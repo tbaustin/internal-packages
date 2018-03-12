@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "keywords": [
     "react",
-    "component",
-    "boilerplate"
+    "escalade",
+    "priceline"
   ],
   "main": "dist/index.js",
   "author": "Kennedy Rose <krose@escaladesports.com>",
@@ -29,6 +29,8 @@
     "react-dom": "^16.1.1"
   },
   "dependencies": {
+    "fetch-retry": "^1.2.0",
+    "statable": "^0.2.2",
     "styled-jsx": "^2.2.4"
   }
 }

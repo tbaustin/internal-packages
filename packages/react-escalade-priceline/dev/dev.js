@@ -1,15 +1,17 @@
 import React from 'react'
 import { render } from 'react-dom'
-import Img from '../src/index'
+import Src, { Availability } from '../src'
 
 const containerEl = document.createElement('div')
 document.body.appendChild(containerEl)
 
 render(
-	<Img
-		src='http://via.placeholder.com/500x1000'
-		width={500}
-		height={1000}
-	/>,
+	<div>
+		<Availability site='goalrilla' id='b6101w'>
+			{stock => {
+				return <div>{stock}</div>
+			}}
+		</Availability>
+	</div>,
 	containerEl
 )
