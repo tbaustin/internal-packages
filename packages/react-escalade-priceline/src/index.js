@@ -1,5 +1,3 @@
 import Availability from './availability'
 
-export {
-	Availability
-}
+export default Availability

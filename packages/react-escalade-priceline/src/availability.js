@@ -10,14 +10,12 @@ class Availability extends Component{
 		this.state = {}
 	}
 	componentDidMount(){
-		stockState.fetch({
+		let options = {
 			site: this.props.site,
 			ids: this.props.id || this.props.ids,
-		})
-		pricingState.fetch({
-			site: this.props.site,
-			ids: this.props.id || this.props.ids,
-		})
+		}
+		stockState.fetch(options)
+		pricingState.fetch(options)
 	}
 	render(){
 		return (

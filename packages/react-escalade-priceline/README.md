@@ -1,18 +1,39 @@
-# React Component Boilerplate
+# react-escalade-priceline
 
-A simple React boilerplate that outputs to ES5 and ES6.
+Dynamically fetch or prefetch Escalade stock & pricing.
 
-## Getting started
+## Installation
+
+With npm:
 
 ```bash
-git clone git@github.com:escaladesports/react-component-boilerplate.git --depth=1 your-component
-cd your-component
-rm -rf .git
+npm install --save react-escalade-priceline
 ```
 
-Also make sure to edit the `package.json` file with a new name, version number, author, and anything else you might need.
+With Yarn:
+
+```bash
+yarn add react-escalade-priceline
+```
 
 ## Usage
 
-- `yarn dev`: Runs a local dev server from the `dev` directory
-- `yarn analyze`: View bundle sizes
+```jsx
+import Availability from 'react-escalade-priceline'
+
+...
+
+<Availability site='goalrilla' id='b6101w'>
+	{({ stock, pricing }) => {
+		if (pricing && stock) {
+			return (
+				<div>
+					<div>Pricing: {pricing}</div>
+					<div>Stock: {stock}</div>
+				</div>
+			)
+		}
+		return <div>Loading...</div>
+	}}
+</Availability>
+```

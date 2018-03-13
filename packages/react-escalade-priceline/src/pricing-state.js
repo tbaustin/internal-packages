@@ -22,7 +22,6 @@ export default new State({}, {
 		if(typeof ids !== 'object'){
 			ids = [ ids ]
 		}
-		console.log('Fetching pricing...')
 		let res = await fetch(options.endpoint, {
 			method: 'POST',
 			body: JSON.stringify({
