@@ -8,8 +8,13 @@ document.body.appendChild(containerEl)
 render(
 	<div>
 		<Availability site='goalrilla' id='b6101w'>
-			{stock => {
-				return <div>{stock}</div>
+			{({ stock, pricing }) => {
+				return (
+					<div>
+						<div>Pricing: {pricing}</div>
+						<div>Stock: {stock}</div>
+					</div>
+				)
 			}}
 		</Availability>
 	</div>,
