@@ -26,13 +26,15 @@ class Availability extends Component{
 						if (this.props.id) {
 							obj = {
 								stock: stock[this.props.id],
-								pricing: pricing[this.props.id]
+								pricing: pricing[this.props.id],
+								loading: !(this.props.id in stock) || !(this.props.id in pricing),
 							}
 						}
 						else{
 							obj = {
 								stock,
-								pricing
+								pricing,
+								loading: !stock || !pricing,
 							}
 						}
 						return this.props.children(obj)
