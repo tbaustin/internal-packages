@@ -8,7 +8,6 @@ import {
 
 class PriceAndStock extends Component{
 	render() {
-		if (!this.props.children) return null
 		return (
 			<Stock {...this.props}>
 				{({ stock, loading }) => {
@@ -16,6 +15,7 @@ class PriceAndStock extends Component{
 					return (
 						<Price {...this.props}>
 							{({ price, loading }) => {
+								if (!this.props.children) return null
 								let priceLoading = loading
 								return this.props.children({
 									stock,

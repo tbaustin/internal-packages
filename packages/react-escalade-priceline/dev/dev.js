@@ -21,17 +21,20 @@ class Test extends Component{
 	}
 	render(){
 		return (
-			<PriceAndStock site='goalrilla' id={this.state.id}>
-				{({ stock, price, loading }) => {
-					if (loading) {
-						return <div>Loading...</div>
-					}
-					return <div>
-						<div>Stock: {stock}</div>
-						<div>Price: {price}</div>
-					</div>
-				}}
-			</PriceAndStock>
+			<div>
+				<PriceAndStock site='goalrilla' id={this.state.id}>
+					{({ stock, price, loading }) => {
+						if (loading) {
+							return <div>Loading...</div>
+						}
+						return <div>
+							<div>Stock: {stock}</div>
+							<div>Price: {price}</div>
+						</div>
+					}}
+				</PriceAndStock>
+				<PrefetchPriceAndStock site='goalrilla' ids={['b8301w', 'b8301w']} />
+			</div>
 		)
 	}
 }
