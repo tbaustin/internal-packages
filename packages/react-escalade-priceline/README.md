@@ -18,22 +18,68 @@ yarn add react-escalade-priceline
 
 ## Usage
 
+### Fetching price and/or stock
+
 ```jsx
-import Availability from 'react-escalade-priceline'
+import { Price, Stock, PriceAndStock } from 'react-escalade-priceline'
 
 ...
 
-<Availability site='goalrilla' id='b6101w'>
-	{({ stock, pricing }) => {
-		if (pricing && stock) {
-			return (
-				<div>
-					<div>Pricing: {pricing}</div>
-					<div>Stock: {stock}</div>
-				</div>
-			)
-		}
-		return <div>Loading...</div>
+<Price site='goalrilla' id='b6101w'>
+	{({ price, loading }) => {
+		return (
+			<div>
+				{loading && 'Loading...'}
+				{!loading && price && `$${price.toFixed(2)}`}
+			</div>
+		)
 	}}
-</Availability>
+</Price>
+
+...
+
+<Stock site='goalrilla' id='b6101w'>
+	{({ stock, loading }) => {
+		return (
+			<div>
+				{loading && 'Loading...'}
+				{!loading && stock && 'In stock'}
+				{!loading && !stock && 'Out of stock'}
+			</div>
+		)
+	}}
+</Stock>
+
+...
+
+<PriceAndStock site='goalrilla' id='b6101w'>
+	{({ stock, price, loading }) => {
+		if(loading) return <div>Loading...</div>
+		return (
+			<div>
+				<div>Price: {price}</div>
+				<div>Stock: {stock}</div>
+			</div>
+		)
+	}}
+</PriceAndStock>
+```
+
+### Prefetching price and/or stock
+
+```jsx
+import { PrefetchPrice, PrefetchStock, PrefetchPriceAndStock } from 'react-escalade-priceline'
+
+...
+
+<PrefetchPrice site='goalrilla' id={['b6101w', 'b3101w' ]} />
+
+...
+
+<PrefetchStock site='goalrilla' id={['b6101w', 'b3101w' ]} />
+
+...
+
+<PrefetchPriceAndStock site='goalrilla' id={['b6101w', 'b3101w' ]} />
+
 ```

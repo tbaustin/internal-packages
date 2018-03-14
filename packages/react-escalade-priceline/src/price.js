@@ -18,6 +18,7 @@ class Price extends Component{
 		pricingState.fetch(options)
 	}
 	render(){
+		if(!this.props.children) return null
 		return (
 			<Subscribe to={pricingState}>
 				{price => {

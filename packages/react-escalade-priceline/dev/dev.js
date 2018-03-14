@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Stock, Price, PriceAndStock } from '../src'
+import { PriceAndStock, PrefetchPriceAndStock } from '../src'
 
 const containerEl = document.createElement('div')
 document.body.appendChild(containerEl)
@@ -18,6 +18,7 @@ render(
 				</div>
 			}}
 		</PriceAndStock>
+		<PrefetchPriceAndStock site='goalrilla' ids={[ 'b6101w' ]} />
 	</div>,
 	containerEl
 )

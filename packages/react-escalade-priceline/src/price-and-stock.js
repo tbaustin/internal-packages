@@ -7,7 +7,8 @@ import {
 } from './'
 
 class PriceAndStock extends Component{
-	render(){
+	render() {
+		if (!this.props.children) return null
 		return (
 			<Stock {...this.props}>
 				{({ stock, loading }) => {
