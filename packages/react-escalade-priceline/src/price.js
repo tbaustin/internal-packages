@@ -7,8 +7,15 @@ class Price extends Component{
 	constructor(props){
 		super(props)
 		this.state = {}
+		this.fetch = this.fetch.bind(this)
 	}
 	componentDidMount(){
+		this.fetch()
+	}
+	componentDidUpdate(){
+		this.fetch()
+	}
+	fetch() {
 		let options = {
 			...this.props
 		}
