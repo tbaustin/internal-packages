@@ -18,7 +18,7 @@ class Stock extends Component {
 		stockState.fetch(options)
 	}
 	render() {
-		if (!this.props.children) return null
+		if (!this.props.children || (!this.props.id && !this.props.ids)) return null
 		return (
 			<Subscribe to={stockState}>
 				{stock => {

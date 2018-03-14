@@ -11,6 +11,9 @@ async function fetchMethod(options){
 	if(options.id){
 		ids.push(options.id)
 	}
+	if(!ids.length){
+		return
+	}
 	let res = await fetch(options.endpoint, {
 		method: 'POST',
 		body: JSON.stringify({
