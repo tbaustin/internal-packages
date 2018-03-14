@@ -1,28 +1,23 @@
 import React from 'react'
 import { render } from 'react-dom'
-import Availability from '../src'
+import { Stock, Price, PriceAndStock } from '../src'
 
 const containerEl = document.createElement('div')
 document.body.appendChild(containerEl)
 
 render(
 	<div>
-		<Availability site='goalrilla' id='b6101w'>
-			{({ stock, pricing, loading }) => {
+		<PriceAndStock site='goalrilla' id='b6101w'>
+			{({ stock, price, loading }) => {
 				if(loading){
 					return <div>Loading...</div>
 				}
-				if(!stock){
-					return <div>Out of Stock</div>
-				}
-				return (
-					<div>
-						<div>Pricing: {pricing}</div>
-						<div>Stock: {stock}</div>
-					</div>
-				)
+				return <div>
+					<div>Stock: {stock}</div>
+					<div>Price: {price}</div>
+				</div>
 			}}
-		</Availability>
+		</PriceAndStock>
 	</div>,
 	containerEl
 )
