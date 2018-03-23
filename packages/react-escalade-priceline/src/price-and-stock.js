@@ -12,18 +12,13 @@ class PriceAndStock extends Component{
 		return (
 			<Stock {...this.props}>
 				{({ stock, loading }) => {
-					console.log('Stock rendering...')
 					let stockLoading = loading
 					return (
 						<Price {...this.props}>
 							{({ price, loading }) => {
-								console.log('Price rendering...')
 								if (!renderChild){
-									console.log('Rendering null')
-									console.log(renderChild)
 									return null
 								}
-								console.log('Rendering price and stock')
 								let priceLoading = loading
 								return renderChild({
 									stock,
