@@ -14,6 +14,8 @@ async function fetchMethod(options){
 	if(!ids.length){
 		return
 	}
+
+	// Fetch data
 	let res = await fetch(options.endpoint, {
 		method: 'POST',
 		body: JSON.stringify({
@@ -23,5 +25,16 @@ async function fetchMethod(options){
 	})
 	res = await res.json()
 	this.setState(res)
+
+	// Repoll interval
+	if(typeof window === 'object'){
+		clearTimeout(this.timeout)
+		this.timeout = setTimeout(() => {
+			this.fetch({
+				...options,
+				ids: Object.keys(this.state),
+			})
+		}, 6 * 1000)
+	}
 }
 export default fetchMethod
