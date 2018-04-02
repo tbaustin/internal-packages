@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "fetch-retry": "^1.2.0",
-    "statable": "^0.2.3",
-    "styled-jsx": "^2.2.4"
+    "statable": "^0.2.3"
   }
 }
