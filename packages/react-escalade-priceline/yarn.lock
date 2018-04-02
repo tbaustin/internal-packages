@@ -5962,11 +5962,9 @@ ssri@^5.0.0:
   dependencies:
     safe-buffer "^5.1.1"
 
-statable@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/statable/-/statable-0.2.2.tgz#ecba8154f1206bd7f037a55215875b14adf9a47d"
-  dependencies:
-    styled-jsx "^2.2.4"
+statable@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/statable/-/statable-0.2.3.tgz#c801df97d15aa077e907897b66918a2e66903e95"
 
 static-extend@^0.1.1:
   version "0.1.2"
