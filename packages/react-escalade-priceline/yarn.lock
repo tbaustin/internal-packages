@@ -5973,7 +5973,7 @@ static-extend@^0.1.1:
     define-property "^0.2.5"
     object-copy "^0.1.0"
 
-"static-server@github:escaladesports/static-server":
+static-server@escaladesports/static-server:
   version "3.0.0"
   resolved "https://codeload.github.com/escaladesports/static-server/tar.gz/cba4e0a7d56129badeb55963a2414c88531ca8bb"
   dependencies:

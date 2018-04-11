@@ -21,7 +21,7 @@ class Test extends Component {
   render() {
     return (
       <div>
-        <PriceAndStock site="goalrilla" id={this.state.id}>
+        <PriceAndStock site="stiga" env="testing" id="T8591B">
           {({ stock, price, loading }) => {
             if (loading) {
               return <div>Loading...</div>;
@@ -34,7 +34,7 @@ class Test extends Component {
             );
           }}
         </PriceAndStock>
-        <PrefetchPriceAndStock site="goalrilla" ids={['b8301w', 'b8301w']} />
+        {/* <PrefetchPriceAndStock site="goalrilla" ids={['b8301w', 'b8301w']} /> */}
       </div>
     );
   }
