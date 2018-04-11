@@ -1,6 +1,10 @@
 {
   "name": "react-escalade-priceline",
+<<<<<<< HEAD
   "version": "1.0.5",
+=======
+  "version": "1.0.9",
+>>>>>>> 161155565ef49ec63110a2c7789ec9e6428cdf8c
   "keywords": [
     "react",
     "escalade",
@@ -23,14 +27,13 @@
     "travis": "opn https://travis-ci.org/escaladesports/react-escalade-priceline/branches"
   },
   "devDependencies": {
-    "esca-scripts": "^0.14.2",
+    "esca-scripts": "^0.14.4",
     "opn-cli": "^3.1.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1"
   },
   "dependencies": {
     "fetch-retry": "^1.2.0",
-    "statable": "^0.2.2",
-    "styled-jsx": "^2.2.4"
+    "statable": "^0.2.3"
   }
 }

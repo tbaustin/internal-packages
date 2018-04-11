@@ -12,8 +12,10 @@ class Price extends Component{
 	componentDidMount(){
 		this.fetch()
 	}
-	componentDidUpdate(){
-		this.fetch()
+	componentDidUpdate(prevProps, prevState){
+		if(prevProps.length !== this.props.length){
+			this.fetch()
+		}
 	}
 	fetch() {
 		let options = {
