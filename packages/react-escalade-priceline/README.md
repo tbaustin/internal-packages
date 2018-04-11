@@ -81,5 +81,22 @@ import { PrefetchPrice, PrefetchStock, PrefetchPriceAndStock } from 'react-escal
 ...
 
 <PrefetchPriceAndStock site='goalrilla' id={['b6101w', 'b3101w' ]} />
+```
 
+### Switch to testing environment
+
+```jsx
+import { PriceAndStock } from 'react-escalade-priceline'
+
+<PriceAndStock site='goalrilla' id='b6101w' env="testing">
+	{({ stock, price, loading }) => {
+		if(loading) return <div>Loading...</div>
+		return (
+			<div>
+				<div>Price: {price}</div>
+				<div>Stock: {stock}</div>
+			</div>
+		)
+	}}
+</PriceAndStock>
 ```
