@@ -29,8 +29,7 @@ class Price extends Component {
   render() {
     if (!this.props.children || (!this.props.id && !this.props.ids))
       return null;
-    const { id, ids } = this.props;
-    console.log(id, ids);
+    const { id } = this.props;
     return (
       <Subscribe to={pricingState}>
         {price => {

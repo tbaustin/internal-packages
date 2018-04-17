@@ -28,7 +28,6 @@ class Stock extends Component {
     if (!this.props.children || (!this.props.id && !this.props.ids))
       return null;
     const { id } = this.props;
-    console.log(id, ids);
     return (
       <Subscribe to={stockState}>
         {stock => {

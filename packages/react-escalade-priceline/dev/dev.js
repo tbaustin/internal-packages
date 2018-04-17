@@ -22,17 +22,13 @@ class Test extends Component {
     const ids = ['b1002', 'b1030', 'b2415w'];
     return (
       <div>
-        <PriceAndStock site="goalrilla" ids={ids}>
+        <PriceAndStock site="goalrilla" id="b1002">
           {({ stock, price, loading }) => {
             if (loading) return <div>loading</div>;
             return (
               <div>
-                {ids.map(id => (
-                  <div key={id}>
-                    <div>Price: {price[id]}</div>
-                    <div>Stock: {stock[id]}</div>
-                  </div>
-                ))}
+                <div>Price: {price}</div>
+                <div>Stock: {stock}</div>
               </div>
             );
           }}
