@@ -29,8 +29,11 @@ class Price extends Component {
   render() {
     if (!this.props.children || (!this.props.id && !this.props.ids))
       return null;
-    const { id } = this.props;
-    const updatedId = id.toLowerCase();
+    const { id, ids } = this.props;
+    let updated;
+    if (id) {
+      updated = id.toLowerCase();
+    }
     return (
       <Subscribe to={pricingState}>
         {price => {
@@ -38,8 +41,8 @@ class Price extends Component {
             let obj;
             if (this.props.id) {
               obj = {
-                price: price[updatedId],
-                loading: !(updatedId in price)
+                price: price[updated],
+                loading: !(updated in price)
               };
             } else {
               obj = {

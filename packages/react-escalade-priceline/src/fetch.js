@@ -14,7 +14,6 @@ async function fetchMethod(options) {
   if (!ids.length) {
     return;
   }
-
   // Fetch data
   let res = await fetch(options.endpoint, {
     method: 'POST',

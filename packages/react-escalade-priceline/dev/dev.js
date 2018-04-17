@@ -21,20 +21,24 @@ class Test extends Component {
   render() {
     return (
       <div>
-        <PriceAndStock site="stiga" env="testing" id="T8591B">
-          {({ stock, price, loading }) => {
+        <PriceAndStock
+          site="goalrilla"
+          ids={['b3200w', 'b3222w', 'b3300w', 'b3333w', 'b5000w']}
+          // id={'b3200w'}
+        >
+          {({ price, stock, loading }) => {
             if (loading) {
               return <div>Loading...</div>;
             }
             return (
               <div>
-                <div>Stock: {stock}</div>
-                <div>Price: {price}</div>
+                {<div>Price: {price['b3200w']}</div>}
+                {<div>Stock: {stock['b3200w']}</div>}
               </div>
             );
           }}
         </PriceAndStock>
-        {/* <PrefetchPriceAndStock site="goalrilla" ids={['b8301w', 'b8301w']} /> */}
+        <PrefetchPriceAndStock site="goalrilla" ids={['b8301w', 'b8301w']} />
       </div>
     );
   }
