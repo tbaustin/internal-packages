@@ -29,7 +29,7 @@ class Price extends Component {
   render() {
     if (!this.props.children || (!this.props.id && !this.props.ids))
       return null;
-    const { id, ids } = this.props;
+    const { id } = this.props;
     let updated;
     if (id) {
       updated = id.toLowerCase();
