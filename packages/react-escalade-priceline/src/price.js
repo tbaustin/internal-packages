@@ -29,20 +29,17 @@ class Price extends Component {
   render() {
     if (!this.props.children || (!this.props.id && !this.props.ids))
       return null;
-    const { id } = this.props;
-    let updated;
-    if (id) {
-      updated = id.toLowerCase();
-    }
+    const { id, ids } = this.props;
+    console.log(id, ids);
     return (
       <Subscribe to={pricingState}>
         {price => {
           if (this.props.children) {
             let obj;
-            if (this.props.id) {
+            if (id) {
               obj = {
-                price: price[updated],
-                loading: !(updated in price)
+                price: price[id.toLowerCase()],
+                loading: !(id.toLowerCase() in price)
               };
             } else {
               obj = {

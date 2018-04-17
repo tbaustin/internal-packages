@@ -28,19 +28,16 @@ class Stock extends Component {
     if (!this.props.children || (!this.props.id && !this.props.ids))
       return null;
     const { id } = this.props;
-    let updated;
-    if (id) {
-      updated = id.toLowerCase();
-    }
+    console.log(id, ids);
     return (
       <Subscribe to={stockState}>
         {stock => {
           if (this.props.children) {
             let obj;
-            if (this.props.id) {
+            if (id) {
               obj = {
-                stock: stock[updated],
-                loading: !(updated in stock)
+                stock: stock[id.toLowerCase()],
+                loading: !(id.toLowerCase() in stock)
               };
             } else {
               obj = {
