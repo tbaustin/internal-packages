@@ -1,63 +1,62 @@
-import React, { Component } from 'react';
-import { Subscribe } from 'statable';
+import React, { Component } from 'react'
+import { Subscribe } from 'statable'
 
-import stockState from './stock-state';
+import stockState from './stock-state'
 
 class Stock extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
-    this.fetch = this.fetch.bind(this);
+    super(props)
+    this.state = {}
+    this.fetch = this.fetch.bind(this)
   }
   componentDidMount() {
-    this.fetch();
+    this.fetch()
   }
   componentDidUpdate() {
-    this.fetch();
+    this.fetch()
   }
   fetch() {
     let options = {
       ...this.props
-    };
-    if (!options.endpoint) {
-      options.endpoint = this.props.endpoints[options.env];
     }
-    stockState.fetch(options);
+    if (!options.endpoint) {
+      options.endpoint = this.props.endpoints[options.env]
+    }
+    stockState.fetch(options)
   }
   render() {
-    if (!this.props.children || (!this.props.id && !this.props.ids))
-      return null;
-    const { id } = this.props;
+    if (!this.props.children || (!this.props.id && !this.props.ids)) return null
+    const { id } = this.props
     return (
       <Subscribe to={stockState}>
         {stock => {
           if (this.props.children) {
-            let obj;
-            if (id) {
+            let obj
+            if (id && stock.inventory) {
               obj = {
-                stock: stock[id.toLowerCase()],
-                loading: !(id.toLowerCase() in stock)
-              };
+                stock: stock.inventory[id.toUpperCase()].stock,
+                loading: !(id.toUpperCase() in stock.inventory)
+              }
             } else {
               obj = {
-                stock,
-                loading: !stock
-              };
+                stock: stock.inventory,
+                loading: !stock.inventory
+              }
             }
-            return this.props.children(obj);
+            return this.props.children(obj)
           }
         }}
       </Subscribe>
-    );
+    )
   }
 }
 
 Stock.defaultProps = {
   env: `production`,
   endpoints: {
-    production: `https://xinn7f22bj.execute-api.us-east-1.amazonaws.com/production/handler`,
-    testing: `https://t9w63tqdfk.execute-api.us-east-1.amazonaws.com/staging/handler`
+    production: `https://inventory.escsportsapi.com/load`,
+    testing: `https://inventory-test.escsportsapi.com/load`
   }
-};
+}
 
-export default Stock;
+export default Stock

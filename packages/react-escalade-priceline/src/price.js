@@ -1,65 +1,64 @@
-import React, { Component } from 'react';
-import { Subscribe } from 'statable';
+import React, { Component } from 'react'
+import { Subscribe } from 'statable'
 
-import pricingState from './pricing-state';
+import pricingState from './pricing-state'
 
 class Price extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
-    this.fetch = this.fetch.bind(this);
+    super(props)
+    this.state = {}
+    this.fetch = this.fetch.bind(this)
   }
   componentDidMount() {
-    this.fetch();
+    this.fetch()
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.length !== this.props.length) {
-      this.fetch();
+      this.fetch()
     }
   }
   fetch() {
     let options = {
       ...this.props
-    };
-    if (!options.endpoint) {
-      options.endpoint = this.props.endpoints[options.env];
     }
-    pricingState.fetch(options);
+    if (!options.endpoint) {
+      options.endpoint = this.props.endpoints[options.env]
+    }
+    pricingState.fetch(options)
   }
   render() {
-    if (!this.props.children || (!this.props.id && !this.props.ids))
-      return null;
-    const { id } = this.props;
+    if (!this.props.children || (!this.props.id && !this.props.ids)) return null
+    const { id } = this.props
     return (
       <Subscribe to={pricingState}>
         {price => {
           if (this.props.children) {
-            let obj;
-            if (id) {
+            let obj
+            if (id && price.prices) {
               obj = {
-                price: price[id.toLowerCase()],
-                loading: !(id.toLowerCase() in price)
-              };
+                price: price.prices[id.toUpperCase()].price,
+                loading: !(id.toUpperCase() in price.prices)
+              }
             } else {
               obj = {
-                price,
-                loading: !price
-              };
+                price: price.prices,
+                loading: !price.prices
+              }
             }
-            return this.props.children(obj);
+            return this.props.children(obj)
           }
         }}
       </Subscribe>
-    );
+    )
   }
 }
 
 Price.defaultProps = {
   env: `production`,
   endpoints: {
-    production: `https://cojn6cbcd7.execute-api.us-east-1.amazonaws.com/production/handler`,
-    testing: `https://hmfnvefe14.execute-api.us-east-1.amazonaws.com/staging/handler`
+    production: `https://pricing.escsportsapi.com/load`,
+    testing: `https://pricing-test.escsportsapi.com/load`
   }
-};
+}
 
-export default Price;
+export default Price
