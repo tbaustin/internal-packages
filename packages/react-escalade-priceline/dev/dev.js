@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
-import { Price, PriceAndStock, PrefetchPriceAndStock } from '../src'
+import { Price, PriceAndStock, PrefetchPriceAndStock } from '../dist'
 const containerEl = document.createElement('div')
 document.body.appendChild(containerEl)
 
