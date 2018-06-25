@@ -36,3 +36,4 @@ class Test extends Component {
 }
 
 render(<Test />, document.querySelector(`#container`))
+
