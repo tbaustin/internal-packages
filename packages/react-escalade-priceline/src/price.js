@@ -61,4 +61,5 @@ Price.defaultProps = {
   }
 }
 
+
 export default Price

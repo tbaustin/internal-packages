@@ -26,14 +26,14 @@ async function fetchMethod(options) {
   this.setState(res)
 
   // Repoll interval
-  // if (typeof window === 'object') {
-  //   clearTimeout(this.timeout)
-  //   this.timeout = setTimeout(() => {
-  //     this.fetch({
-  //       ...options,
-  //       ids: Object.keys(this.state)
-  //     })
-  //   }, 6 * 1000)
-  // }
+   if (typeof window === 'object') {
+    clearTimeout(this.timeout)
+     this.timeout = setTimeout(() => {
+       this.fetch({
+        ...options,
+        ids: Object.keys(this.state)
+      })
+    }, 6 * 1000)
+   }
 }
 export default fetchMethod

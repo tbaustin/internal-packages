@@ -1,6 +1,6 @@
 {
   "name": "react-escalade-priceline",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "keywords": [
     "react",
     "escalade",
@@ -14,22 +14,24 @@
   },
   "license": "MIT",
   "scripts": {
-    "analyze": "esca-scripts analyze --react --component --input ./src/index.js",
-    "build": "esca-scripts build --react --component --babel --multiple --input src --output dist",
-    "dev": "esca-scripts dev ---input './dev/dev.js, ./dev/index.html' --react --browser",
+    "build": "esca-scripts build --no-css",
+    "dev": "esca-scripts dev --no-css",
     "prepublishOnly": "npm run build",
     "reset": "esca-scripts reset",
     "test": "echo 'no test'",
     "travis": "opn https://travis-ci.org/escaladesports/react-escalade-priceline/branches"
   },
   "devDependencies": {
-    "esca-scripts": "^0.14.4",
+    "esca-scripts": "^1.4.2",
+    "get-port": "^3.2.0",
     "opn-cli": "^3.1.0",
+    "puppeteer": "^1.5.0",
     "react": "^16.1.1",
-    "react-dom": "^16.1.1"
+    "react-dom": "^16.1.1",
+    "static-server": "^2.2.1"
   },
   "dependencies": {
     "fetch-retry": "^1.2.0",
-    "statable": "^0.2.3"
+    "statable": "^0.3.1"
   }
 }
