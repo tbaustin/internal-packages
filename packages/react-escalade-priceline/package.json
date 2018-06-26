@@ -31,7 +31,7 @@
     "static-server": "^2.2.1"
   },
   "dependencies": {
-    "fetch-retry": "^1.2.0",
+    "isomorphic-fetch": "^2.2.1",
     "statable": "^0.3.1"
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
-import { Price, PriceAndStock, PrefetchPriceAndStock } from '../src'
+import { Price, Stock, PriceAndStock, PrefetchPriceAndStock } from '../src'
 
 class Test extends Component {
 	constructor(props) {
@@ -19,7 +19,7 @@ class Test extends Component {
 	render() {
 		return (
 			<div>
-				<PriceAndStock site="goalrilla" id={this.state.id}>
+				<PriceAndStock site='goalrilla' id={this.state.id}>
 					{({ stock, price, loading }) => {
 						if (loading) return <div>loading</div>
 						return (
