@@ -19,16 +19,18 @@ async function fetchMethod(options) {
 		site: options.site,
 		skus: ids,
 	})
+	console.log(`Fetching...`)
 	let res = await fetch(options.endpoint, {
 		method: 'POST',
 		body,
 	})
 	res = await res.json()
+	console.log(res)
 	if (`inventory` in res) {
-		res = extractStock(res)
+		res = extractStock(res, ids)
 	}
 	if(`prices` in res){
-		res = extractPrices(res)
+		res = extractPrices(res, ids)
 	}
 	this.setState(res)
 
@@ -44,19 +46,34 @@ async function fetchMethod(options) {
 	}
 }
 
-function extractStock(res) {
+function extractStock(res, ids) {
+	console.log(`Extracting stock...`)
 	let newRes = {}
-	res = res.inventory
-	for (let i in res) {
-		newRes[i.toLowerCase()] = res[i].stock
+	res = res.inventory || {}
+	for(let i = ids.length; i--;){
+		const id = ids[i].toUpperCase()
+		if (id in res) {
+			newRes[id.toLowerCase()] = res[id].stock
+		}
+		else{
+			newRes[id.toLowerCase()] = 0
+		}
 	}
 	return newRes
 }
-function extractPrices(res) {
+function extractPrices(res, ids) {
+	console.log(`Extracting Pricing...`)
 	let newRes = {}
-	res = res.prices
-	for (let i in res) {
-		newRes[i.toLowerCase()] = Number(res[i].price)
+	res = res.prices || {}
+	console.log(res)
+	for (let i = ids.length; i--;) {
+		const id = ids[i].toUpperCase()
+		if (id in res) {
+			newRes[id.toLowerCase()] = Number(res[id].price)
+		}
+		else {
+			newRes[id.toLowerCase()] = false
+		}
 	}
 	return newRes
 }

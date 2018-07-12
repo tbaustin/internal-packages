@@ -6,7 +6,7 @@ class Test extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			id: `b6101w`
+			id: `b6101w-fake`
 		};
 	}
 	componentDidMount() {
@@ -24,7 +24,7 @@ class Test extends Component {
 						if (loading) return <div>loading</div>
 						return (
 							<div>
-								<div>Price: {price}</div>
+								<div>Price: {price ? price : `No price found`}</div>
 								<div>Stock: {stock}</div>
 							</div>
 						)
