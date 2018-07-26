@@ -56,8 +56,8 @@ class Stock extends Component {
 Stock.defaultProps = {
 	env: `production`,
 	endpoints: {
-		production: `https://inventory.escsportsapi.com/load`,
-		testing: `https://inventory-test.escsportsapi.com/load`,
+		production: `https://xinn7f22bj.execute-api.us-east-1.amazonaws.com/production/handler`,
+		testing: `https://t9w63tqdfk.execute-api.us-east-1.amazonaws.com/staging/handler`,
 	},
 }
 
