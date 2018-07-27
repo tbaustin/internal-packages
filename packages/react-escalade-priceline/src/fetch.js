@@ -19,13 +19,13 @@ async function fetchMethod(options) {
 		site: options.site,
 		skus: ids,
 	})
-	console.log(`Fetching...`)
+	// console.log(`Fetching...`)
 	let res = await fetch(options.endpoint, {
 		method: 'POST',
 		body,
 	})
 	res = await res.json()
-	console.log(res)
+	// console.log(res)
 	if (`inventory` in res) {
 		res = extractStock(res, ids)
 	}
@@ -47,7 +47,7 @@ async function fetchMethod(options) {
 }
 
 function extractStock(res, ids) {
-	console.log(`Extracting stock...`)
+	// console.log(`Extracting stock...`)
 	let newRes = {}
 	res = res.inventory || {}
 	for(let i = ids.length; i--;){
@@ -62,10 +62,10 @@ function extractStock(res, ids) {
 	return newRes
 }
 function extractPrices(res, ids) {
-	console.log(`Extracting Pricing...`)
+	// console.log(`Extracting Pricing...`)
 	let newRes = {}
 	res = res.prices || {}
-	console.log(res)
+	// console.log(res)
 	for (let i = ids.length; i--;) {
 		const id = ids[i].toUpperCase()
 		if (id in res) {
