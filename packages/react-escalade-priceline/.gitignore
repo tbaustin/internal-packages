@@ -11,18 +11,22 @@ node_modules/
 
 # Development/Environment
 .env
+.env.*
 dist
+dist-*
 .next
 json
-static
-docs/build/
-dist-*
-coverage/
-.eslintcache
-.postcssrc
-webpack.config.js
-.babelrc
+public
 .cache
+envdotjs-key
+env.js
+.serverless
+_optimize
+.postcssrc
+./gatsby-node.js
+./gatsby-browser.js
+./gatsby-ssr.js
+_book
 
 # Temporary
 temp

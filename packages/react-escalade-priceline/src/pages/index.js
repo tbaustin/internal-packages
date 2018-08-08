@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
-import { render } from 'react-dom'
-import { Price, Stock, PriceAndStock, PrefetchPriceAndStock } from '../src'
+import { Price, Stock, PriceAndStock, PrefetchPriceAndStock } from '../module'
 
-class Test extends Component {
+export default class Test extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			id: `b6101w-fake`
-		};
+			id: `b6101w-fake`,
+		}
 	}
 	componentDidMount() {
 		setTimeout(() => {
 			this.setState({
-				id: `b8301w`
-			});
+				id: `b8301w`,
+			})
 		}, 2 * 1000)
 	}
 	render() {
@@ -34,6 +33,3 @@ class Test extends Component {
 		)
 	}
 }
-
-render(<Test />, document.querySelector(`#container`))
-

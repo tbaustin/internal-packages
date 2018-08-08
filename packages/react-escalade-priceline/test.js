@@ -1,3 +1,4 @@
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "jest" }]*/
 import puppeteer from 'puppeteer'
 import getPort from 'get-port'
 import Server from 'static-server'
@@ -10,11 +11,11 @@ describe(`Form component`, () => {
 	let page
 	beforeAll(async () => {
 		server = new Server({
-			rootPath: `dist-bundle`,
+			rootPath: `public`,
 			port: await getPort(),
 		})
 		server.start()
-		browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+		browser = await puppeteer.launch({ args: [`--no-sandbox`] })
 		page = await browser.newPage()
 		await page.goto(`http://localhost:${server.port}`)
 		await page.waitForSelector(`form`)
