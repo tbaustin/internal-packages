@@ -1,0 +1,31 @@
+{
+  "name": "@escaladesports/zygote-plugin-esca-api",
+  "version": "1.0.0",
+  "description": "Zygote plugin for Escalade Sports API",
+  "main": "dist/index.js",
+  "scripts": {
+    "analyze": "esca-scripts analyze --react --component --input ./src/index.js",
+    "build": "esca-scripts build --react --component --babel --input src --output dist --multiple",
+    "dev": "esca-scripts dev ---input './dev/dev.js, ./dev/index.html' --react --browser",
+    "prepublishOnly": "npm run build",
+    "reset": "esca-scripts reset",
+    "test": "echo 'no test'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/escaladesports/zygote-plugin-esca-api.git"
+  },
+  "author": "Matt Suhay <matthew.suhay@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/escaladesports/zygote-plugin-esca-api/issues"
+  },
+  "homepage": "https://github.com/escaladesports/zygote-plugin-esca-api#readme",
+  "devDependencies": {
+    "esca-scripts": "^1.5.4",
+    "react": "^16.7.0"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
