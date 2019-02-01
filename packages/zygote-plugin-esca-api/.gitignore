@@ -27,6 +27,7 @@ env.js.key
 .env.js.key
 .serverless
 _optimize
+headers.js
 
 # Temporary
 temp

@@ -5,9 +5,13 @@ import productsState from 'zygote-cart/src/export/state/products'
 import shippingState, { findShippingMethod } from 'zygote-cart/src/export/state/shipping'
 import customerState from 'zygote-cart/src/export/state/customer'
 import totalsState from 'zygote-cart/src/export/state/totals'
+import centsToDollars from 'zygote-cart/src/export/utils/cents-to-dollars'
 
-const headers = {
-
+let headers = {}
+try {
+	headers = require('../headers')
+} catch (e) {
+	// no headers, no problem
 }
 
 const preInfo = async ({ info }) => {
@@ -118,22 +122,17 @@ const postInfo = async ({ response, info, preFetchData }) => {
 					methodIndex++
 				})
 
-				if (Object.keys(jsonBody).length > 1) {
-					const products = [...productsState.state.products]
-					shippingMethods[location] = {
-						id: location,
-						description: jsonBody[location].products.map(shipProd => {
-							const thisProduct = products.find(reqProd => reqProd.id == shipProd)
-							thisProduct.location = location
-							return thisProduct.name
-						}).join(', '),
-						shippingMethods: Object.keys(locationShippingMethods).map(ship => locationShippingMethods[ship])
-					}
-					productsState.setState({ products })
+				const products = [...productsState.state.products]
+				shippingMethods[location] = {
+					id: location,
+					description: jsonBody[location].products.map(shipProd => {
+						const thisProduct = products.find(reqProd => reqProd.id == shipProd)
+						thisProduct.location = location
+						return thisProduct.name
+					}).join(', '),
+					shippingMethods: Object.keys(locationShippingMethods).map(ship => locationShippingMethods[ship])
 				}
-				else {
-					shippingMethods = locationShippingMethods
-				}
+				productsState.setState({ products })
 			})
 			let discount = 0
 			totalsState.state.modifications.filter(mod => !mod.id.startsWith(`tax`) && !mod.id.startsWith(`shipping`)).forEach(mod => {
@@ -153,11 +152,6 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	return {
 		success: inventory && shippingMethods ? true : false,
 		modifications: [
-			{
-				id: `january-sale`,
-				description: `January Sale`,
-				value: -2000,
-			},
 			shippingMethods[Object.keys(shippingMethods)[0]].tax,
 		],
 		shippingMethods: Object.keys(shippingMethods).map(ship => shippingMethods[ship]),
@@ -166,29 +160,31 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	}
 }
 
-const slowFetch = async (order_objs, i) => {
+const slowFetch = async (order_objs, i, url) => {
 	let responses = []
-	await fetch(`https://orders-test.escsportsapi.com/save`, { // Create order
+	await fetch(url, { // Create order
 		method: `post`,
 		body: order_objs[i],
 		headers: headers,
 	})
+		.then(response => response.json())
 		.then(response => {
-			console.log(response)
+			responses.push(response)
 			if (order_objs.length > i + 1) {
-				return slowFetch(order_objs, i + 1)
+				return slowFetch(order_objs, i + 1, url)
 			}
 		})
 		.then(response => {
-			console.log(response)
+			// console.log(response)
 		})
+	
+	return responses
 }
 
-const preOrder = async ({ info }) => {
+const preOrder = async ({ preFetchData, info }) => {
 	const bind_id = shortid.generate()
 	const auth0_id = customerState.state.customer ? customerState.state.customer.username : ''
 	const email = info.infoEmail
-	console.log(info)
 	const billing = info.sameBilling 
 		? {
 			first_name: info.billingFirstName,
@@ -228,9 +224,16 @@ const preOrder = async ({ info }) => {
 			phone: info.infoPhone || ``,
 			country: `US`,
 		}
-	
+
+	const taxes = totalsState.state.modifications.find(mod => mod.id == `tax`)
+	const discounts = {}
+	totalsState.state.modifications.filter(mod => !mod.id.startsWith(`tax`) && !mod.id.startsWith(`ship`)).forEach(mod => {
+		discounts[mod.id] = mod.value > 0 ? centsToDollars(mod.value) : centsToDollars(mod.value * -1)
+	})
+
 	const products = [...productsState.state.products]
 	const orders = {}
+
 	products.forEach(product => {
 		if (!orders[product.location]) {
 			orders[product.location] = {
@@ -248,14 +251,16 @@ const preOrder = async ({ info }) => {
 			height: product.height,
 			weight: product.weight,
 			fc: product.freight_class || product.fc,
-			price: (product.price / 100).toFixed(2),
+			price: centsToDollars(product.price),
 			qty: product.quantity
 		}
-		orders[product.location].locationTotal += (product.price / 100).toFixed(2)
+		orders[product.location].locationTotal = parseFloat(orders[product.location].locationTotal) + centsToDollars(product.price)
 
 		const selected = shippingState.state.selected[product.location] || shippingState.state.selected
 		const method = findShippingMethod(selected, shippingState.state.selected[product.location] ? product.location : false)
-		const value = (method.value / 100).toFixed(2)
+		const value = centsToDollars(method.value)
+
+		orders[product.location].locationTotal = parseFloat(orders[product.location].locationTotal) + parseFloat(value)
 
 		orders[product.location].shipping.options[value] = {
 			label: method.description,
@@ -264,112 +269,176 @@ const preOrder = async ({ info }) => {
 		orders[product.location].shipping.skus.push(product.id)
 	})
 
-	const taxes = totalsState.state.modifications.find(mod => mod.id == `tax`)
-	const discounts = {}
-	totalsState.state.modifications.filter(mod => !mod.id.startsWith(`tax`) && !mod.id.startsWith(`shipping`)).forEach(mod => {
-		discounts[mod.id] = (mod.value > 0 ? mod.value / 100 : (mod.value * -1) / 100).toFixed(2)
+	/////////////////////////////// Slow fetch, multi call
+	//
+	// let order = []
+	// const order_objs = Object.keys(orders).map(location => {
+	// 	return JSON.stringify({
+	// 		bind_id,
+	// 		auth0_id,
+	// 		email,
+	// 		billing,
+	// 		delivery,
+	// 		products: orders[location].products,
+	// 		shipping: orders[location].shipping,
+	// 		discounts,
+	// 		taxes: {
+	// 			value: ((taxes.value / 100) * ((parseFloat(orders[location].locationTotal) + parseFloat(Object.keys(orders[location].shipping.options)[0])) / (totalsState.state.total / 100))).toFixed(2)
+	// 		}
+	// 	})
+	// })
+
+	// let i = 0
+	// await fetch(`https://orders-test.escsportsapi.com/save`, { // Create order
+	// 	method: `post`,
+	// 	body: order_objs[i],
+	// 	headers: headers,
+	// })
+	// 	.then(response => response.json())
+	// 	.then(response => {
+	// 		order.push(response)
+	// 		if (order_objs.length > 1) {
+	// 			return slowFetch(order_objs, i + 1, `https://orders-test.escsportsapi.com/save`).then(response => {
+	// 				order = order.concat(response)
+	// 			})
+	// 		}
+	// 	})
+	// 	.then(response => {
+	// 		// console.log(response)
+	// 	})
+	//
+	//////////////////////////////////////
+
+	Object.keys(orders).map(location => {
+		orders[location].discounts = discounts
+		orders[location].taxes = {
+			value: (centsToDollars(taxes.value) * (parseFloat(orders[location].locationTotal) / parseFloat(centsToDollars(totalsState.state.total - taxes.value)))).toFixed(2)
+		}
 	})
 
-	let fetches = []
-	let order = []
-
-	const order_objs = Object.keys(orders).map(location => {
-		return JSON.stringify({
+	const payment = {
+		order: {
 			bind_id,
 			auth0_id,
 			email,
 			billing,
 			delivery,
-			products: orders[location].products,
-			shipping: orders[location].shipping,
-			discounts,
-			taxes: {
-				value: ((taxes.value / 100) * ((parseFloat(orders[location].locationTotal) + parseFloat(Object.keys(orders[location].shipping.options)[0])) / (totalsState.state.total / 100))).toFixed(2)
-			}
-		})
-	})
-
-	let i = 0
-	await fetch(`https://orders-test.escsportsapi.com/save`, { // Create order
-		method: `post`,
-		body: order_objs[i],
-		headers: headers,
-	})
-		.then(response => {
-			console.log(response)
-			if (order_objs.length > 1) {
-				return slowFetch(order_objs, i + 1).then(response => {
-					console.log(response)
-				})
-			}
-		})
-		.then(response => {
-			console.log(response)
-		})
-
-	// Object.keys(orders).map(location => {
-	// 	fetches.push(
-	// 		fetch(`https://orders-test.escsportsapi.com/save`, { // Create order
-	// 			method: `post`,
-	// 			body: JSON.stringify({
-	// 				bind_id,
-	// 				auth0_id,
-	// 				email,
-	// 				billing,
-	// 				delivery,
-	// 				products: orders[location].products,
-	// 				shipping: orders[location].shipping,
-	// 				discounts,
-	// 				taxes: {
-	// 					value: ((taxes.value / 100) * ((parseFloat(orders[location].locationTotal) + parseFloat(Object.keys(orders[location].shipping.options)[0])) / (totalsState.state.total / 100))).toFixed(2)
-	// 				},
-	// 			}),
-	// 			headers: headers,
-	// 		})
-	// 	)
-	// })
-	
-	// await Promise.all(fetches)
-	// 	.then(response => {
-	// 		return response.map(res => res.json())
-	// 	})
-	// 	.then(data => {
-	// 		data.forEach(dat => dat.then(j => order.push(j)))
-	// 	})
-	return order
-}
-
-const postOrder = async ({ response, info, preFetchData }) => {
-	console.log(response)
-	const payment = {
-		order_id: response[0].order_id,
-		payment: {
-			card: {
-				name: info.billingName,
-				number: info.billingCardNumber.replace(/\s/g, ``).trim(),
-				expire: {
-					month: info.billingCardExpiration.split(`/`)[0].trim(),
-					year: info.billingCardExpiration.split(`/`)[1].trim(),
-				},
-				code: info.billingCardCVC,
-			},
-		},
-		method: `authnet`,
+			locations: orders,
+		}
 	}
-	return await fetch(`https://pay-test.escsportsapi.com/authnet/make`, { // Send payment
+
+	if (preFetchData.payment && preFetchData.paymentType) {
+		payment.order.payment = {
+			validation: preFetchData.payment || ``,
+			type: preFetchData.paymentType || ``
+		}
+	}
+
+	return await fetch(`https://orders-test.escsportsapi.com/store`, { // Create order
 		method: `post`,
 		body: JSON.stringify(payment),
 		headers: headers,
 	})
+		.then(response => response.json())
+}
+
+const postOrder = async ({ response, info, preFetchData }) => {
+	let url, payment_obj, payments = []
+
+	if (info.paymentType === 'paypal') {
+		url = `https://pay-test.escsportsapi.com/paypal/verify`
+		payment_obj = response.map(res => {
+			return JSON.stringify({
+				order_id: res.order_id ? res.order_id : res,
+			})
+		})
+	}
+	else {
+		url = `https://pay-test.escsportsapi.com/authnet/make`
+		payment_obj = response.map(res => {
+			if (info.billingName === ``) {
+				payments.push({ error: `Invalid billing name provided.` })
+			}
+			if (info.billingCardNumber === ``) {
+				payments.push({ error: `Invalid credit card number provided.` })
+			}
+			if (info.billingCardExpiration === ``) {
+				payments.push({ error: `Invalid credit card expiration provided.` })
+			}
+			if (info.billingCardCVC === ``) {
+				payments.push({ error: `Invalid credit card CVC provided.` })
+			}
+			return JSON.stringify({
+				order_id: res.order_id ? res.order_id : res,
+				payment: {
+					card: {
+						name: info.billingName,
+						number: info.billingCardNumber.replace(/\s/g, ``).trim(),
+						expire: {
+							month: info.billingCardExpiration.split(`/`)[0].trim(),
+							year: info.billingCardExpiration.split(`/`)[1].trim(),
+						},
+						code: info.billingCardCVC,
+					},
+				},
+				method: `authnet`,
+			})
+		})
+	}
+
+	if (payment_obj.findIndex(pay => pay.error) == -1) {
+		let i = 0
+		await fetch(url, { // Send payment
+			method: `post`,
+			body: payment_obj[i],
+			headers: headers,
+		})
+			.then(response => response.json())
+			.then(response => {
+				payments.push(response)
+				if (payment_obj.length > 1) {
+					return slowFetch(payment_obj, i + 1, url).then(response => {
+						payments = payments.concat(response)
+					})
+				}
+			})
+			.then(response => {
+				// console.log(response)
+			})
+	}
+
+	for (let x = 0; x < payments.length; x++) {
+		if (payments[x].error) {
+			return {
+				success: false,
+				messages: {
+					error: payments[x].error[0].message
+				}
+			}
+		}
+
+		if (payments[x].verified == false) {
+			return {
+				success: false,
+				messages: {
+					error: "Failed to verify transaction."
+				}
+			}
+		}
+	}
+
+	return {
+		success: true,
+	}
 }
 
 const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0 }) => {
 	if (!shippingAddress.shippingStateAbbr) return {}
 	let checkTax = {
 		state: shippingAddress.shippingStateAbbr,
-		subtotal: (subtotal / 100).toFixed(2),
-		shipping: (shipping / 100).toFixed(2),
-		discount: ((discount < 0 ? discount * -1 : discount) / 100).toFixed(2),
+		subtotal: centsToDollars(subtotal),
+		shipping: centsToDollars(shipping),
+		discount: centsToDollars(discount < 0 ? discount * -1 : discount),
 	}
 
 	return await fetch(`https://taxes-test.escsportsapi.com/calculate`, { // Get taxes
