@@ -28,5 +28,8 @@
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "shortid": "^2.2.14"
+  },
+  "peerDependencies": {
+    "@escaladesports/zygote-cart": "^3.0.0"
   }
 }
