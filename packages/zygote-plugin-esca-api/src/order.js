@@ -7,12 +7,18 @@ import customerState from 'zygote-cart/dist/state/customer'
 import totalsState from 'zygote-cart/dist/state/totals'
 import centsToDollars from 'zygote-cart/dist/utils/cents-to-dollars'
 
-let headers = {}
+let headers = {}, awsHeaders = {}
 try {
 	headers = require('../headers')
 } catch (e) {
 	// no headers, no problem
 }
+try {
+	awsHeaders = require('../aws-headers')
+} catch (e) {
+	// no headers, no problem
+}
+
 
 const slowFetch = async (order_objs, i, url) => {
 	let responses = []
@@ -123,46 +129,6 @@ const preOrder = async ({ preFetchData, info }) => {
 		orders[product.location].shipping.skus.push(product.id)
 	})
 
-	/////////////////////////////// Slow fetch, multi call
-	//
-	// let order = []
-	// const order_objs = Object.keys(orders).map(location => {
-	// 	return JSON.stringify({
-	// 		bind_id,
-	// 		auth0_id,
-	// 		email,
-	// 		billing,
-	// 		delivery,
-	// 		products: orders[location].products,
-	// 		shipping: orders[location].shipping,
-	// 		discounts,
-	// 		taxes: {
-	// 			value: ((taxes.value / 100) * ((parseFloat(orders[location].locationTotal) + parseFloat(Object.keys(orders[location].shipping.options)[0])) / (totalsState.state.total / 100))).toFixed(2)
-	// 		}
-	// 	})
-	// })
-
-	// let i = 0
-	// await fetch(`https://orders-test.escsportsapi.com/save`, { // Create order
-	// 	method: `post`,
-	// 	body: order_objs[i],
-	// 	headers: headers,
-	// })
-	// 	.then(response => response.json())
-	// 	.then(response => {
-	// 		order.push(response)
-	// 		if (order_objs.length > 1) {
-	// 			return slowFetch(order_objs, i + 1, `https://orders-test.escsportsapi.com/save`).then(response => {
-	// 				order = order.concat(response)
-	// 			})
-	// 		}
-	// 	})
-	// 	.then(response => {
-	// 		// console.log(response)
-	// 	})
-	//
-	//////////////////////////////////////
-
 	Object.keys(orders).map(location => {
 		orders[location].discounts = discounts
 		orders[location].taxes = {
@@ -191,7 +157,7 @@ const preOrder = async ({ preFetchData, info }) => {
 	return await fetch(`https://orders-test.escsportsapi.com/store`, { // Create order
 		method: `post`,
 		body: JSON.stringify(payment),
-		headers: headers,
+		headers: awsHeaders,
 	})
 		.then(response => response.json())
 }

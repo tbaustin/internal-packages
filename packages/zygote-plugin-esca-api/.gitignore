@@ -28,6 +28,7 @@ env.js.key
 .serverless
 _optimize
 headers.js
+aws-headers.js
 
 # Temporary
 temp
