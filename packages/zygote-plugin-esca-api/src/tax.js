@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
 import centsToDollars from 'zygote-cart/dist/utils/cents-to-dollars'
+import settingsState from 'zygote-cart/dist/state/settings'
 
 let headers = {}
 try {
@@ -11,6 +12,8 @@ try {
 
 const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0 }) => {
 	if (!shippingAddress.shippingStateAbbr) return {}
+	if (!settingsState.state.tax) return {}
+	
 	let checkTax = {
 		state: shippingAddress.shippingStateAbbr,
 		subtotal: centsToDollars(subtotal),
