@@ -21,6 +21,9 @@ coverage/
 .eslintcache
 .postcssrc
 src
+headers.js
+aws-headers.js
+aws-headers-trimmed.js
 
 # Temporary
 temp
