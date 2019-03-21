@@ -21,7 +21,7 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 		discount: centsToDollars(discount < 0 ? discount * -1 : discount),
 	}
 
-	return await fetch(`https://taxes-test.escsportsapi.com/calculate`, { // Get taxes
+	return await fetch(`/api/taxes/calculate`, { // Get taxes
 		method: `post`,
 		body: JSON.stringify(checkTax),
 		headers: headers,

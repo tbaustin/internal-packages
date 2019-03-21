@@ -31,7 +31,7 @@ const coupons = async ({ info, shipping }) => {
 			}
 		}
 
-		return fetch(`https://coupon-test.escsportsapi.com/calculate`, { // Get packing dimensions
+		return fetch(`/api/coupon/calculate`, { // Get packing dimensions
 			method: `post`,
 			body: JSON.stringify(check),
 			headers: headers,

@@ -1,13 +1,12 @@
 import fetch from 'isomorphic-fetch'
 import shortid from 'shortid'
 
-import productsState from 'zygote-cart/dist/state/products'
+import { productsState, customerState, totalsState } from 'zygote-cart/dist/state'
 import shippingState, { findShippingMethod } from 'zygote-cart/dist/state/shipping'
-import customerState from 'zygote-cart/dist/state/customer'
-import totalsState from 'zygote-cart/dist/state/totals'
+
 import centsToDollars from 'zygote-cart/dist/utils/cents-to-dollars'
 
-let headers = {}, awsHeaders = {}
+let headers = {}, awsHeaders = {}, awsHeadersTrimmed = {}
 try {
 	headers = require('../headers')
 } catch (e) {
@@ -18,20 +17,24 @@ try {
 } catch (e) {
 	// no headers, no problem
 }
+try {
+	awsHeadersTrimmed = require('../aws-headers-trimmed')
+} catch (e) {
+	// no headers, no problem
+}
 
-
-const slowFetch = async (order_objs, i, url) => {
+const slowFetch = async (order_objs, i, url, head = headers) => {
 	let responses = []
 	await fetch(url, { // Create order
 		method: `post`,
 		body: order_objs[i],
-		headers: headers,
+		headers: head,
 	})
 		.then(response => response.json())
 		.then(response => {
 			responses.push(response)
 			if (order_objs.length > i + 1) {
-				return slowFetch(order_objs, i + 1, url)
+				return slowFetch(order_objs, i + 1, url, head)
 			}
 		})
 		.then(response => {
@@ -154,7 +157,7 @@ const preOrder = async ({ preFetchData, info }) => {
 		}
 	}
 
-	return await fetch(`https://orders-test.escsportsapi.com/store`, { // Create order
+	return await fetch(`/api/orders/store`, { // Create order
 		method: `post`,
 		body: JSON.stringify(payment),
 		headers: awsHeaders,
@@ -166,16 +169,16 @@ const postOrder = async ({ response, info, preFetchData }) => {
 	let url, payment_obj, payments = []
 
 	if (info.paymentType === 'paypal') {
-		url = `https://pay-test.escsportsapi.com/paypal/verify`
-		payment_obj = response.map(res => {
+		url = `/api/pay/paypal`
+		payment_obj = response.order_id.map(res => {
 			return JSON.stringify({
 				order_id: res.order_id ? res.order_id : res,
 			})
 		})
 	}
 	else {
-		url = `https://pay-test.escsportsapi.com/authnet/make`
-		payment_obj = response.map(res => {
+		url = `/api/pay/anet`
+		payment_obj = response.order_id.map(res => {
 			if (info.billingName === ``) {
 				payments.push({ error: `Invalid billing name provided.` })
 			}
@@ -189,19 +192,16 @@ const postOrder = async ({ response, info, preFetchData }) => {
 				payments.push({ error: `Invalid credit card CVC provided.` })
 			}
 			return JSON.stringify({
-				order_id: res.order_id ? res.order_id : res,
-				payment: {
-					card: {
-						name: info.billingName,
-						number: info.billingCardNumber.replace(/\s/g, ``).trim(),
-						expire: {
-							month: info.billingCardExpiration.split(`/`)[0].trim(),
-							year: info.billingCardExpiration.split(`/`)[1].trim(),
-						},
-						code: info.billingCardCVC,
+				order_id: res[Object.keys(res)[0]],
+				card: {
+					number: info.billingCardNumber.replace(/\s/g, ``).trim(),
+					code: info.billingCardCVC,
+					expire: {
+						month: info.billingCardExpiration.split(`/`)[0].trim(),
+						year: info.billingCardExpiration.split(`/`)[1].trim(),
 					},
 				},
-				method: `authnet`,
+				action: `authcap`,
 			})
 		})
 	}
@@ -211,13 +211,13 @@ const postOrder = async ({ response, info, preFetchData }) => {
 		await fetch(url, { // Send payment
 			method: `post`,
 			body: payment_obj[i],
-			headers: headers,
+			headers: awsHeadersTrimmed,
 		})
 			.then(response => response.json())
 			.then(response => {
 				payments.push(response)
 				if (payment_obj.length > 1) {
-					return slowFetch(payment_obj, i + 1, url).then(response => {
+					return slowFetch(payment_obj, i + 1, url, awsHeadersTrimmed).then(response => {
 						payments = payments.concat(response)
 					})
 				}
@@ -228,11 +228,19 @@ const postOrder = async ({ response, info, preFetchData }) => {
 	}
 
 	for (let x = 0; x < payments.length; x++) {
-		if (payments[x].error) {
+		if (payments[x].error && payments[x].error.length > 0) {
 			return {
 				success: false,
 				messages: {
 					error: payments[x].error[0].message
+				}
+			}
+		}
+		else if (payments[x].errorMessage) {
+			return {
+				success: false,
+				messages: {
+					error: payments[x].errorMessage
 				}
 			}
 		}

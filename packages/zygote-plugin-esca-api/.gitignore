@@ -29,6 +29,7 @@ env.js.key
 _optimize
 headers.js
 aws-headers.js
+aws-headers-trimmed.js
 
 # Temporary
 temp

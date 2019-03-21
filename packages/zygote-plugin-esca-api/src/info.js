@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-fetch'
 
-import productsState from 'zygote-cart/dist/state/products'
-import totalsState from 'zygote-cart/dist/state/totals'
+import { productsState, totalsState } from 'zygote-cart/dist/state'
 
 import { calculateTax } from './tax'
 import { coupons } from './coupons'
@@ -30,7 +29,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 
 	let shippingMethods = {}, selectedShippingMethod = {}, success = true, modifications = [], messages = { error: [], info: [] }
 
-	await fetch(`https://products-test.escsportsapi.com/shipping`, { // Get packing dimensions
+	await fetch(`/api/products/shipping`, { // Get packing dimensions
 		method: `post`,
 		body: JSON.stringify(preFetchData),
 		headers: headers,
@@ -118,7 +117,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 								})
 							}
 						}
-						return fetch(`https://shipping-test.escsportsapi.com/load`, { // Get shipping cost
+						return fetch(`/api/shipping/load`, { // Get shipping cost
 							method: `post`,
 							body: JSON.stringify(shipping),
 							headers: headers,
