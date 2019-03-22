@@ -4,31 +4,13 @@ import shortid from 'shortid'
 import { productsState, customerState, totalsState } from 'zygote-cart/dist/state'
 import shippingState, { findShippingMethod } from 'zygote-cart/dist/state/shipping'
 
-import centsToDollars from 'zygote-cart/dist/utils/cents-to-dollars'
+import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
 
-let headers = {}, awsHeaders = {}, awsHeadersTrimmed = {}
-try {
-	headers = require('../headers')
-} catch (e) {
-	// no headers, no problem
-}
-try {
-	awsHeaders = require('../aws-headers')
-} catch (e) {
-	// no headers, no problem
-}
-try {
-	awsHeadersTrimmed = require('../aws-headers-trimmed')
-} catch (e) {
-	// no headers, no problem
-}
-
-const slowFetch = async (order_objs, i, url, head = headers) => {
+const slowFetch = async (order_objs, i, url) => {
 	let responses = []
 	await fetch(url, { // Create order
 		method: `post`,
 		body: order_objs[i],
-		headers: head,
 	})
 		.then(response => response.json())
 		.then(response => {
@@ -160,7 +142,6 @@ const preOrder = async ({ preFetchData, info }) => {
 	return await fetch(`/api/orders/store`, { // Create order
 		method: `post`,
 		body: JSON.stringify(payment),
-		headers: awsHeaders,
 	})
 		.then(response => response.json())
 }
@@ -211,13 +192,12 @@ const postOrder = async ({ response, info, preFetchData }) => {
 		await fetch(url, { // Send payment
 			method: `post`,
 			body: payment_obj[i],
-			headers: awsHeadersTrimmed,
 		})
 			.then(response => response.json())
 			.then(response => {
 				payments.push(response)
 				if (payment_obj.length > 1) {
-					return slowFetch(payment_obj, i + 1, url, awsHeadersTrimmed).then(response => {
+					return slowFetch(payment_obj, i + 1, url).then(response => {
 						payments = payments.concat(response)
 					})
 				}

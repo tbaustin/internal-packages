@@ -1,12 +1,5 @@
 import fetch from 'isomorphic-fetch'
 
-let headers = {}
-try {
-	headers = require('../headers')
-} catch (e) {
-	// no headers, no problem
-}
-
 const coupons = async ({ info, shipping }) => {
 	if (info.coupon) {
 		const check = {
@@ -34,7 +27,6 @@ const coupons = async ({ info, shipping }) => {
 		return fetch(`/api/coupon/calculate`, { // Get packing dimensions
 			method: `post`,
 			body: JSON.stringify(check),
-			headers: headers,
 		})
 	}
 	

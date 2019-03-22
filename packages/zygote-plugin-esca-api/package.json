@@ -22,14 +22,14 @@
   },
   "homepage": "https://github.com/escaladesports/zygote-plugin-esca-api#readme",
   "devDependencies": {
-    "esca-scripts": "^1.5.4",
-    "react": "^16.7.0"
+    "esca-scripts": "^1.5.4"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "shortid": "^2.2.14"
   },
   "peerDependencies": {
-    "@escaladesports/zygote-cart": "^3.0.0"
+    "@escaladesports/zygote-cart": "^3.0.0",
+    "react": "^16.7.0"
   }
 }

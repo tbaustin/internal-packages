@@ -1,14 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
-import centsToDollars from 'zygote-cart/dist/utils/cents-to-dollars'
-import settingsState from 'zygote-cart/dist/state/settings'
-
-let headers = {}
-try {
-	headers = require('../headers')
-} catch (e) {
-	// no headers, no problem
-}
+import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
+import settingsState from '@escaladesports/zygote-cart/dist/state/settings'
 
 const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0 }) => {
 	if (!shippingAddress.shippingStateAbbr) return {}
@@ -24,7 +17,6 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 	return await fetch(`/api/taxes/calculate`, { // Get taxes
 		method: `post`,
 		body: JSON.stringify(checkTax),
-		headers: headers,
 	})
 		.then(response => response.json())
 		.then(jsonBody => {

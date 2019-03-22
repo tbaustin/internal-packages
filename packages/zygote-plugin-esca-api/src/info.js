@@ -1,16 +1,9 @@
 import fetch from 'isomorphic-fetch'
 
-import { productsState, totalsState } from 'zygote-cart/dist/state'
+import { productsState, totalsState } from '@escaladesports/zygote-cart/dist/state'
 
 import { calculateTax } from './tax'
 import { coupons } from './coupons'
-
-let headers = {}
-try {
-	headers = require('../headers')
-} catch (e) {
-	// no headers, no problem
-}
 
 const preInfo = async ({ info }) => {
 	return {
@@ -32,7 +25,6 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	await fetch(`/api/products/shipping`, { // Get packing dimensions
 		method: `post`,
 		body: JSON.stringify(preFetchData),
-		headers: headers,
 	})
 		.then(response => response.json())
 		.then(jsonBody => {
@@ -120,7 +112,6 @@ const postInfo = async ({ response, info, preFetchData }) => {
 						return fetch(`/api/shipping/load`, { // Get shipping cost
 							method: `post`,
 							body: JSON.stringify(shipping),
-							headers: headers,
 						})
 					})
 			}
