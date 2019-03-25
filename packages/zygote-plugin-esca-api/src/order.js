@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import shortid from 'shortid'
 
-import { productsState, customerState, totalsState } from 'zygote-cart/dist/state'
-import shippingState, { findShippingMethod } from 'zygote-cart/dist/state/shipping'
+import { productsState, customerState, totalsState } from '@escaladesports/zygote-cart/dist/state'
+import shippingState, { findShippingMethod } from '@escaladesports/zygote-cart/dist/state/shipping'
 
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
 
