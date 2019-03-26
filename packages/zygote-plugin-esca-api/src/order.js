@@ -224,6 +224,14 @@ const postOrder = async ({ response, info, preFetchData }) => {
 				}
 			}
 		}
+		else if (payments[x].message && payments[x].message == 'Forbidden') {
+			return {
+				success: false,
+				messages: {
+					error: 'There was an error trying to place payment on this order.'
+				}
+			}
+		}
 
 		if (payments[x].verified == false) {
 			return {
