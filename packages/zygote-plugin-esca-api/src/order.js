@@ -245,6 +245,9 @@ const postOrder = async ({ response, info, preFetchData }) => {
 
 	return {
 		success: true,
+		meta: {
+			orderId: response.order_id.map(order => order.order_id ? order.order_id : order)
+		}
 	}
 }
 
