@@ -158,6 +158,7 @@ const postOrder = async ({ response, info, preFetchData }) => {
 		})
 	}
 	else {
+		info.paymentType = `anet`
 		url = `/api/pay/anet`
 		payment_obj = response.order_id.map(res => {
 			if (info.billingName === ``) {
@@ -246,7 +247,7 @@ const postOrder = async ({ response, info, preFetchData }) => {
 	return {
 		success: true,
 		meta: {
-			orderId: response.order_id.map(order => order.order_id ? order.order_id : order)
+			orderId: response.order_id.map(order => order.order_id ? `${info.paymentType}|${order.order_id}` : `${info.paymentType}|${order}`)
 		}
 	}
 }
