@@ -1,19 +1,9 @@
-// import * as Info from './info'
-// import * as Order from './order'
-// import * as Tax from './tax'
-
-// const Api = {
-// 	Info, Order, Tax
-// }
-
-// export default Api
-
 if (typeof window !== 'undefined') {
 	const existingScript = document.getElementById('polyfill')
 
 	if (!existingScript) {
 		const script = document.createElement('script')
-		script.src = 'https://polyfill.io/v3/polyfill.min.js?features=String.prototype.startsWith'
+		script.src = 'https://polyfill.io/v3/polyfill.min.js?features=Array.prototype.findIndex%2CString.prototype.startsWith'
 		script.id = 'polyfill'
 		document.body.appendChild(script)
 	}
