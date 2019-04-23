@@ -154,6 +154,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 				productsState.setState({ products })
 			})
 			let discount = 0
+
 			totalsState.state.modifications.filter(mod => !mod.id.startsWith(`tax`) && !mod.id.startsWith(`shipping`)).forEach(mod => {
 				discount += mod.value > 0 ? mod.value : (mod.value * -1)
 			})
@@ -173,6 +174,8 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		.catch(error => {
 			if (error.message == `empty`) {
 				quantityModifications = `all`
+				success = false
+				throw Error(error)
 			}
 			else {
 				success = false
