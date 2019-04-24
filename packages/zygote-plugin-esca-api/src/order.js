@@ -221,7 +221,7 @@ const postOrder = async ({ response, info, preFetchData }) => {
 			return {
 				success: false,
 				messages: {
-					error: payments[x].errorMessage
+					error: `${payments[x].errorMessage}${payments[x].reasons ? ` ${payments[x].reasons.join(`. `)}` : ``}`
 				}
 			}
 		}

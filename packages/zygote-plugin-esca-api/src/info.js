@@ -175,7 +175,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			if (error.message == `empty`) {
 				quantityModifications = `all`
 				success = false
-				throw Error(error)
+				throw Error('No items to send, all out of stock.')
 			}
 			else {
 				success = false
