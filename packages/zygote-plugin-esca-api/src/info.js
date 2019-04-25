@@ -132,7 +132,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 						id: `method-${methodIndex}`,
 						description: jsonBody[location].options[cost].label,
 						value: parseInt(cost.toString().replace(/\./g, ''), 10),
-						addInfo: `Get it ${jsonBody[location].options[cost].eta}!`,
+						addInfo: jsonBody[location].options[cost].eta ? `Get it ${jsonBody[location].options[cost].eta}!` : ``,
 					}
 					if (i == 0) {
 						standardShipping += locationShippingMethods[cost].value
