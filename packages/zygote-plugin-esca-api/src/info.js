@@ -38,7 +38,8 @@ const postInfo = async ({ response, info, preFetchData }) => {
 					const item = info.products.find(obj => obj.id == key)
 					products.push({
 						...item,
-						...jsonBody.products[key]
+						...jsonBody.products[key],
+						name: item.name,
 					})
 					const available = quantityModifications ? quantityModifications.find(obj => obj.id == key).available : 9999999
 					jsonBody.products[key].qty = item
