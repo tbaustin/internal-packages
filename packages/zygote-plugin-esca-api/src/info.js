@@ -17,6 +17,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		return {
 			id: id,
 			available: inventory[id].stock || 0,
+			location: inventory[id].locations && Object.keys(inventory[id].locations).length > 0 ? Object.keys(inventory[id].locations)[0] : ``,
 		}
 	})
 
@@ -41,12 +42,14 @@ const postInfo = async ({ response, info, preFetchData }) => {
 						...jsonBody.products[key],
 						name: item.name,
 					})
-					const available = quantityModifications ? quantityModifications.find(obj => obj.id == key).available : 9999999
+					const objMod = quantityModifications ? quantityModifications.find(obj => obj.id == key) : null
+					const available = objMod ? objMod.available : 9999999
 					jsonBody.products[key].qty = item
 						? available < item.quantity
 							? available
 							: item.quantity 
 						: 0
+					jsonBody.products[key].location = objMod ? objMod.location : ``
 					if (jsonBody.products[key].freight_class && !jsonBody.products[key].fc) {
 						jsonBody.products[key].fc = jsonBody.products[key].freight_class 
 					}
