@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
 import { productsState, totalsState } from '@escaladesports/zygote-cart/dist/state'
+import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
 
 import { calculateTax } from './tax'
 import { coupons } from './coupons'
@@ -50,6 +51,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 							: item.quantity 
 						: 0
 					jsonBody.products[key].location = objMod ? objMod.location : ``
+					jsonBody.products[key].price = centsToDollars(item.price)
 					if (jsonBody.products[key].freight_class && !jsonBody.products[key].fc) {
 						jsonBody.products[key].fc = jsonBody.products[key].freight_class 
 					}
