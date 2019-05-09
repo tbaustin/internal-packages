@@ -1,10 +1,16 @@
 import fetch from 'isomorphic-fetch'
-
-import { productsState, totalsState } from '@escaladesports/zygote-cart/dist/state'
+import * as Sentry from '@sentry/browser'
+import { productsState, totalsState, settingsState } from '@escaladesports/zygote-cart/dist/state'
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
 
 import { calculateTax } from './tax'
 import { coupons } from './coupons'
+
+if (settingsState.state.sentryDsn) {
+	Sentry.init({
+		dsn: settingsState.state.sentryDsn
+	})
+}
 
 const preInfo = async ({ info }) => {
 	return {
@@ -185,6 +191,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			}
 			else {
 				success = false
+				if (Sentry && Sentry.captureException) Sentry.captureException(new Error(error))
 				throw Error(error)
 			}
 		})

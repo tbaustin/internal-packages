@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/escaladesports/zygote-plugin-esca-api#readme",
   "devDependencies": {
+    "@sentry/browser": "^5.2.0",
     "esca-scripts": "^1.5.4"
   },
   "dependencies": {
