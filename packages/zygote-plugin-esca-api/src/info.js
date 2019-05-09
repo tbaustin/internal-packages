@@ -27,7 +27,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		}
 	})
 
-	let shippingMethods = {}, selectedShippingMethod = {}, success = true, modifications = [], messages = { error: [], info: [] }
+	let shippingMethods = {}, selectedShippingMethod = {}, success = true, modifications = [], messages = { error: [], info: [] }, shipping = {}
 
 	await fetch(`/api/products/shipping`, { // Get packing dimensions
 		method: `post`,
@@ -68,7 +68,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 
 				productsState.setState({ products })
 
-				const shipping = {
+				shipping = {
 					service: `ups`,
 					destination: {
 						street1: info.shippingAddress1,
