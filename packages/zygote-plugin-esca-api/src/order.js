@@ -1,7 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import shortid from 'shortid'
+import * as Sentry from '@sentry/browser'
 
-import { productsState, customerState, totalsState } from '@escaladesports/zygote-cart/dist/state'
+import { productsState, customerState, totalsState, settingsState } from '@escaladesports/zygote-cart/dist/state'
 import shippingState, { findShippingMethod } from '@escaladesports/zygote-cart/dist/state/shipping'
 
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
@@ -147,6 +148,11 @@ const preOrder = async ({ preFetchData, info }) => {
 }
 
 const postOrder = async ({ response, info, preFetchData }) => {
+	if (settingsState.state.sentryDsn) {
+		Sentry.init({
+			dsn: settingsState.state.sentryDsn
+		})
+	}
 	let url, payment_obj, payments = []
 
 	if (info.paymentType === 'paypal') {
@@ -210,6 +216,9 @@ const postOrder = async ({ response, info, preFetchData }) => {
 
 	for (let x = 0; x < payments.length; x++) {
 		if (payments[x].error && payments[x].error.length > 0) {
+			if (Sentry && Sentry.captureMessage) {
+				Sentry.captureMessage(payments[x].error[0].message, Sentry.Severity.Error)
+			}
 			return {
 				success: false,
 				messages: {
@@ -218,6 +227,9 @@ const postOrder = async ({ response, info, preFetchData }) => {
 			}
 		}
 		else if (payments[x].errorMessage) {
+			if (Sentry && Sentry.captureException) {
+				Sentry.captureException(payments[x])
+			}
 			return {
 				success: false,
 				messages: {
@@ -226,6 +238,9 @@ const postOrder = async ({ response, info, preFetchData }) => {
 			}
 		}
 		else if (payments[x].message && payments[x].message == 'Forbidden') {
+			if (Sentry && Sentry.captureException) {
+				Sentry.captureException(payments[x])
+			}
 			return {
 				success: false,
 				messages: {

@@ -6,12 +6,6 @@ import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-doll
 import { calculateTax } from './tax'
 import { coupons } from './coupons'
 
-if (settingsState.state.sentryDsn) {
-	Sentry.init({
-		dsn: settingsState.state.sentryDsn
-	})
-}
-
 const preInfo = async ({ info }) => {
 	return {
 		skus: info.products ? info.products.map(function(product) { return product.id }) : []
@@ -19,6 +13,11 @@ const preInfo = async ({ info }) => {
 }
 
 const postInfo = async ({ response, info, preFetchData }) => {
+	if (settingsState.state.sentryDsn) {
+		Sentry.init({
+			dsn: settingsState.state.sentryDsn
+		})
+	}
 	const { inventory } = response
 	let quantityModifications = Object.keys(inventory).map(id => {
 		return {
@@ -37,6 +36,10 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		.then(response => response.json())
 		.then(jsonBody => {
 			if (jsonBody.errors) {
+				if (Sentry && Sentry.captureMessage) {
+					Sentry.captureMessage("Request: " + JSON.stringify(preFetchData), Sentry.Severity.Error)
+					Sentry.captureMessage("Response: " + JSON.stringify(jsonBody), Sentry.Severity.Error)
+				}
 				throw Error(jsonBody.errors)
 			}
 
@@ -134,6 +137,10 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		.then(response => response.json())
 		.then(jsonBody => {
 			if (jsonBody.errors) {
+				if (Sentry && Sentry.captureMessage) {
+					Sentry.captureMessage("Request: " + JSON.stringify(shipping), Sentry.Severity.Error)
+					Sentry.captureMessage("Response: " + JSON.stringify(jsonBody), Sentry.Severity.Error)
+				}
 				throw Error(jsonBody.errors)
 			}
 			let standardShipping = 0, methodIndex = 0
@@ -191,7 +198,9 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			}
 			else {
 				success = false
-				if (Sentry && Sentry.captureException) Sentry.captureException(new Error(error))
+				if (Sentry && Sentry.captureException) {
+					Sentry.captureException(new Error(error.message))
+				}
 				throw Error(error)
 			}
 		})

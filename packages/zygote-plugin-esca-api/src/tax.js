@@ -1,9 +1,16 @@
 import fetch from 'isomorphic-fetch'
+import * as Sentry from '@sentry/browser'
 
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
 import settingsState from '@escaladesports/zygote-cart/dist/state/settings'
 
 const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0 }) => {
+	if (settingsState.state.sentryDsn) {
+		Sentry.init({
+			dsn: settingsState.state.sentryDsn
+		})
+	}
+
 	if (!shippingAddress.shippingStateAbbr) return {}
 	if (!settingsState.state.tax) return {}
 	
@@ -21,6 +28,10 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 		.then(response => response.json())
 		.then(jsonBody => {
 			if (jsonBody.errors) {
+				if (Sentry && Sentry.captureMessage) {
+					Sentry.captureMessage("Request: " + JSON.stringify(checkTax), Sentry.Severity.Error)
+					Sentry.captureMessage("Response: " + JSON.stringify(jsonBody), Sentry.Severity.Error)
+				}
 				throw Error(jsonBody.errors)
 			}
 			return {
