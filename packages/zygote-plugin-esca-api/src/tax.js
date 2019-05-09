@@ -17,7 +17,7 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 	let checkTax = {
 		state: shippingAddress.shippingStateAbbr,
 		subtotal: centsToDollars(subtotal),
-		shipping: centsToDollars(shipping),
+		shipping: shipping ? centsToDollars(shipping) : 0,
 		discount: centsToDollars(discount < 0 ? discount * -1 : discount),
 	}
 
