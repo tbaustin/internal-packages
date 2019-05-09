@@ -36,9 +36,9 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		.then(response => response.json())
 		.then(jsonBody => {
 			if (jsonBody.errors) {
-				if (Sentry && Sentry.captureMessage) {
-					Sentry.captureMessage("Request: " + JSON.stringify(preFetchData), Sentry.Severity.Error)
-					Sentry.captureMessage("Response: " + JSON.stringify(jsonBody), Sentry.Severity.Error)
+				if (Sentry && Sentry.captureException) {
+					Sentry.captureException("Request: " + JSON.stringify(preFetchData))
+					Sentry.captureException("Response: " + JSON.stringify(jsonBody))
 				}
 				throw Error(jsonBody.errors)
 			}
@@ -137,9 +137,9 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		.then(response => response.json())
 		.then(jsonBody => {
 			if (jsonBody.errors) {
-				if (Sentry && Sentry.captureMessage) {
-					Sentry.captureMessage("Request: " + JSON.stringify(shipping), Sentry.Severity.Error)
-					Sentry.captureMessage("Response: " + JSON.stringify(jsonBody), Sentry.Severity.Error)
+				if (Sentry && Sentry.captureException) {
+					Sentry.captureException("Request: " + JSON.stringify(shipping))
+					Sentry.captureException("Response: " + JSON.stringify(jsonBody))
 				}
 				throw Error(jsonBody.errors)
 			}
@@ -198,8 +198,8 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			}
 			else {
 				success = false
-				if (Sentry && Sentry.captureException) {
-					Sentry.captureException(new Error(error.message))
+				if (Sentry && Sentry.captureMessage) {
+					Sentry.captureMessage(error.message, Sentry.Severity.Error)
 				}
 				throw Error(error)
 			}

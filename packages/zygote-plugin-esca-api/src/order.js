@@ -228,7 +228,7 @@ const postOrder = async ({ response, info, preFetchData }) => {
 		}
 		else if (payments[x].errorMessage) {
 			if (Sentry && Sentry.captureException) {
-				Sentry.captureException(payments[x])
+				Sentry.captureMessage(payments[x].errorMessage, Sentry.Severity.Error)
 			}
 			return {
 				success: false,

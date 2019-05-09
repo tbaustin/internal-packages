@@ -28,9 +28,9 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 		.then(response => response.json())
 		.then(jsonBody => {
 			if (jsonBody.errors) {
-				if (Sentry && Sentry.captureMessage) {
-					Sentry.captureMessage("Request: " + JSON.stringify(checkTax), Sentry.Severity.Error)
-					Sentry.captureMessage("Response: " + JSON.stringify(jsonBody), Sentry.Severity.Error)
+				if (Sentry && Sentry.captureException) {
+					Sentry.captureException("Request: " + JSON.stringify(checkTax), Sentry.Severity.Error)
+					Sentry.captureException("Response: " + JSON.stringify(jsonBody), Sentry.Severity.Error)
 				}
 				throw Error(jsonBody.errors)
 			}
