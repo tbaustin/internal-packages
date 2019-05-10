@@ -14,11 +14,12 @@ const preInfo = async ({ info }) => {
 
 const postInfo = async ({ response, info, preFetchData }) => {
 	if (settingsState.state.sentryDsn) {
-		console.log('init')
 		Sentry.init({
 			dsn: settingsState.state.sentryDsn,
 			beforeSend(event) {
-				console.log(event)
+				if (event.tags && event.tags[`zygote-plugin-esca-api`]) {
+					return event
+				}
 				return null
 			}
 		})
