@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch'
-import { productsState, totalsState } from '@escaladesports/zygote-cart/dist/state'
+import { productsState, totalsState, settingsState } from '@escaladesports/zygote-cart/dist/state'
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
 import * as Sentry from '@sentry/browser'
 
