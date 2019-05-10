@@ -148,6 +148,17 @@ const preOrder = async ({ preFetchData, info }) => {
 }
 
 const postOrder = async ({ response, info, preFetchData }) => {
+	if (settingsState.state.sentryDsn) {
+		console.log('init')
+		Sentry.init({
+			dsn: settingsState.state.sentryDsn,
+			beforeSend(event) {
+				console.log(event)
+				return null
+			}
+		})
+	}
+	
 	let url, payment_obj, payments = []
 
 	if (info.paymentType === 'paypal') {

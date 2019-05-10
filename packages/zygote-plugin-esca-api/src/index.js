@@ -1,4 +1,4 @@
-import { init } from '@sentry/browser'
+import * as Sentry from '@sentry/browser'
 import { settingsState } from '@escaladesports/zygote-cart/dist/state'
 
 if (typeof window !== 'undefined') {
@@ -10,17 +10,6 @@ if (typeof window !== 'undefined') {
 		script.id = 'polyfill'
 		document.body.appendChild(script)
 	}
-}
-
-if (settingsState.state.sentryDsn) {
-	console.log('init')
-	init({
-		dsn: settingsState.state.sentryDsn,
-		beforeSend(event) {
-			console.log(event)
-			return null
-		}
-	})
 }
 
 export * from './info'
