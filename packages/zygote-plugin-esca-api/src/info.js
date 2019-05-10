@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch'
-import * as Sentry from '@sentry/browser'
-import { productsState, totalsState, settingsState } from '@escaladesports/zygote-cart/dist/state'
+import { productsState, totalsState } from '@escaladesports/zygote-cart/dist/state'
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
+import * as Sentry from '@sentry/browser'
 
 import { calculateTax } from './tax'
 import { coupons } from './coupons'
@@ -13,11 +13,6 @@ const preInfo = async ({ info }) => {
 }
 
 const postInfo = async ({ response, info, preFetchData }) => {
-	if (settingsState.state.sentryDsn) {
-		Sentry.init({
-			dsn: settingsState.state.sentryDsn
-		})
-	}
 	const { inventory } = response
 	let quantityModifications = Object.keys(inventory).map(id => {
 		return {
@@ -37,8 +32,12 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		.then(jsonBody => {
 			if (jsonBody.errors) {
 				if (Sentry && Sentry.captureException) {
-					Sentry.captureException("Request: " + JSON.stringify(preFetchData))
-					Sentry.captureException("Response: " + JSON.stringify(jsonBody))
+					Sentry.withScope(scope => {
+						scope.setTag("zygote-plugin-esca-api", "info")
+  					scope.setLevel('error')
+						Sentry.captureException("Request: " + JSON.stringify(preFetchData))
+						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
+					})
 				}
 				throw Error(jsonBody.errors)
 			}
@@ -138,8 +137,12 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		.then(jsonBody => {
 			if (jsonBody.errors) {
 				if (Sentry && Sentry.captureException) {
-					Sentry.captureException("Request: " + JSON.stringify(shipping))
-					Sentry.captureException("Response: " + JSON.stringify(jsonBody))
+					Sentry.withScope(scope => {
+						scope.setTag("zygote-plugin-esca-api", "info")
+  					scope.setLevel('error')
+						Sentry.captureException("Request: " + JSON.stringify(shipping))
+						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
+					})
 				}
 				throw Error(jsonBody.errors)
 			}
@@ -199,7 +202,11 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			else {
 				success = false
 				if (Sentry && Sentry.captureMessage) {
-					Sentry.captureMessage(error.message, Sentry.Severity.Error)
+					Sentry.withScope(scope => {
+						scope.setTag("zygote-plugin-esca-api", "info")
+  					scope.setLevel('error')
+						Sentry.captureMessage(error.message, Sentry.Severity.Error)
+					})
 				}
 				throw Error(error)
 			}
