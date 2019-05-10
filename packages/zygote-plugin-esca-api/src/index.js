@@ -13,6 +13,7 @@ if (typeof window !== 'undefined') {
 }
 
 if (settingsState.state.sentryDsn) {
+	console.log('init')
 	init({
 		dsn: settingsState.state.sentryDsn,
 		beforeSend(event) {
