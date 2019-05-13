@@ -22,9 +22,9 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 	
 	let checkTax = {
 		state: shippingAddress.shippingStateAbbr,
-		subtotal: centsToDollars(subtotal),
-		shipping: shipping ? centsToDollars(shipping) : 0,
-		discount: centsToDollars(discount < 0 ? discount * -1 : discount),
+		subtotal: subtotal && subtotal > 0 ? centsToDollars(subtotal) : 0,
+		shipping: shipping && shipping > 0 ? centsToDollars(shipping) : 0,
+		discount: discount && discount > 0 ? centsToDollars(discount < 0 ? discount * -1 : discount) : 0,
 	}
 
 	return await fetch(`/api/taxes/calculate`, { // Get taxes
