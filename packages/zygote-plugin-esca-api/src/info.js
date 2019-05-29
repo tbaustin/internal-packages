@@ -67,12 +67,12 @@ const postInfo = async ({ response, info, preFetchData }) => {
 					jsonBody.products[key].qty = item
 						? available < item.quantity
 							? available
-							: item.quantity 
+							: item.quantity
 						: 0
 					jsonBody.products[key].location = objMod ? objMod.location : ``
 					jsonBody.products[key].price = centsToDollars(item.price)
 					if (jsonBody.products[key].freight_class && !jsonBody.products[key].fc) {
-						jsonBody.products[key].fc = jsonBody.products[key].freight_class 
+						jsonBody.products[key].fc = jsonBody.products[key].freight_class
 					}
 				}
 
@@ -192,9 +192,9 @@ const postInfo = async ({ response, info, preFetchData }) => {
 				discount += mod.value > 0 ? mod.value : (mod.value * -1)
 			})
 
-			return calculateTax({ 
-				shippingAddress: info, 
-				subtotal: info.totals.subtotal, 
+			return calculateTax({
+				shippingAddress: info,
+				subtotal: info.totals.subtotal,
 				shipping: standardShipping,
 				discount: discount,
 			})
@@ -216,7 +216,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 					Sentry.withScope(scope => {
 						scope.setTag("zygote-plugin-esca-api", "info")
   					scope.setLevel('error')
-						Sentry.captureMessage(error.message, Sentry.Severity.Error)
+						Sentry.captureMessage(error, Sentry.Severity.Error)
 					})
 				}
 				throw Error(error)

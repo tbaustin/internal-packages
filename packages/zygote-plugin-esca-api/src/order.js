@@ -23,7 +23,7 @@ const slowFetch = async (order_objs, i, url) => {
 		.then(response => {
 			// console.log(response)
 		})
-	
+
 	return responses
 }
 
@@ -31,7 +31,7 @@ const preOrder = async ({ preFetchData, info }) => {
 	const bind_id = shortid.generate()
 	const auth0_id = customerState.state.customer ? customerState.state.customer.username : ''
 	const email = info.infoEmail
-	const billing = info.sameBilling 
+	const billing = info.sameBilling
 		? {
 			first_name: info.billingFirstName,
 			last_name: info.billingLastName,
@@ -56,8 +56,8 @@ const preOrder = async ({ preFetchData, info }) => {
 			phone: info.infoPhone || ``,
 			country: `US`,
 		}
-	const delivery = info.sameBilling 
-		? `billing` 
+	const delivery = info.sameBilling
+		? `billing`
 		: {
 			first_name: info.billingFirstName,
 			last_name: info.billingLastName,
@@ -227,7 +227,7 @@ const postOrder = async ({ response, info, preFetchData }) => {
 				Sentry.withScope(scope => {
 					scope.setTag("zygote-plugin-esca-api", "order")
 					scope.setLevel('error')
-					Sentry.captureMessage(payments[x].error[0].message, Sentry.Severity.Error)
+					Sentry.captureMessage(payments, Sentry.Severity.Error)
 				})
 			}
 			return {
@@ -242,7 +242,7 @@ const postOrder = async ({ response, info, preFetchData }) => {
 				Sentry.withScope(scope => {
 					scope.setTag("zygote-plugin-esca-api", "order")
 					scope.setLevel('error')
-					Sentry.captureMessage(payments[x].errorMessage, Sentry.Severity.Error)
+					Sentry.captureMessage(payments, Sentry.Severity.Error)
 				})
 			}
 			return {

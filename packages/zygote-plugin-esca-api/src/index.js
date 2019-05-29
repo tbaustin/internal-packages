@@ -1,5 +1,5 @@
-import * as Sentry from '@sentry/browser'
-import { settingsState } from '@escaladesports/zygote-cart/dist/state'
+// import * as Sentry from '@sentry/browser'
+// import { settingsState } from '@escaladesports/zygote-cart/dist/state'
 
 if (typeof window !== 'undefined') {
 	const existingScript = document.getElementById('polyfill')
