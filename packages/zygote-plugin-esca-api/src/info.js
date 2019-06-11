@@ -41,16 +41,17 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	})
 		.then(response => response.json())
 		.then(jsonBody => {
-			if (jsonBody.errors) {
+			console.log(`Received from shipping API:`, jsonBody)
+			if (jsonBody.errors || jsonBody.errorMessage) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
 						scope.setTag("zygote-plugin-esca-api", "info")
-  					scope.setLevel('error')
+  						scope.setLevel('error')
 						Sentry.captureException("Request: " + JSON.stringify(preFetchData))
 						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
 					})
 				}
-				throw Error(jsonBody.errors)
+				throw Error(jsonBody.errors || jsonBody.errorMessage)
 			}
 
 			let products = []
@@ -146,16 +147,17 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		})
 		.then(response => response.json())
 		.then(jsonBody => {
-			if (jsonBody.errors) {
+			console.log(`Received from coupons API:`, jsonBody)
+			if (jsonBody.errors || jsonBody.errorMessage) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
 						scope.setTag("zygote-plugin-esca-api", "info")
-  					scope.setLevel('error')
+  						scope.setLevel('error')
 						Sentry.captureException("Request: " + JSON.stringify(shipping))
 						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
 					})
 				}
-				throw Error(jsonBody.errors)
+				throw Error(jsonBody.errors || jsonBody.errorMessage)
 			}
 			let standardShipping = 0, methodIndex = 0
 			Object.keys(jsonBody).forEach(location => {
@@ -215,7 +217,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 				if (Sentry && Sentry.captureMessage) {
 					Sentry.withScope(scope => {
 						scope.setTag("zygote-plugin-esca-api", "info")
-  					scope.setLevel('error')
+  						scope.setLevel('error')
 						Sentry.captureMessage(error, Sentry.Severity.Error)
 					})
 				}
