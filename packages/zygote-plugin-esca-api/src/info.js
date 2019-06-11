@@ -51,7 +51,9 @@ const postInfo = async ({ response, info, preFetchData }) => {
 						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
 					})
 				}
-				throw Error(jsonBody.errors || jsonBody.errorMessage)
+				throw Error({
+					message: jsonBody.errors || jsonBody.errorMessage
+				})
 			}
 
 			let products = []
@@ -157,7 +159,9 @@ const postInfo = async ({ response, info, preFetchData }) => {
 						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
 					})
 				}
-				throw Error(jsonBody.errors || jsonBody.errorMessage)
+				throw Error({
+					message: jsonBody.errors || jsonBody.errorMessage
+				})
 			}
 			let standardShipping = 0, methodIndex = 0
 			Object.keys(jsonBody).forEach(location => {
@@ -212,6 +216,9 @@ const postInfo = async ({ response, info, preFetchData }) => {
 				success = false
 				console.error('No items to send, all out of stock.')
 			}
+			else if(error.message){
+				messages.error.push(error.message)
+			}
 			else {
 				success = false
 				if (Sentry && Sentry.captureMessage) {
@@ -221,7 +228,6 @@ const postInfo = async ({ response, info, preFetchData }) => {
 						Sentry.captureMessage(error, Sentry.Severity.Error)
 					})
 				}
-				throw Error(error)
 			}
 		})
 
