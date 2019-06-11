@@ -231,7 +231,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			}
 		})
 
-	return {
+	const res = {
 		success: inventory && shippingMethods ? true && success : false,
 		messages: messages,
 		modifications: [
@@ -242,6 +242,8 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		selectedShippingMethod: Object.keys(selectedShippingMethod).length == 1 ? selectedShippingMethod[Object.keys(selectedShippingMethod)[0]] : selectedShippingMethod,
 		quantityModifications: quantityModifications,
 	}
+	console.log(`Sending to Zygote:`, res)
+	return res
 }
 
 export { preInfo, postInfo }
