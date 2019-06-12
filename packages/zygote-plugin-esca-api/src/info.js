@@ -217,6 +217,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 				console.error('No items to send, all out of stock.')
 			}
 			else if(error.message){
+				console.error(error.message)
 				messages.error.push(error.message)
 			}
 			else {
@@ -233,7 +234,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 
 	const res = {
 		success: inventory && shippingMethods ? true && success : false,
-		messages: messages,
+		messages,
 		modifications: [
 			...modifications,
 			shippingMethods[Object.keys(shippingMethods)[0]] ? shippingMethods[Object.keys(shippingMethods)[0]].tax : { id: '', value: 0, description: '' },
