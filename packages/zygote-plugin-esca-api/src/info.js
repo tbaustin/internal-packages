@@ -150,7 +150,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		.then(response => response.json())
 		.then(jsonBody => {
 			console.log(`Received from coupons API:`, jsonBody)
-			if (jsonBody.errors || jsonBody.errorMessage) {
+			if (jsonBody.errorMessage || jsonBody.errors) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
 						scope.setTag("zygote-plugin-esca-api", "info")
@@ -159,9 +159,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
 					})
 				}
-				throw Error({
-					message: jsonBody.errors || jsonBody.errorMessage
-				})
+				throw Error(jsonBody.errorMessage || jsonBody.errors)
 			}
 			let standardShipping = 0, methodIndex = 0
 			Object.keys(jsonBody).forEach(location => {
