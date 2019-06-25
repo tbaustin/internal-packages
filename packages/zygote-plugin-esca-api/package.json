@@ -9,7 +9,8 @@
     "dev": "esca-scripts dev ---input './dev/dev.js, ./dev/index.html' --react --browser",
     "prepublishOnly": "npm run build",
     "reset": "esca-scripts reset",
-    "test": "echo 'no test'"
+    "test": "echo 'no test'",
+    "travis": "open-cli https://travis-ci.org/escaladesports/zygote-plugin-esca-api/branches"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,9 @@
   },
   "homepage": "https://github.com/escaladesports/zygote-plugin-esca-api#readme",
   "devDependencies": {
-    "esca-scripts": "^1.5.4"
+    "esca-scripts": "^1.5.4",
+    "open-cli": "^5.0.0",
+    "styled-jsx": "2.2.6"
   },
   "dependencies": {
     "@escaladesports/zygote-cart": "^3.0.23",
