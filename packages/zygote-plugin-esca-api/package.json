@@ -25,9 +25,10 @@
     "esca-scripts": "^1.5.4"
   },
   "dependencies": {
+    "@escaladesports/zygote-cart": "^3.0.23",
+    "@sentry/browser": "^5.2.0",
     "isomorphic-fetch": "^2.2.1",
     "react-load-script": "^0.0.6",
-    "@sentry/browser": "^5.2.0",
     "shortid": "^2.2.14"
   },
   "peerDependencies": {

@@ -165,12 +165,19 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			Object.keys(jsonBody).forEach(location => {
 				let locationShippingMethods = {}
 				Object.keys(jsonBody[location].options).forEach((cost, i) => {
+
+					let eta = jsonBody[location].options[cost].eta || ``
+					if(eta && eta.indexOf(`-NA-`) !== -1){
+						eta = ``
+					}
+
 					locationShippingMethods[cost] = {
 						id: `method-${methodIndex}`,
 						description: jsonBody[location].options[cost].label,
 						value: parseInt(cost.toString().replace(/\./g, ''), 10),
-						addInfo: jsonBody[location].options[cost].eta ? `Get it ${jsonBody[location].options[cost].eta}!` : ``,
+						addInfo: eta ? `Get it ${eta}!` : ``,
 					}
+
 					if (i == 0) {
 						standardShipping += locationShippingMethods[cost].value
 						selectedShippingMethod[location] = `method-${methodIndex}`
