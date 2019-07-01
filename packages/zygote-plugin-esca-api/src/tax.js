@@ -17,9 +17,14 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 		})
 	}
 
-	if (!shippingAddress.shippingStateAbbr) return {}
-	if (!settingsState.state.tax) return {}
-	
+	if (!shippingAddress.shippingStateAbbr || !settingsState.state.tax) {
+		return {
+			id: `tax`,
+			description: `Tax`,
+			value: 0,
+		}
+	}
+
 	let checkTax = {
 		state: shippingAddress.shippingStateAbbr,
 		subtotal: subtotal && subtotal > 0 ? centsToDollars(subtotal) : 0,
