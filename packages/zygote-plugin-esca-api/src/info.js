@@ -13,6 +13,7 @@ const preInfo = async ({ info }) => {
 }
 
 const postInfo = async ({ response, info, preFetchData }) => {
+	console.log(`postInfo`)
 	if (settingsState.state.sentryDsn) {
 		Sentry.init({
 			dsn: settingsState.state.sentryDsn,
