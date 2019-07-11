@@ -16,14 +16,11 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 			}
 		})
 	}
+	console.log(`Calcaulating tax for`, shippingAddress)
 
 	if (!shippingAddress.shippingStateAbbr || !settingsState.state.tax) {
-		console.log(`No tax found, setting to 0`)
-		return {
-			id: `tax`,
-			description: `Tax`,
-			value: 0,
-		}
+		console.log(`No tax found`)
+		return {}
 	}
 
 	let checkTax = {
