@@ -18,6 +18,7 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 	}
 
 	if (!shippingAddress.shippingStateAbbr || !settingsState.state.tax) {
+		console.log(`No tax found, setting to 0`)
 		return {
 			id: `tax`,
 			description: `Tax`,
@@ -38,6 +39,7 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 	})
 		.then(response => response.json())
 		.then(jsonBody => {
+			console.log(`Received from tax API`, jsonBody)
 			if (jsonBody.errors) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
