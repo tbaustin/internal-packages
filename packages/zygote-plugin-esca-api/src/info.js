@@ -204,6 +204,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 				discount += mod.value > 0 ? mod.value : (mod.value * -1)
 			})
 
+			console.log(`Preparing for taxes`)
 			return calculateTax({
 				shippingAddress: info,
 				subtotal: info.totals.subtotal,
