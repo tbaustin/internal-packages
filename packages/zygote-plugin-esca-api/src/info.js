@@ -36,10 +36,6 @@ const postInfo = async ({ response, info, preFetchData }) => {
 
 	let shippingMethods = {}, selectedShippingMethod = {}, success = true, modifications = [], messages = { error: [], info: [] }, shipping = {}
 
-	console.log(`Pre Fetch Data From postInfo method: `, JSON.stringify(preFetchData, null, 2))
-	console.log(`Response From postInfo method:  `, JSON.stringify(response, null, 2))
-	console.log(`Info From postInfo method:  `, JSON.stringify(info, null, 2))
-
 	await fetch(`/api/products/shipping`, { // Get packing dimensions
 		method: `post`,
 		body: JSON.stringify(preFetchData),
@@ -142,6 +138,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 								})
 							}
 						}
+						console.log(`DATA sent to shipping API: `, shipping)
 						return fetch(`/api/shipping/load`, { // Get shipping cost
 							method: `post`,
 							body: JSON.stringify(shipping),
@@ -154,7 +151,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		})
 		.then(response => response.json())
 		.then(jsonBody => {
-			console.log(`Received from coupons API:`, jsonBody)
+			console.log(`Received from Shipping API:`, jsonBody)
 			if (jsonBody.errorMessage || jsonBody.errors) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
