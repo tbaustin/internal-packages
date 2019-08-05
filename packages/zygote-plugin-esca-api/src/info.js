@@ -37,6 +37,8 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	let shippingMethods = {}, selectedShippingMethod = {}, success = true, modifications = [], messages = { error: [], info: [] }, shipping = {}
 
 	console.log(`Pre Fetch Data From postInfo method: `, JSON.stringify(preFetchData, null, 2))
+	console.log(`Response From postInfo method:  `, JSON.stringify(response, null, 2))
+	console.log(`Info From postInfo method:  `, JSON.stringify(info, null, 2))
 
 	await fetch(`/api/products/shipping`, { // Get packing dimensions
 		method: `post`,
