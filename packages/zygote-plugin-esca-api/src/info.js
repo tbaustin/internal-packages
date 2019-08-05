@@ -13,7 +13,7 @@ const preInfo = async ({ info }) => {
 }
 
 const postInfo = async ({ response, info, preFetchData }) => {
-	console.log(`postInfo`)
+	// console.log(`postInfo`)
 	if (settingsState.state.sentryDsn) {
 		Sentry.init({
 			dsn: settingsState.state.sentryDsn,
@@ -35,6 +35,8 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	})
 
 	let shippingMethods = {}, selectedShippingMethod = {}, success = true, modifications = [], messages = { error: [], info: [] }, shipping = {}
+
+	console.log(`Pre Fetch Data From postInfo method: `, JSON.stringify(preFetchData, null, 2))
 
 	await fetch(`/api/products/shipping`, { // Get packing dimensions
 		method: `post`,
