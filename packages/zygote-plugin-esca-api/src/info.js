@@ -42,7 +42,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	})
 		.then(response => response.json())
 		.then(jsonBody => {
-			console.log(`Received from shipping API:`, jsonBody)
+			console.log(`Received from PRODUCT API:`, jsonBody)
 			if (jsonBody.errors || jsonBody.errorMessage) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
@@ -138,7 +138,8 @@ const postInfo = async ({ response, info, preFetchData }) => {
 								})
 							}
 						}
-						console.log(`DATA sent to shipping API: `, shipping)
+						console.log(`DATA sent to shipping API: `, JSON.stringify(shipping, null, 2))
+
 						return fetch(`/api/shipping/load`, { // Get shipping cost
 							method: `post`,
 							body: JSON.stringify(shipping),
