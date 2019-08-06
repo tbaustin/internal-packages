@@ -22,7 +22,7 @@ async function fetchMethod(options) {
 		headers: {
 			'ESC-API-Context': options.site,
 		},
-		method: 'POST',
+		method: `POST`,
 		body,
 	})
 	res = await res.json()
@@ -35,12 +35,12 @@ async function fetchMethod(options) {
 	this.setState(res)
 
 	// Repoll interval
-	if (typeof window === 'object') {
+	if (typeof window === `object`) {
 		clearTimeout(this.timeout)
 		this.timeout = setTimeout(() => {
 			this.fetch({
 				...options,
-				ids: Object.keys(this.state)
+				ids: Object.keys(this.state),
 			})
 		}, 60 * 1000)
 	}

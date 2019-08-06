@@ -2,6 +2,6 @@ import { State } from 'statable'
 import fetch from './fetch'
 
 const state = new State({}, {
-	fetch
+	fetch,
 })
 export default state

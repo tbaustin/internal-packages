@@ -16,10 +16,12 @@ class Stock extends Component {
 	}
 	fetch() {
 		let options = {
-			...this.props
+			...this.props,
 		}
 		if (!options.endpoint) {
 			options.endpoint = this.props.endpoints[options.env]
+		} else if (options.endpoint.stock) {
+			options.endpoint = options.endpoint.stock
 		}
 		stockState.fetch(options)
 	}
@@ -37,12 +39,12 @@ class Stock extends Component {
 							const lowerId = id.toLowerCase()
 							obj = {
 								stock: stock[lowerId],
-								loading: !(lowerId in stock)
+								loading: !(lowerId in stock),
 							}
 						} else {
 							obj = {
 								stock,
-								loading: !stock
+								loading: !stock,
 							}
 						}
 						return this.props.children(obj)

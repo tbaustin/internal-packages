@@ -16,10 +16,12 @@ class Price extends Component {
 	}
 	fetch() {
 		let options = {
-			...this.props
+			...this.props,
 		}
 		if (!options.endpoint) {
 			options.endpoint = this.props.endpoints[options.env]
+		} else if (options.endpoint.price) {
+			options.endpoint = options.endpoint.price
 		}
 		pricingState.fetch(options)
 	}
@@ -36,12 +38,12 @@ class Price extends Component {
 						if (id) {
 							obj = {
 								price: price[id.toLowerCase()],
-								loading: !(id.toLowerCase() in price)
+								loading: !(id.toLowerCase() in price),
 							}
 						} else {
 							obj = {
 								price,
-								loading: !price
+								loading: !price,
 							}
 						}
 						return this.props.children(obj)
