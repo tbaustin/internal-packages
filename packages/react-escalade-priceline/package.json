@@ -1,6 +1,6 @@
 {
   "name": "react-escalade-priceline",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "keywords": [
     "react",
     "escalade",
@@ -15,8 +15,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "gatsby develop --open",
-		"build": "rm -rf dist && mkdir dist && babel src/module --out-dir dist",
-		"prepublishOnly": "npm run build",
+    "build": "rm -rf dist && mkdir dist && babel src/module --out-dir dist",
+    "prepublishOnly": "npm run build",
     "build:gatsby": "gatsby build",
     "lint": "eslint ./src",
     "precommit": "lint-staged",
