@@ -23,9 +23,11 @@ class Price extends Component {
 		} else if (options.endpoint.price) {
 			options.endpoint = options.endpoint.price
 		}
+		console.log(`OPTIONS: `, options)
 		pricingState.fetch(options)
 	}
 	render() {
+		console.log(`PROPS FROM PRICE: `, this.props)
 		if (!this.props.children || (!this.props.id && !this.props.ids)) {
 			return null
 		}

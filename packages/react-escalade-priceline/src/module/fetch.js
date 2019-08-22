@@ -18,6 +18,11 @@ async function fetchMethod(options) {
 	let body = JSON.stringify({
 		skus: ids,
 	})
+
+	console.log(`Options: `,options)
+	console.log(`Body: `, body)
+	if(!options.site) throw new Error(`Must include a site`)
+
 	let res = await fetch(options.endpoint, {
 		headers: {
 			'ESC-API-Context': options.site,
