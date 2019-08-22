@@ -19,16 +19,20 @@ async function fetchMethod(options) {
 		skus: ids,
 	})
 
-	console.log(`Options sent through priceline: `, JSON.stringify(options, null, 2))
-	console.log(`Ids being sent: `, JSON.stringify(ids, null, 2))
-
-	let res = await fetch(options.endpoint, {
+	const fetchObj = {
 		headers: {
 			'ESC-API-Context': options.site,
 		},
 		method: `POST`,
 		body,
-	})
+	}
+
+	console.log(`Options sent through priceline: `, JSON.stringify(options, null, 2))
+	console.log(`Ids being sent: `, JSON.stringify(ids, null, 2))
+
+	console.log(`Fetch Object: `, JSON.stringify(fetchObj, null, 2))
+
+	let res = await fetch(options.endpoint, fetchObj)
 
 	try {
 		res = await res.json()
