@@ -19,6 +19,9 @@ async function fetchMethod(options) {
 		skus: ids,
 	})
 
+	console.log(`Options sent through priceline: `, JSON.stringify(options, null, 2))
+	console.log(`Ids being sent: `, JSON.stringify(ids, null, 2))
+
 	let res = await fetch(options.endpoint, {
 		headers: {
 			'ESC-API-Context': options.site,
