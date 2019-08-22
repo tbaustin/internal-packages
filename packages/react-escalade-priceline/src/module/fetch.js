@@ -19,10 +19,6 @@ async function fetchMethod(options) {
 		skus: ids,
 	})
 
-	console.log(`Options: `,options)
-	console.log(`Body: `, body)
-	if(!options.site) throw new Error(`Must include a site`)
-
 	let res = await fetch(options.endpoint, {
 		headers: {
 			'ESC-API-Context': options.site,
@@ -30,7 +26,15 @@ async function fetchMethod(options) {
 		method: `POST`,
 		body,
 	})
-	res = await res.json()
+
+	try {
+		res = await res.json()
+	} catch(e){
+		console.log(`res.json() error: `, e, await res.text())
+	}
+
+	console.log(res)
+
 	if (`inventory` in res) {
 		res = extractStock(res, ids)
 	}
