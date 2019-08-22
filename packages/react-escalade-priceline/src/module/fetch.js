@@ -27,10 +27,11 @@ async function fetchMethod(options) {
 		body,
 	}
 
-	console.log(`Options sent through priceline: `, JSON.stringify(options, null, 2))
-	console.log(`Ids being sent: `, JSON.stringify(ids, null, 2))
-
-	console.log(`Fetch Object: `, JSON.stringify(fetchObj, null, 2))
+	if(options.debug){
+		console.log(`Options sent through priceline: `, JSON.stringify(options, null, 2))
+		console.log(`Ids being sent: `, JSON.stringify(ids, null, 2))
+		console.log(`Fetch Object: `, JSON.stringify(fetchObj, null, 2))
+	}
 
 	let res = await fetch(options.endpoint, fetchObj)
 
@@ -40,7 +41,9 @@ async function fetchMethod(options) {
 		console.log(`res.json() error: `, e, await res.text())
 	}
 
-	console.log(`fetch response from priceline: `, res)
+	if(options.debug){
+		console.log(`fetch response from priceline: `, res)
+	}
 
 	if (`inventory` in res) {
 		res = extractStock(res, ids)
