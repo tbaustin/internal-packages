@@ -33,7 +33,7 @@ async function fetchMethod(options) {
 		console.log(`res.json() error: `, e, await res.text())
 	}
 
-	console.log(res)
+	console.log(`fetch response from priceline: `, res)
 
 	if (`inventory` in res) {
 		res = extractStock(res, ids)
