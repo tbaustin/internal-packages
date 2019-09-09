@@ -59,13 +59,18 @@ const postInfo = async ({ response, info, preFetchData }) => {
 
 			let products = []
 			if (jsonBody.products && Object.keys(jsonBody.products).length > 0) {
+				console.log(`PRODUCTS FROM INFO: `,info.products)
 				for (let key in jsonBody.products) {
-					const item = info.products.find(obj => obj.id == key)
-					products.push({
-						...item,
-						...jsonBody.products[key],
-						name: item.name,
-					})
+					const item = info.products.find(obj => obj.id.toLowerCase() === key.toLowerCase())
+					if(item){
+						products.push({
+							...item,
+							...jsonBody.products[key],
+							name: item.name,
+						})
+					} else {
+						console.log(`Product not found from info: `, key)
+					}
 					const objMod = quantityModifications ? quantityModifications.find(obj => obj.id == key) : null
 					const available = objMod ? objMod.available : 9999999
 					jsonBody.products[key].qty = item
@@ -192,7 +197,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 				shippingMethods[location] = {
 					id: location,
 					description: jsonBody[location].products.map(shipProd => {
-						const thisProduct = products.find(reqProd => reqProd.id == shipProd)
+						const thisProduct = products.find(reqProd => reqProd.id.toLowerCase() === shipProd.toLowerCase())
 						thisProduct.location = location
 						return thisProduct.name
 					}).join(', '),

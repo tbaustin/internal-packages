@@ -91,7 +91,7 @@ const preOrder = async ({ preFetchData, info }) => {
 				locationTotal: 0,
 			}
 		}
-		orders[product.location].products[product.id] = {
+		orders[product.location].products[product.id.toUpperCase()] = {
 			length: product.length,
 			width: product.width,
 			height: product.height,
@@ -140,11 +140,22 @@ const preOrder = async ({ preFetchData, info }) => {
 		}
 	}
 
-	return await fetch(`/api/orders/store`, { // Create order
+	console.log(`SENT TO CREATE ORDER: `, JSON.stringify(payment, null, 2))
+
+	let res = await fetch(`/api/orders/store`, { // Create order
 		method: `post`,
 		body: JSON.stringify(payment),
 	})
-		.then(response => response.json())
+
+	res = await res.text()
+	console.log(res)
+	try {
+		res = JSON.parse(res)
+	} catch(e){
+		console.log(`res.json() failed: `, e)
+	}
+
+	return res
 }
 
 const postOrder = async ({ response, info, preFetchData }) => {
@@ -172,7 +183,7 @@ const postOrder = async ({ response, info, preFetchData }) => {
 	}
 	else {
 		info.paymentType = `anet`
-		url = `/api/pay/anet`
+		url = `/api/authnet`
 		payment_obj = response.order_id.map(res => {
 			if (info.billingName === ``) {
 				payments.push({ error: `Invalid billing name provided.` })
@@ -203,11 +214,19 @@ const postOrder = async ({ response, info, preFetchData }) => {
 
 	if (payment_obj.findIndex(pay => pay.error) == -1) {
 		let i = 0
+		console.log(`URL: `, url)
+		console.log(`BODY: `, payment_obj[i])
 		await fetch(url, { // Send payment
 			method: `post`,
 			body: payment_obj[i],
 		})
-			.then(response => response.json())
+			.then(async response => {
+				try {
+					return response.json()
+				} catch(e){
+					console.log(`response.json() error: `, e)
+				}
+			})
 			.then(response => {
 				payments.push(response)
 				if (payment_obj.length > 1) {
@@ -281,7 +300,7 @@ const postOrder = async ({ response, info, preFetchData }) => {
 	return {
 		success: true,
 		meta: {
-			orderId: response.order_id.map(order => order.order_id ? `${info.paymentType}|${order.order_id}` : `${info.paymentType}|${order}`)
+			orderId: response.order_id.map(order => `${info.paymentType}|${JSON.stringify(order)}`)
 		}
 	}
 }
