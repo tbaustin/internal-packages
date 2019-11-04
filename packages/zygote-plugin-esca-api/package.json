@@ -1,0 +1,41 @@
+{
+  "name": "@escaladesports/zygote-plugin-esca-api",
+  "version": "1.1.20",
+  "description": "Zygote plugin for Escalade Sports API",
+  "main": "dist/index.js",
+  "scripts": {
+    "analyze": "esca-scripts analyze --react --component --input ./src/index.js",
+    "build": "esca-scripts build --react --component --babel --input src --output dist --multiple",
+    "dev": "esca-scripts dev ---input './dev/dev.js, ./dev/index.html' --react --browser",
+    "prepublishOnly": "npm run build",
+    "reset": "esca-scripts reset",
+    "test": "echo 'no test'",
+    "travis": "open-cli https://travis-ci.org/escaladesports/zygote-plugin-esca-api/branches"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/escaladesports/zygote-plugin-esca-api.git"
+  },
+  "author": "Matt Suhay <matthew.suhay@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/escaladesports/zygote-plugin-esca-api/issues"
+  },
+  "homepage": "https://github.com/escaladesports/zygote-plugin-esca-api#readme",
+  "devDependencies": {
+    "esca-scripts": "^1.5.4",
+    "open-cli": "^5.0.0",
+    "styled-jsx": "2.2.6"
+  },
+  "dependencies": {
+    "@escaladesports/zygote-cart": "^3.0.23",
+    "@sentry/browser": "^5.2.0",
+    "isomorphic-fetch": "^2.2.1",
+    "react-load-script": "^0.0.6",
+    "shortid": "^2.2.14"
+  },
+  "peerDependencies": {
+    "@escaladesports/zygote-cart": "^3.0.0",
+    "react": "^16.7.0"
+  }
+}
