@@ -28,6 +28,7 @@ const slowFetch = async (order_objs, i, url) => {
 }
 
 const preOrder = async ({ preFetchData, info }) => {
+	console.log('ship bill info', info)
 	const bind_id = shortid.generate()
 	const auth0_id = customerState.state.customer ? customerState.state.customer.username : ''
 	const email = info.infoEmail
@@ -64,7 +65,7 @@ const preOrder = async ({ preFetchData, info }) => {
 			street1: info.shippingAddress1,
 			street2: info.shippingAddress2,
 			city: info.shippingCity,
-			state: info.billingStateAbbr,
+			state: info.shippingStateAbbr,
 			zip: info.shippingZip,
 			company: info.shippingCompany || ``,
 			phone: info.infoPhone || ``,
