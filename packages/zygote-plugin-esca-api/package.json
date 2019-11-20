@@ -28,7 +28,7 @@
     "styled-jsx": "2.2.6"
   },
   "dependencies": {
-    "@escaladesports/zygote-cart": "^3.0.23",
+    "@escaladesports/zygote-cart": "^3.0.54",
     "@sentry/browser": "^5.2.0",
     "isomorphic-fetch": "^2.2.1",
     "react-load-script": "^0.0.6",
