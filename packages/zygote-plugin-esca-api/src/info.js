@@ -35,6 +35,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	})
 
 	let shippingMethods = {}, selectedShippingMethod = {}, success = true, modifications = [], messages = { error: [], info: [] }, shipping = {}
+	let couponFreeShipping = false
 
 	await fetch(`/api/products/shipping`, { // Get packing dimensions
 		method: `post`,
@@ -141,6 +142,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 									value: parseInt('-' + coupon.discount.toString().replace(/\./, '')),
 									type: coupon.type || 'discount'
 								})
+								couponFreeShipping = coupon.freeshipping
 							}
 						}
 						console.log(`DATA sent to shipping API: `, JSON.stringify(shipping, null, 2))
@@ -246,6 +248,35 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			}
 		})
 
+	let finalShippingMethods = Object.values(shippingMethods)
+	let selectedMethodVals = Object.values(selectedShippingMethod)
+
+	if (couponFreeShipping) {
+		finalShippingMethods.forEach(method => {
+			let { shippingMethods } = method
+			let existingFreeShipping = shippingMethods.find(m => m.value === 0)
+			let freeShipMessage = `Applied from coupon code`
+
+			if (existingFreeShipping) {
+				existingFreeShipping.id = `free-shipping`
+				existingFreeShipping.addInfo = freeShipMessage
+			}
+			else {
+				shippingMethods.push({
+					id: `free-shipping`,
+					description: `Free Shipping`,
+					value: 0,
+					addInfo: freeShipMessage
+				})
+			}
+		})
+		selectedMethodVals.fill(`free-shipping`)
+	}
+
+	let finalSelectedShippingMethod = selectedMethodVals.length == 1
+		? selectedMethodVals[0]
+		: selectedMethodVals
+
 	const res = {
 		success: inventory && shippingMethods ? true && success : false,
 		messages,
@@ -253,8 +284,8 @@ const postInfo = async ({ response, info, preFetchData }) => {
 			...modifications,
 			shippingMethods[Object.keys(shippingMethods)[0]] ? shippingMethods[Object.keys(shippingMethods)[0]].tax : { id: '', value: 0, description: '' },
 		],
-		shippingMethods: Object.keys(shippingMethods).map(ship => shippingMethods[ship]),
-		selectedShippingMethod: Object.keys(selectedShippingMethod).length == 1 ? selectedShippingMethod[Object.keys(selectedShippingMethod)[0]] : selectedShippingMethod,
+		shippingMethods: finalShippingMethods,
+		selectedShippingMethod: finalSelectedShippingMethod,
 		quantityModifications: quantityModifications,
 	}
 	console.log(`Sending to Zygote:`, res)
