@@ -241,7 +241,30 @@ const postOrder = async ({ response, info, preFetchData }) => {
 			})
 	}
 
+	console.log(`PAYMENTS RESPONSE: `, JSON.stringify(payments, null, 2))
+
 	for (let x = 0; x < payments.length; x++) {
+		if(!!payments[x].failed) {
+			const { reason, avs, cvv } = payments[x]
+			const errorMessage = `
+			${reason} \n
+			${avs ? `
+				${avs.response}. \n
+				${avs.detail} \n
+			` : ``}
+			${cvv ? `
+				${cvv.response}. \n
+				${cvv.detail} \n
+			` : ``}
+			`
+			console.log(`PAYMENT FAILED`, errorMessage)
+			return {
+				success: false,
+				messages: {
+					error: errorMessage
+				}
+			}
+		}
 		if (payments[x].error && payments[x].error.length > 0) {
 			if (Sentry && Sentry.captureMessage) {
 				Sentry.withScope(scope => {
