@@ -122,8 +122,9 @@ const preOrder = async ({ preFetchData, info }) => {
 
 	Object.keys(orders).map(location => {
 		orders[location].discounts = discounts
+		const taxVal = taxes && typeof taxes === `object` ? taxes.value : 0
 		orders[location].taxes = {
-			value: (centsToDollars(taxes.value) * (parseFloat(orders[location].locationTotal) / parseFloat(centsToDollars(totalsState.state.total - taxes.value)))).toFixed(2)
+			value: (centsToDollars(taxVal) * (parseFloat(orders[location].locationTotal) / parseFloat(centsToDollars(totalsState.state.total - taxVal)))).toFixed(2)
 		}
 	})
 
