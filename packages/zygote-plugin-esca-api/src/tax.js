@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch'
 import * as Sentry from '@sentry/browser'
 
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
+import { dollarsToCents } from './utils/helpers'
 import settingsState from '@escaladesports/zygote-cart/dist/state/settings'
 
 const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0 }) => {
@@ -30,6 +31,8 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 		discount: discount && discount > 0 ? centsToDollars(discount < 0 ? discount * -1 : discount) : 0,
 	}
 
+	console.log(`SENT TO CALCULATE API: `, checkTax)
+
 	return await fetch(`/api/taxes/calculate`, { // Get taxes
 		method: `post`,
 		body: JSON.stringify(checkTax),
@@ -51,7 +54,7 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 			return {
 				id: `tax`,
 				description: jsonBody.tax.label,
-				value: parseInt(jsonBody.tax.value.toString().replace(/\./g, ''), 10),
+				value: dollarsToCents(jsonBody.tax.value.toString()),
 			}
 		})
 		.catch(error => console.log('Failed to calculate taxes', error))

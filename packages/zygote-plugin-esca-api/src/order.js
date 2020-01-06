@@ -72,6 +72,10 @@ const preOrder = async ({ preFetchData, info }) => {
 			country: `US`,
 		}
 
+
+		console.log(`BILLING: `, billing)
+		console.log(`DELIVERY: `, delivery)
+
 	const taxes = totalsState.state.modifications.find(mod => mod.id == `tax`)
 	const discounts = {}
 	totalsState.state.modifications.filter(mod => !mod.id.startsWith(`tax`) && !mod.id.startsWith(`ship`)).forEach(mod => {
