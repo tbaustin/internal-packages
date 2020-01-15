@@ -3,9 +3,9 @@ import * as Sentry from '@sentry/browser'
 
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
 import { dollarsToCents } from './utils/helpers'
-import settingsState from '@escaladesports/zygote-cart/dist/state/settings'
 
-const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0 }) => {
+const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0, cartState }) => {
+	const { settingsState } = cartState
 	if (settingsState.state.sentryDsn) {
 		Sentry.init({
 			dsn: settingsState.state.sentryDsn,

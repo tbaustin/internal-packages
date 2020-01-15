@@ -2,9 +2,6 @@ import fetch from 'isomorphic-fetch'
 import shortid from 'shortid'
 import * as Sentry from '@sentry/browser'
 
-import { productsState, customerState, totalsState, settingsState } from '@escaladesports/zygote-cart/dist/state'
-import shippingState, { findShippingMethod } from '@escaladesports/zygote-cart/dist/state/shipping'
-
 import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
 
 const slowFetch = async (order_objs, i, url) => {
@@ -27,8 +24,18 @@ const slowFetch = async (order_objs, i, url) => {
 	return responses
 }
 
-const preOrder = async ({ preFetchData, info }) => {
-	console.log('ship bill info', info)
+const preOrder = async ({ preFetchData, info, cartState }) => {
+	const {
+		productsState,
+		customerState,
+		totalsState,
+		shippingState,
+		findShippingMethod
+	} = cartState
+
+	console.log('ship bill info: ', info)
+	console.log('prefetch info: ', preFetchData)
+
 	const bind_id = shortid.generate()
 	const auth0_id = customerState.state.customer ? customerState.state.customer.username : ''
 	const email = info.infoEmail
@@ -106,10 +113,12 @@ const preOrder = async ({ preFetchData, info }) => {
 			qty: product.quantity
 		}
 		orders[product.location].locationTotal = parseFloat(orders[product.location].locationTotal) + centsToDollars(product.price)
-
+		console.log(`SHIPPING STATE: `, shippingState)
 		const selected = shippingState.state.selected[product.location] || shippingState.state.selected
 		const method = findShippingMethod(selected, shippingState.state.selected[product.location] ? product.location : false)
 		const value = centsToDollars(method.value)
+
+		console.log(`SHIPPING METHOD: `,  method)
 
 		orders[product.location].locationTotal = parseFloat(orders[product.location].locationTotal) + parseFloat(value)
 
@@ -164,7 +173,11 @@ const preOrder = async ({ preFetchData, info }) => {
 	return res
 }
 
-const postOrder = async ({ response, info, preFetchData }) => {
+const postOrder = async ({ response, info, preFetchData, cartState }) => {
+	const {
+		settingsState,
+	} = cartState
+
 	if (settingsState.state.sentryDsn) {
 		Sentry.init({
 			dsn: settingsState.state.sentryDsn,
@@ -222,28 +235,29 @@ const postOrder = async ({ response, info, preFetchData }) => {
 		let i = 0
 		console.log(`URL: `, url)
 		console.log(`BODY: `, payment_obj[i])
-		await fetch(url, { // Send payment
+		let res = await fetch(url, { // Send payment
 			method: `post`,
 			body: payment_obj[i],
 		})
-			.then(async response => {
-				try {
-					return response.json()
-				} catch(e){
-					console.log(`response.json() error: `, e)
+		res = await res.text()
+		console.log(`RES FROM PAYMENT: `, res)
+		try {
+			res = JSON.parse(res)
+			payments.push(response)
+			if (payment_obj.length > 1) {
+				return slowFetch(payment_obj, i + 1, url).then(response => {
+					payments = payments.concat(response)
+				})
+			}
+		} catch(e){
+			console.log(`res.json() failed: `, e)
+			return {
+				success: false,
+				messages: {
+					error: `Something went wrong with submitting your payment, please try again.`
 				}
-			})
-			.then(response => {
-				payments.push(response)
-				if (payment_obj.length > 1) {
-					return slowFetch(payment_obj, i + 1, url).then(response => {
-						payments = payments.concat(response)
-					})
-				}
-			})
-			.then(response => {
-				// console.log(response)
-			})
+			}
+		}
 	}
 
 	console.log(`PAYMENTS RESPONSE: `, JSON.stringify(payments, null, 2))
