@@ -243,7 +243,7 @@ const postOrder = async ({ response, info, preFetchData, cartState }) => {
 		console.log(`RES FROM PAYMENT: `, res)
 		try {
 			res = JSON.parse(res)
-			payments.push(response)
+			payments.push(res)
 			if (payment_obj.length > 1) {
 				return slowFetch(payment_obj, i + 1, url).then(response => {
 					payments = payments.concat(response)
