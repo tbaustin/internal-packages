@@ -1,6 +1,10 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "new-version": "npx lerna version --yes",
+		"new-publish": "npx lerna publish from-package --yes"
+  },
   "devDependencies": {
     "lerna": "^3.18.3"
   },
