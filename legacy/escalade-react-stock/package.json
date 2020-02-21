@@ -1,0 +1,35 @@
+{
+  "name": "escalade-react-stock",
+  "version": "1.0.3",
+  "keywords": [
+    "escalade",
+    "react",
+    "stock"
+  ],
+  "main": "dist/index.js",
+  "author": "Kennedy Rose <krose@escaladesports.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/escaladesports/escalade-react-stock.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "analyze": "esca-scripts analyze --react --component --input ./src/index.js",
+    "build": "esca-scripts build --react --component --babel --input ./src --output ./dist --multiple",
+    "dev": "esca-scripts dev ---input './dev/dev.js, ./dev/index.html' --react --browser --component",
+    "prepublishOnly": "npm run build",
+    "test": "echo 'no test'",
+    "travis": "opn https://travis-ci.org/escaladesports/escalade-react-stock/branches",
+    "reset": "esca-scripts reset"
+  },
+  "devDependencies": {
+    "esca-scripts": "^0.13.4",
+    "opn-cli": "^3.1.0",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1"
+  },
+  "dependencies": {
+    "escalade-stock-store": "^1.0.0",
+    "styled-jsx": "^2.2.4"
+  }
+}
