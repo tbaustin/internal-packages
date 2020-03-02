@@ -1,0 +1,26 @@
+{
+  "name": "@escaladesports/utils",
+  "version": "0.0.1",
+  "description": "Utility functions for use in Escalade Sports projects",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npx babel src --out-dir dist",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@escaladesports/babel-preset": "^1.0.0",
+    "jest": "^25.1.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.8.3"
+  },
+  "gitHead": "d355934a8e86972d0a5f33c95eff6e848fd03901"
+}
