@@ -1,16 +1,17 @@
 {
-  "name": "@escaladesports/gatsby-source-esca-api",
+  "name": "gatsby-source-esca-api",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
+	"main": "dist/index.js",
   "scripts": {
-    "build": "npx babel src --out-dir dist",
+    "build": "npx babel src --out-dir ./",
     "test": "jest"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
     "@escaladesports/babel-preset": "^1.0.0",
+    "axios": "^0.19.2",
     "jest": "^25.1.0"
   },
   "keywords": [],
