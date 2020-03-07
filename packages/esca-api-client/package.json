@@ -1,7 +1,7 @@
 {
   "name": "@escaladesports/esca-api-client",
   "version": "0.0.1",
-  "description": "",
+  "description": "A JavaScript client library for Escalade Sports microservices",
   "main": "dist/index.js",
   "scripts": {
     "build": "npx babel src --out-dir dist",
@@ -28,5 +28,6 @@
     "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
     "regenerator-runtime": "^0.13.3"
-  }
+  },
+  "gitHead": "42fb478f528d0be62605c2f22ac8889fee5fdb65"
 }
