@@ -14,7 +14,7 @@ const contextProductRequest = async (options, setProducts) => {
 }
 
 export function WithProducts({ children }) {
-	const [products, setProducts] = useReducer((_, action) => action, {})
+	const [products, setProducts] = useReducer((_, action) => action, [])
 	return (
 		<Context.Provider value={[products, setProducts]}>
 			{children}
@@ -25,23 +25,25 @@ export function WithProducts({ children }) {
 export function Products({ children, options, ...restProps }) {
 	const [products, setProducts] = useContext(Context)
 	const { displayFields, ...restOptions } = options
+
 	useEffect(() => {
 		if(typeof window !== `undefined`){
 			contextProductRequest(restOptions, setProducts)
 		}
 	}, [])
-	const loading = !Object.keys(products).length
-	const mappedProducts = Object.keys(products).map(productId => ({...products[productId], sku: productId}))
+
+	const loading = !!products.length
+
 	return (
 		<section {...restProps}>
 			{children
 				? children({
 					loading,
-					products: mappedProducts
+					products
 				})
 				: <ul>
 					{!loading
-						? mappedProducts.map(product => (
+						? products.map(product => (
 							<li key={product.sku}>
 								<h2>{product.name || product.sku}</h2>
 								<ul>

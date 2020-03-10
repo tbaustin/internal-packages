@@ -1,4 +1,4 @@
-import axios from 'axios'
+import EscaAPIClient from '@escaladesports/esca-api-client'
 
 async function fetchProducts(options) {
 	const {
@@ -7,31 +7,22 @@ async function fetchProducts(options) {
 		fields,
 		salsify,
 		skus,
-		url
+		apiKey
 	} = options
 
-	const endpoint = env === `prod`
-		? `https://m570gzyn6h.execute-api.us-east-1.amazonaws.com/production/`
-		: `https://7el25d5l16.execute-api.us-east-1.amazonaws.com/dev/`
-
-	const { data } = await axios({
-		method: `post`,
-		url: endpoint,
-		data: {
-			data: {
-				fields,
-				salsify,
-				skus: skus || `all`,
-			},
-			site,
-			url,
-		},
-		headers: {
-			"Content-Type": `application/json`,
-		},
+	const client = new EscaAPIClient({
+		environment: env,
+		site,
+		apiKey
 	})
 
-	return data.products
+	const products = await client.loadProducts({
+		fields,
+		salsify,
+		skus
+	})
+
+	return products
 }
 
 exports.sourceNodes = async function({ actions, createNodeId, createContentDigest }, options){
@@ -39,13 +30,10 @@ exports.sourceNodes = async function({ actions, createNodeId, createContentDiges
 	try {
 		const products = await fetchProducts(options)
 		console.log(`Building out nodes for ${Object.keys(products).length} Esca Products`)
-		for (let id in products){
-			const nodeContent = {
-				...products[id],
-				sku: id,
-			}
+		for (let product of products){
+			const nodeContent = { ...product }
 			const nodeMeta = {
-				id: createNodeId(`escalade-products-${id}`),
+				id: createNodeId(`escalade-products-${product.sku || product.id}`),
 				parent: null,
 				children: [],
 				internal: {

@@ -66,7 +66,7 @@ async function loadProducts(params) {
 	}
 
   const products = await this.apiRequest(requestConfig, `products`)
-	return Object.values(products)
+	return Object.keys(products).map(productId => ({ ...products[productId], sku: productId }))
 }
 
 

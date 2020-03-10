@@ -1,35 +1,26 @@
-import axios from 'axios'
+import EscaAPIClient from '@escaladesports/esca-api-client'
 
 export default async function productRequest(options) {
-	const {
-		site,
-		env,
-		fields,
-		salsify,
-		skus,
-		url
-	} = options
+	// const {
+	// 	site,
+	// 	env,
+	// 	fields,
+	// 	salsify,
+	// 	skus,
+	// } = options
 
-	const endpoint = env === `prod`
-		? `https://m570gzyn6h.execute-api.us-east-1.amazonaws.com/production/`
-		: `https://7el25d5l16.execute-api.us-east-1.amazonaws.com/dev/`
+	// const client = new EscaAPIClient({
+	// 	environment: env,
+	// 	site,
+	// })
 
-	const { data } = await axios({
-		method: `post`,
-		url: endpoint,
-		data: {
-			data: {
-				fields,
-				salsify,
-				skus: skus || `all`,
-			},
-			site,
-			url,
-		},
-		headers: {
-			"Content-Type": `application/json`,
-		},
-	})
+	// const products = await client.loadProducts({
+	// 	fields,
+	// 	salsify,
+	// 	skus
+	// })
 
-	return data.products
+	return [{ price: `1.00`, name: `hellow`, sku: `123`, stock: 2}]
+
 }
+

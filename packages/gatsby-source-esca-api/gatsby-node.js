@@ -1,6 +1,6 @@
 "use strict";
 
-var _axios = _interopRequireDefault(require("axios"));
+var _escaApiClient = _interopRequireDefault(require("@escaladesports/esca-api-client"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26,33 +26,26 @@ function _fetchProducts() {
       fields,
       salsify,
       skus,
-      url
+      apiKey
     } = options;
-    var endpoint = env === "prod" ? "https://m570gzyn6h.execute-api.us-east-1.amazonaws.com/production/" : "https://7el25d5l16.execute-api.us-east-1.amazonaws.com/dev/";
-    var {
-      data
-    } = yield (0, _axios.default)({
-      method: "post",
-      url: endpoint,
-      data: {
-        data: {
-          fields,
-          salsify,
-          skus: skus || "all"
-        },
-        site,
-        url
-      },
-      headers: {
-        "Content-Type": "application/json"
-      }
+    var client = new _escaApiClient.default({
+      environment: env,
+      site,
+      apiKey
     });
-    return data.products;
+    var products = yield client.loadProducts({
+      fields,
+      salsify,
+      skus
+    });
+    return products;
   });
   return _fetchProducts.apply(this, arguments);
 }
 
-exports.sourceNodes = /*#__PURE__*/function () {
+exports.sourceNodes =
+/*#__PURE__*/
+function () {
   var _ref = _asyncToGenerator(function* (_ref2, options) {
     var {
       actions,
@@ -67,13 +60,11 @@ exports.sourceNodes = /*#__PURE__*/function () {
       var products = yield fetchProducts(options);
       console.log("Building out nodes for ".concat(Object.keys(products).length, " Esca Products"));
 
-      for (var id in products) {
-        var nodeContent = _objectSpread({}, products[id], {
-          sku: id
-        });
+      for (var product of products) {
+        var nodeContent = _objectSpread({}, product);
 
         var nodeMeta = {
-          id: createNodeId("escalade-products-".concat(id)),
+          id: createNodeId("escalade-products-".concat(product.sku || product.id)),
           parent: null,
           children: [],
           internal: {
