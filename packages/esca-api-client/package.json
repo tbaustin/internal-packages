@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/esca-api-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A JavaScript client library for Escalade Sports microservices",
   "main": "dist/index.js",
   "scripts": {
@@ -24,13 +24,13 @@
   "author": "Escalade Sports",
   "license": "ISC",
   "dependencies": {
+    "@sentry/browser": "^5.13.2",
+    "@sentry/node": "^5.13.2",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
-    "regenerator-runtime": "^0.13.3",
-    "@sentry/browser": "^5.13.2",
-    "@sentry/node": "^5.13.2"
+    "regenerator-runtime": "^0.13.3"
   },
   "gitHead": "42fb478f528d0be62605c2f22ac8889fee5fdb65"
 }
