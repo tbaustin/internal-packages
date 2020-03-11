@@ -24,12 +24,14 @@ const coupons = async ({ info, shipping }) => {
 			}
 		}
 
-		return fetch(`/api/coupon/calculate`, { // Get packing dimensions
+		const res = fetch(`/api/coupon/calculate`, { // Get packing dimensions
 			method: `post`,
 			body: JSON.stringify(check),
 		})
+
+		return res
 	}
-	
+
 	return null
 }
 

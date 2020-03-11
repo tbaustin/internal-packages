@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+		"bootstrap": "npx lerna bootstrap --use-workspaces",
     "new-version": "npx lerna version --yes",
 		"new-publish": "npx lerna publish from-package --yes"
   },

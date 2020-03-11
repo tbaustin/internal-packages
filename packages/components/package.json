@@ -1,5 +1,5 @@
 {
-  "name": "@escaladesports/react-esca-api",
+  "name": "@escaladesports/components",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
@@ -10,14 +10,11 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
-    "@escaladesports/babel-preset": "^1.0.0",
+    "@escaladesports/babel-preset": "^1.0.1",
     "jest": "^25.1.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@babel/polyfill": "^7.8.3",
-    "@escaladesports/esca-api-client": "^0.0.2"
-  }
+  "dependencies": {}
 }

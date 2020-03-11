@@ -125,6 +125,7 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 
 				return coupons({ info, shipping })
 					.then(response => {
+						console.log(`REPONSE FROM COUPON: `, response)
 						if (response) { // There was a coupon
 							return response.json()
 						}
@@ -139,8 +140,10 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 									coupon.reason && coupon.reason.length > 0 ? `${coupon.error}. ${coupon.reason[0]}` : coupon.error
 								)
 								info.coupon = ''
-							}
-							else {
+							} else if (coupon.errors) {
+								messages.info.push(coupon.errors)
+								info.coupon = ''
+							} else {
 								modifications.push({
 									id: coupon.code || info.coupon,
 									description: coupon.label || 'Coupon',
