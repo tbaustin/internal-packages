@@ -14,6 +14,8 @@ node_modules/
 .env.*
 dist
 dist-*
+node
+browser
 .next
 json
 public

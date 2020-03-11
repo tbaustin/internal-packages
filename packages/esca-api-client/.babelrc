@@ -1,5 +1,13 @@
 {
 	"presets": [
 		"@escaladesports/babel-preset"
+	],
+	"plugins": [
+		[
+			"module-rewrite",
+			{
+				"replaceFunc": "./replace-module-paths.js"
+			}
+		]
 	]
 }

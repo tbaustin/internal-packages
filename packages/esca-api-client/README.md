@@ -5,6 +5,11 @@ A JavaScript client library for Escalade Sports microservices
 
 1) Instantiate the client:
 ```javascript
+/**
+ * Note: the below import should work as written; if not, you may need
+ * to import from either '@escaladesports/esca-api-client/browser' or
+ * '@escaladesports/esca-api-client/node' depending on your environment
+ */ 
 import EscaAPIClient from '@escaladesports/esca-api-client'
 
 const client = new EscaAPIClient({
