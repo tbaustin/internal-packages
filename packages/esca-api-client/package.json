@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/esca-api-client",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A JavaScript client library for Escalade Sports microservices",
   "main": "node/index.js",
   "browser": "browser/index.js",
