@@ -1,11 +1,14 @@
 {
   "name": "@escaladesports/esca-api-client",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A JavaScript client library for Escalade Sports microservices",
-  "main": "dist/index.js",
+  "main": "node/index.js",
+  "browser": "browser/index.js",
   "scripts": {
-    "build": "npx babel src --out-dir dist",
-    "test": "jest"
+    "build:node": "BABEL_ENV=node npx babel src --out-dir node",
+    "build:browser": "BABEL_ENV=browser npx babel src --out-dir browser",
+    "build": "npm run build:node && npm run build:browser",
+    "test": "BABEL_ENV=node jest"
   },
   "repository": {
     "type": "git",
@@ -27,8 +30,8 @@
     "@sentry/browser": "^5.13.2",
     "@sentry/node": "^5.13.2",
     "axios": "^0.19.2",
-    "core-js": "^3.6.4",
-    "dotenv": "^8.2.0",
+    "babel-plugin-module-rewrite": "^0.2.0",
+    "core-js": "^2.6.11",
     "lodash": "^4.17.15",
     "regenerator-runtime": "^0.13.3"
   },

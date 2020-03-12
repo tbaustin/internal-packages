@@ -1,18 +1,6 @@
-import * as SentryBrowser from '@sentry/browser'
-import * as SentryNode from '@sentry/node'
+// NOTE: this will get rewritten as @sentry/browser when building for browser
+import * as Sentry from '@sentry/node'
 
-
-
-const isBrowser = new Function(`
-  try {
-    return this === window
-  }
-  catch(err) {
-    return false
-  }
-`)()
-
-const Sentry = isBrowser ? SentryBrowser : SentryNode
 
 const dsn = `https://e51b6f18c5cc485a9828f86e4e3ca8e4@sentry.io/3842502`
 Sentry.init({ dsn })
