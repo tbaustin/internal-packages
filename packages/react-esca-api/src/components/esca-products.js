@@ -6,11 +6,12 @@ const Context = createContext()
 
 const pollInterval = 1 * 60 * 1000
 
+
 const contextProductRequest = async (options, setProducts) => {
 	const products = await productRequest(options)
 	setProducts(products)
 
-	setTimeout(() => contextProductRequest(options, setProducts), pollInterval);
+	setTimeout(() => contextProductRequest(options, setProducts), pollInterval)
 }
 
 export function WithProducts({ children }) {
@@ -27,7 +28,7 @@ export function Products({ children, options, ...restProps }) {
 	const { displayFields, ...restOptions } = options
 
 	useEffect(() => {
-		if(typeof window !== `undefined`){
+		if (typeof window !== `undefined`) {
 			contextProductRequest(restOptions, setProducts)
 		}
 	}, [])
@@ -39,7 +40,7 @@ export function Products({ children, options, ...restProps }) {
 			{children
 				? children({
 					loading,
-					products
+					products,
 				})
 				: <ul>
 					{!loading
@@ -49,7 +50,7 @@ export function Products({ children, options, ...restProps }) {
 								<ul>
 									{displayFields
 										? displayFields.map((field, i) => <li key={`${field}-${i}`}>{product[field] || `Field does not exist on product`}</li>)
-										: Object.keys(product).map((field, i) => <li key={`${field}-${i}`}>{product[field]}</li> )
+										: Object.keys(product).map((field, i) => <li key={`${field}-${i}`}>{product[field]}</li>)
 									}
 								</ul>
 							</li>
@@ -57,7 +58,7 @@ export function Products({ children, options, ...restProps }) {
 						: <div>Loading...</div>
 					}
 				</ul>
-		}
+			}
 		</section>
 	)
 }
@@ -66,7 +67,7 @@ export function useProducts(options) {
 	const [products, setProducts] = useContext(Context)
 
 	useEffect(() => {
-		if(typeof window !== `undefined`){
+		if (typeof window !== `undefined`) {
 			contextProductRequest(options, setProducts)
 		}
 	}, [])

@@ -1,13 +1,29 @@
 {
-  "name": "root",
-  "private": true,
-  "scripts": {
+	"name": "root",
+	"private": true,
+	"scripts": {
 		"bootstrap": "npx lerna bootstrap --use-workspaces",
-    "new-version": "npx lerna version --yes",
+		"new-version": "npx lerna version --yes",
 		"new-publish": "npx lerna publish from-package --yes"
-  },
-  "devDependencies": {
-    "lerna": "^3.18.3"
-  },
-  "workspaces": ["packages/*"]
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"!(legacy|needs-updated|node_modules)/**/*.js": [
+			"eslint --fix"
+		]
+	},
+	"devDependencies": {
+		"@escaladesports/eslint-config": "^0.0.4",
+		"eslint": "^6.8.0",
+		"husky": "^4.2.3",
+		"lerna": "^3.18.3",
+		"lint-staged": "^10.0.8"
+	},
+	"workspaces": [
+		"packages/*"
+	]
 }

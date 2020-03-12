@@ -1,0 +1,14 @@
+dist
+packages/*/dist/**
+**/dist/*
+docs
+dist-*
+public
+.cache
+.serverless
+_optimize
+temp
+temp-*
+/needs-updated/**
+/node_modules/
+**/node_modules/**
