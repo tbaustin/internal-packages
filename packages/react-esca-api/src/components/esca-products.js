@@ -1,4 +1,9 @@
-import React, { useReducer, createContext, useContext, useEffect } from 'react'
+import React, { 
+	useReducer, 
+	createContext, 
+	useContext, 
+	useEffect,
+} from 'react'
 
 import productRequest from '../utils/product-request'
 
@@ -15,7 +20,7 @@ const contextProductRequest = async (options, setProducts) => {
 }
 
 export function WithProducts({ children }) {
-	const [products, setProducts] = useReducer((_, action) => action, [])
+	const [products, setProducts] = useReducer((_, action) => action, null)
 	return (
 		<Context.Provider value={[products, setProducts]}>
 			{children}
@@ -33,7 +38,7 @@ export function Products({ children, options, ...restProps }) {
 		}
 	}, [])
 
-	const loading = !!products.length
+	const loading = !products
 
 	return (
 		<section {...restProps}>

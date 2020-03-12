@@ -12,3 +12,4 @@ temp-*
 /needs-updated/**
 /node_modules/
 **/node_modules/**
+packages/gatsby-source-esca-api/*.js

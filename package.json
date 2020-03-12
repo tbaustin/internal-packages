@@ -3,6 +3,9 @@
 	"private": true,
 	"scripts": {
 		"bootstrap": "npx lerna bootstrap --use-workspaces",
+		"build": "npx lerna run build --stream",
+		"clean:all": "npx lerna run clean --stream",
+		"clean": "npx lerna clean",
 		"new-version": "npx lerna version --yes",
 		"new-publish": "npx lerna publish from-package --yes"
 	},
@@ -12,8 +15,8 @@
 		}
 	},
 	"lint-staged": {
-		"!(legacy|needs-updated|node_modules)/**/*.js": [
-			"eslint --fix"
+		"!(legacy|node_modules)/**/*.js": [
+			"eslint --fix --no-ignore"
 		]
 	},
 	"devDependencies": {

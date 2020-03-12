@@ -1,5 +1,6 @@
 export {
 	WithProducts,
 	useProducts,
-	Products
+	Products,
 } from './components/esca-products'
+

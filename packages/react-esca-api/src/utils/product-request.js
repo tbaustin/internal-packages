@@ -1,4 +1,6 @@
-import EscaAPIClient from '@escaladesports/esca-api-client/browser'
+import EscaAPIClient from '@escaladesports/esca-api-client'
+
+let client = null
 
 export default async function productRequest(options) {
 	const {
@@ -9,17 +11,17 @@ export default async function productRequest(options) {
 		skus,
 	} = options
 
-	const client = new EscaAPIClient({
-		environment: env,
-		site,
-	})
+	if (!client) {
+		client = new EscaAPIClient({
+			environment: env,
+			site,
+		})
+	}
 
-	const products = await client.loadProducts({
+	return await client.loadProducts({
 		fields,
 		salsify,
 		skus,
 	})
-
-	return products
 }
 

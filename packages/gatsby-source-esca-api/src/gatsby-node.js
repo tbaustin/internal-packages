@@ -7,19 +7,19 @@ async function fetchProducts(options) {
 		fields,
 		salsify,
 		skus,
-		apiKey
+		apiKey,
 	} = options
 
 	const client = new EscaAPIClient({
 		environment: env,
 		site,
-		apiKey
+		apiKey,
 	})
 
 	const products = await client.loadProducts({
 		fields,
 		salsify,
-		skus
+		skus,
 	})
 
 	return products
