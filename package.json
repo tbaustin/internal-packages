@@ -16,7 +16,7 @@
 	},
 	"lint-staged": {
 		"!(legacy|node_modules)/**/*.js": [
-			"eslint --fix --no-ignore"
+			"eslint --fix"
 		]
 	},
 	"devDependencies": {
