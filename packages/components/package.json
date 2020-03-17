@@ -16,5 +16,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "gatsby": "^2.19.45",
+    "lodash": "^4.17.15"
+  }
 }
