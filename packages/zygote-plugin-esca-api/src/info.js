@@ -132,8 +132,8 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 							return null
 						}
 					})
-					.then(coupon => {
-						console.log(`REPONSE FROM COUPON: `, response)
+					.then(async coupon => {
+						console.log(`REPONSE FROM COUPON: `, coupon)
 						if (coupon) {
 							if (!coupon.valid) {
 								messages.info.push(
@@ -144,6 +144,30 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 								messages.info.push(coupon.errors)
 								info.coupon = ``
 							} else {
+								if(coupon.item){
+									const { sku, name, qty, price } = coupon.item
+									let itemRes = await fetch(`/api/products/load`, { method: `post`, body: JSON.stringify({
+										skus: [ sku ],
+										salsify: [`Web Images`],
+									})})
+									itemRes = await itemRes.json()
+									const foundProduct = itemRes.products[sku]
+									console.log(`PRODUCT FOR COUPON: `, foundProduct)
+
+									const item = {
+										...coupon.item,
+										name: name,
+										id: sku,
+										quantity: +qty,
+										image: foundProduct[`Web Images`] && foundProduct[`Web Images`][0],
+										price: price,
+										shippable: true,
+									}
+									console.log(`ITEM FROM COUPON: `, item)
+									
+									const { products: prevProducts } = productsState.state
+									productsState.setState({ products: [ ...prevProducts, item ]})
+								}
 								modifications.push({
 									id: coupon.code || info.coupon,
 									description: coupon.label || `Coupon`,

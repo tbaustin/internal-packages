@@ -15,13 +15,13 @@ const coupons = async ({ info, shipping }) => {
 					city: info.shippingCity,
 					state: info.shippingStateAbbr,
 					zip: info.shippingZip,
-					country: "US",
-					phone: info.infoPhone
+					country: `US`,
+					phone: info.infoPhone,
 				},
-				billing: "delivery",
+				billing: `delivery`,
 				products: shipping.products,
-				discounts: []
-			}
+				discounts: [],
+			},
 		}
 
 		const res = fetch(`/api/coupon/calculate`, { // Get packing dimensions
