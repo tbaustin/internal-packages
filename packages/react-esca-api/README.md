@@ -1,11 +1,11 @@
 # react-esca-api
 
-## Example Code 
+## Example Code
 
 ```js
 import React from 'react';
 import {
-  WithProducts,
+  ProductsProvider,
   useProducts,
   Products,
 } from '@escaladesports/react-esca-api';
@@ -63,9 +63,9 @@ const CustomComp = () => (
 export default function Test() {
   const useComp = true;
   return (
-    <WithProducts>
+    <ProductsProvider>
       {useComp ? <CustomComp /> : <CustomHook />}
-    </WithProducts>
+    </ProductsProvider>
   );
 }
 ```
