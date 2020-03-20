@@ -1,10 +1,11 @@
 import React from 'react'
-import { WithProducts } from '@escaladesports/react-esca-api'
+import { ProductsProvider } from '@escaladesports/react-esca-api'
+
 
 export function wrapRootElement({ element }) {
 	return (
-		<WithProducts>
+		<ProductsProvider>
 			{element}
-		</WithProducts>
+		</ProductsProvider>
 	)
 }
