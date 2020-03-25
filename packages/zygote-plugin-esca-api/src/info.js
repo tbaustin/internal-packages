@@ -126,13 +126,22 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 				return coupons({ info, shipping })
 					.then(response => {
 						if (response) { // There was a coupon
-							return response.json()
+
+							return response.text()	
 						}
 						else {
 							return null
 						}
 					})
-					.then(async coupon => {
+					.then(async couponRes => {
+						let coupon
+						try {
+							console.log(`coupon.text(): `, couponRes)
+							coupon = JSON.parse(couponRes)
+						} catch(e){
+							console.log(`Could not parse coupon: `, e)
+							throw e
+						}
 						console.log(`REPONSE FROM COUPON: `, coupon)
 						if (coupon) {
 							if (!coupon.valid) {
