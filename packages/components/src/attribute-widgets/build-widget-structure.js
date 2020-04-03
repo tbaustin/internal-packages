@@ -7,8 +7,6 @@ export default function buildWidgetStructure(...args) {
 	const widgets = cloneDeep(config)
 	const attributes = Object.keys(widgets)
 
-	console.log(`CURRENT VARIANT:`, currentVariant)
-
 	/**
    * Find a variant that has:
    *  - The given value (option) for the given attribute
@@ -23,8 +21,6 @@ export default function buildWidgetStructure(...args) {
 		const variantsWithOption = variants.filter(v => {
 			return isEqual(v[attribute], option)
 		})
-
-		console.log(`VARIANTS WITH OPTION ${option}:`, variantsWithOption)
 
 		// If there's only 1 variant with the passed option, just use that variant
 		// (or else customer would have no way to navigate to it)
