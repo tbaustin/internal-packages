@@ -1,4 +1,5 @@
 # react-esca-api
+React components & hooks for using Escalade Sports API data
 
 ## Example Code
 
@@ -17,7 +18,7 @@ const options = {
   salsify: ['Web Images'],
 };
 
-const CustomHook = () => {
+const CustomComponentWithHook = () => {
   const [products] = useProducts(options);
   return (
     <section>
@@ -40,7 +41,8 @@ const CustomHook = () => {
   );
 };
 
-const CustomComp = () => (
+// Note: <Products> renders a basic default display if no children specified
+const CustomComponentPlain = () => (
   <Products options={options}>
     {({ products, loading }) => (loading
       ? <div>Loading...</div>
@@ -60,11 +62,12 @@ const CustomComp = () => (
   </Products>
 );
 
-export default function Test() {
-  const useComp = true;
+export default function Test(props) {
+  const { useComp } = props
+
   return (
     <ProductsProvider>
-      {useComp ? <CustomComp /> : <CustomHook />}
+      {useComp ? <CustomComponentPlain /> : <CustomComponentWithHook />}
     </ProductsProvider>
   );
 }
