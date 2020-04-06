@@ -29,6 +29,7 @@ export default function AttributeWidgets(props) {
 		config: configProp,
 		identifier: identifierProp,
 		initial,
+		onChange,
 		debug,
 		test,
 	} = props
@@ -39,6 +40,11 @@ export default function AttributeWidgets(props) {
 	const initialId = test ? `1` : initial
 
 	const [variantId, setVariantId] = useState(initialId)
+
+	const handleSelect = newVariantId => {
+		setVariantId(newVariantId)
+		typeof onChange === `function` && onChange(newVariantId)
+	}
 
 	const currentVariant = useMemo(
 		() => variants.find(v => v[identifier] === variantId),
@@ -87,7 +93,7 @@ export default function AttributeWidgets(props) {
 						label={label}
 						options={options}
 						value={sku}
-						onChange={setVariantId}
+						onChange={handleSelect}
 					/>
 				)
 			})}
