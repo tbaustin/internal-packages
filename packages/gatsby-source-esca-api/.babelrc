@@ -1,0 +1,10 @@
+{
+	"presets": [
+		["@escaladesports/babel-preset", {
+			"targets": {
+				"esmodules": true
+				}
+			}
+		]
+	]
+}

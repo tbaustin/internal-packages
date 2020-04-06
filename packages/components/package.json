@@ -1,0 +1,25 @@
+{
+  "name": "@escaladesports/components",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npx babel src --out-dir dist",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@escaladesports/babel-preset": "^1.0.3",
+    "jest": "^25.1.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "gatsby": "^2.19.45",
+    "lodash": "^4.17.15"
+  },
+  "gitHead": "afabe262c13827265e8539e033f4d3d588798283"
+}

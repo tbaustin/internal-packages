@@ -7,7 +7,7 @@ import { coupons } from './coupons'
 
 const preInfo = async ({ info }) => {
 	return {
-		skus: info.products ? info.products.map(function(product) { return product.id }) : []
+		skus: info.products ? info.products.map(function(product) { return product.id }) : [],
 	}
 }
 
@@ -27,7 +27,7 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 					return event
 				}
 				return null
-			}
+			},
 		})
 	}
 	const { inventory } = response
@@ -52,14 +52,14 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 			if (jsonBody.errors || jsonBody.errorMessage) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
-						scope.setTag("zygote-plugin-esca-api", "info")
-  						scope.setLevel('error')
-						Sentry.captureException("Request: " + JSON.stringify(preFetchData))
-						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
+						scope.setTag(`zygote-plugin-esca-api`, `info`)
+						scope.setLevel(`error`)
+						Sentry.captureException(`Request: ` + JSON.stringify(preFetchData))
+						Sentry.captureException(`Response: ` + JSON.stringify(jsonBody))
 					})
 				}
 				throw Error({
-					message: jsonBody.errors || jsonBody.errorMessage
+					message: jsonBody.errors || jsonBody.errorMessage,
 				})
 			}
 
@@ -126,26 +126,62 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 				return coupons({ info, shipping })
 					.then(response => {
 						if (response) { // There was a coupon
-							return response.json()
+
+							return response.text()	
 						}
 						else {
 							return null
 						}
 					})
-					.then(coupon => {
+					.then(async couponRes => {
+						let coupon
+						try {
+							console.log(`coupon.text(): `, couponRes)
+							coupon = JSON.parse(couponRes)
+						} catch(e){
+							console.log(`Could not parse coupon: `, e)
+							throw e
+						}
+						console.log(`REPONSE FROM COUPON: `, coupon)
 						if (coupon) {
 							if (!coupon.valid) {
 								messages.info.push(
-									coupon.reason && coupon.reason.length > 0 ? `${coupon.error}. ${coupon.reason[0]}` : coupon.error
+									coupon.reason && coupon.reason.length > 0 ? `${coupon.error}. ${coupon.reason[0]}` : coupon.error,
 								)
-								info.coupon = ''
-							}
-							else {
+								info.coupon = ``
+							} else if (coupon.errors) {
+								messages.info.push(coupon.errors)
+								info.coupon = ``
+							} else {
+								if(coupon.item){
+									const { sku, name, qty, price } = coupon.item
+									let itemRes = await fetch(`/api/products/load`, { method: `post`, body: JSON.stringify({
+										skus: [ sku ],
+										salsify: [`Web Images`],
+									})})
+									itemRes = await itemRes.json()
+									const foundProduct = itemRes.products[sku]
+									console.log(`PRODUCT FOR COUPON: `, foundProduct)
+
+									const item = {
+										...coupon.item,
+										name: name,
+										id: sku,
+										quantity: +qty,
+										image: foundProduct[`Web Images`] && foundProduct[`Web Images`][0],
+										price: price,
+										shippable: true,
+									}
+									console.log(`ITEM FROM COUPON: `, item)
+									
+									const { products: prevProducts } = productsState.state
+									productsState.setState({ products: [ ...prevProducts, item ]})
+								}
 								modifications.push({
 									id: coupon.code || info.coupon,
-									description: coupon.label || 'Coupon',
-									value: parseInt('-' + coupon.discount.toString().replace(/\./, '')),
-									type: coupon.type || 'discount'
+									description: coupon.label || `Coupon`,
+									value: parseInt(`-` + coupon.discount.toString().replace(/\./, ``)),
+									type: coupon.type || `discount`,
 								})
 								couponFreeShipping = coupon.freeshipping
 							}
@@ -168,10 +204,10 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 			if (jsonBody.errorMessage || jsonBody.errors) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
-						scope.setTag("zygote-plugin-esca-api", "info")
-  						scope.setLevel('error')
-						Sentry.captureException("Request: " + JSON.stringify(shipping))
-						Sentry.captureException("Response: " + JSON.stringify(jsonBody))
+						scope.setTag(`zygote-plugin-esca-api`, `info`)
+						scope.setLevel(`error`)
+						Sentry.captureException(`Request: ` + JSON.stringify(shipping))
+						Sentry.captureException(`Response: ` + JSON.stringify(jsonBody))
 					})
 				}
 				throw Error(jsonBody.errorMessage || jsonBody.errors)
@@ -189,7 +225,7 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 					locationShippingMethods[cost] = {
 						id: `method-${methodIndex}`,
 						description: jsonBody[location].options[cost].label,
-						value: parseInt(cost.toString().replace(/\./g, ''), 10),
+						value: parseInt(cost.toString().replace(/\./g, ``), 10),
 						addInfo: eta ? `Get it ${eta}!` : ``,
 					}
 
@@ -207,8 +243,8 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 						const thisProduct = products.find(reqProd => reqProd.id.toLowerCase() === shipProd.toLowerCase())
 						thisProduct.location = location
 						return thisProduct.name
-					}).join(', '),
-					shippingMethods: Object.keys(locationShippingMethods).map(ship => locationShippingMethods[ship])
+					}).join(`, `),
+					shippingMethods: Object.keys(locationShippingMethods).map(ship => locationShippingMethods[ship]),
 				}
 				productsState.setState({ products })
 			})
@@ -236,7 +272,7 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 			if (error.message == `empty`) {
 				quantityModifications = `all`
 				success = false
-				console.error('No items to send, all out of stock.')
+				console.error(`No items to send, all out of stock.`)
 			}
 			else if(error.message){
 				console.error(error.message)
@@ -246,8 +282,8 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 				success = false
 				if (Sentry && Sentry.captureMessage) {
 					Sentry.withScope(scope => {
-						scope.setTag("zygote-plugin-esca-api", "info")
-  						scope.setLevel('error')
+						scope.setTag(`zygote-plugin-esca-api`, `info`)
+						scope.setLevel(`error`)
 						Sentry.captureMessage(error, Sentry.Severity.Error)
 					})
 				}
@@ -272,7 +308,7 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 					id: `free-shipping`,
 					description: `Free Shipping`,
 					value: 0,
-					addInfo: freeShipMessage
+					addInfo: freeShipMessage,
 				})
 			}
 		})
@@ -288,7 +324,7 @@ const postInfo = async ({ response, info, preFetchData, cartState }) => {
 		messages,
 		modifications: [
 			...modifications,
-			shippingMethods[Object.keys(shippingMethods)[0]] ? shippingMethods[Object.keys(shippingMethods)[0]].tax : { id: '', value: 0, description: '' },
+			shippingMethods[Object.keys(shippingMethods)[0]] ? shippingMethods[Object.keys(shippingMethods)[0]].tax : { id: ``, value: 0, description: `` },
 		],
 		shippingMethods: finalShippingMethods,
 		selectedShippingMethod: finalSelectedShippingMethod,

@@ -9,20 +9,20 @@ Sentry.init({ dsn })
 let fingerprint = Date.now().toString()
 
 const flush = () => {
-  fingerprint = Date.now().toString()
+	fingerprint = Date.now().toString()
 }
 
 
 const send = (err, params) => {
-  const { level, tags, extra } = params || {}
+	const { level, tags, extra } = params || {}
 
-  Sentry.withScope(scope => {
-    if (typeof tags === `object`) {
-      Object.keys(tags).forEach(t => scope.setTag(t, tags[t]))
-    }
-    if (typeof extra === `object`) {
-      Object.keys(extra).forEach(e => scope.setExtra(e, extra[e]))
-    }
+	Sentry.withScope(scope => {
+		if (typeof tags === `object`) {
+			Object.keys(tags).forEach(t => scope.setTag(t, tags[t]))
+		}
+		if (typeof extra === `object`) {
+			Object.keys(extra).forEach(e => scope.setExtra(e, extra[e]))
+		}
 		scope.setFingerprint(fingerprint)
 		scope.setLevel(level || `error`)
 		Sentry.captureException(err)
