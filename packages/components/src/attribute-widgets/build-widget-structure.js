@@ -13,8 +13,10 @@ export default function buildWidgetStructure(...args) {
    *  - The current variant's values for all other attributes
    */
 	const getVariantForOption = (attribute, option) => {
-		// All other attributes besides current passed to function
-		// i.e. would contain `color` if the current attribute is `size`
+		/**
+		 * All other attributes besides current passed to function
+		 * i.e. would contain `color` if the current attribute is `size`
+		 */
 		const otherAttributes = attributes.filter(a => a !== attribute)
 
 		// Products that have the passed option for the passed attribute
@@ -22,8 +24,10 @@ export default function buildWidgetStructure(...args) {
 			return isEqual(v[attribute], option)
 		})
 
-		// If there's only 1 variant with the passed option, just use that variant
-		// (or else customer would have no way to navigate to it)
+		/**
+		 * If there's only 1 variant with the passed option, just use that variant
+		 * (or else customer would have no way to navigate to it)
+		 */
 		if (variantsWithOption.length === 1) return variantsWithOption[0]
 
 		/**
@@ -36,7 +40,7 @@ export default function buildWidgetStructure(...args) {
 				 * If either the current variant or variant being compared against
 				 * doesn't have a value for the attribute at all, count this as a match
 				 */
-				let ignored = !variant[attr] || !currentVariant[attr]
+				const ignored = !variant[attr] || !currentVariant[attr]
 				return isEqual(variant[attr], currentVariant[attr]) || ignored
 			})
 		})
@@ -55,15 +59,19 @@ export default function buildWidgetStructure(...args) {
 			// Skip properties that don't represent attributes
 			if (!(property in widgets)) continue
 
-			let value = variant[property]
-			let { options } = widgets[property] || {}
+			const value = variant[property]
+			const widget = widgets[property] || {}
+
+			// Start an empty options array if none exists
+			if (!widget.options) widget.options = []
+			const { options } = widget
 
 			// Skip if the option has already been pushed
-			let exists = !!options.find(op => isEqual(op.value, value))
+			const exists = !!options.find(op => isEqual(op.value, value))
 			if (exists) continue
 
 			// Get the SKU of the variant having the option
-			let { sku } = getVariantForOption(property, value) || {}
+			const { sku } = getVariantForOption(property, value) || {}
 
 			// Finally, push the option
 			options.push({ value, sku })
