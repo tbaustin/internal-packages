@@ -21,5 +21,8 @@
     "gatsby": "^2.19.45",
     "lodash": "^4.17.15"
   },
-  "gitHead": "afabe262c13827265e8539e033f4d3d588798283"
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "041e13265c59bd43300de901dc362255f07adfb5"
 }
