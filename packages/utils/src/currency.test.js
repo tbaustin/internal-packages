@@ -66,6 +66,9 @@ test(`Converts cents to dollars`, () => {
 	expect(toDollars(`900,001`)).toBe(9000.01)
 	expect(toDollars(`900,001`, true)).toBe(`$9,000.01`)
 
+	expect(toDollars(`$9,001`)).toBe(90.01)
+	expect(toDollars(`$9,001`, true)).toBe(`$90.01`)
+
 	expect(toDollars(null)).toBe(null)
 	expect(toDollars(null, true)).toBe(``)
 
