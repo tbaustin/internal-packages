@@ -8,7 +8,7 @@ const client = new EscaAPIClient({
 })
 
 
-test(`Loads Lifeline products`, async () => {
+test(`Generates shipping quote for a Goalrilla item`, async () => {
 	expect.assertions(1)
 
 	const expected = {
@@ -36,6 +36,6 @@ test(`Loads Lifeline products`, async () => {
 		},
 	})
 
-	console.log(JSON.stringify(quote, null, 2))
+	// console.log(JSON.stringify(quote, null, 2))
 	expect(quote).toMatchObject(expected)
 })

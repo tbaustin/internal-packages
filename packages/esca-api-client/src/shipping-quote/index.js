@@ -25,8 +25,6 @@ export default async function shippingQuote(params) {
 			},
 		}
 		const quote = await this.apiRequest(requestConfig)
-
-		console.log(JSON.stringify(quote, null, 2))
 		return quote
 	}
 	catch(err) {

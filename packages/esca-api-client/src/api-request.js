@@ -12,7 +12,6 @@ export default async function apiRequest(options, dataPath) {
 		...options,
 		headers: options.headers || this.headers,
 	}
-
 	// Base set of options for error reporting if needed
 	let reportOptions = {
 		tags: { action: `apiRequest` },
