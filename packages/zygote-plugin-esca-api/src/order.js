@@ -14,12 +14,12 @@ const slowFetch = async (order_objs, i, url) => {
 		.then(response => {
 			responses.push(response)
 			if (order_objs.length > i + 1) {
-				return slowFetch(order_objs, i + 1, url, head)
+				return slowFetch(order_objs, i + 1, url)
 			}
 		})
-		.then(response => {
-			// console.log(response)
-		})
+		// .then(response => {
+		// 	console.log(response)
+		// })
 
 	return responses
 }
@@ -30,14 +30,14 @@ const preOrder = async ({ preFetchData, info, cartState }) => {
 		customerState,
 		totalsState,
 		shippingState,
-		findShippingMethod
+		findShippingMethod,
 	} = cartState
 
-	console.log('ship bill info: ', info)
-	console.log('prefetch info: ', preFetchData)
+	console.log(`ship bill info: `, info)
+	console.log(`prefetch info: `, preFetchData)
 
 	const bind_id = shortid.generate()
-	const auth0_id = customerState.state.customer ? customerState.state.customer.username : ''
+	const auth0_id = customerState.state.customer ? customerState.state.customer.username : ``
 	const email = info.infoEmail
 	const billing = info.sameBilling
 		? {
@@ -80,8 +80,8 @@ const preOrder = async ({ preFetchData, info, cartState }) => {
 		}
 
 
-		console.log(`BILLING: `, billing)
-		console.log(`DELIVERY: `, delivery)
+	console.log(`BILLING: `, billing)
+	console.log(`DELIVERY: `, delivery)
 
 	const taxes = totalsState.state.modifications.find(mod => mod.id == `tax`)
 	const discounts = {}
@@ -110,7 +110,7 @@ const preOrder = async ({ preFetchData, info, cartState }) => {
 			weight: product.weight,
 			fc: product.freight_class || product.fc,
 			price: centsToDollars(product.price),
-			qty: product.quantity
+			qty: product.quantity,
 		}
 		orders[product.location].locationTotal = parseFloat(orders[product.location].locationTotal) + centsToDollars(product.price)
 		console.log(`SHIPPING STATE: `, shippingState)
@@ -133,7 +133,7 @@ const preOrder = async ({ preFetchData, info, cartState }) => {
 		orders[location].discounts = discounts
 		const taxVal = taxes && typeof taxes === `object` ? taxes.value : 0
 		orders[location].taxes = {
-			value: (centsToDollars(taxVal) * (parseFloat(orders[location].locationTotal) / parseFloat(centsToDollars(totalsState.state.total - taxVal)))).toFixed(2)
+			value: (centsToDollars(taxVal) * (parseFloat(orders[location].locationTotal) / parseFloat(centsToDollars(totalsState.state.total - taxVal)))).toFixed(2),
 		}
 	})
 
@@ -145,13 +145,13 @@ const preOrder = async ({ preFetchData, info, cartState }) => {
 			billing,
 			delivery,
 			locations: orders,
-		}
+		},
 	}
 
 	if (preFetchData.payment && preFetchData.paymentType) {
 		payment.order.payment = {
 			validation: preFetchData.payment || ``,
-			type: preFetchData.paymentType || ``
+			type: preFetchData.paymentType || ``,
 		}
 	}
 
@@ -173,7 +173,7 @@ const preOrder = async ({ preFetchData, info, cartState }) => {
 	return res
 }
 
-const postOrder = async ({ response, info, preFetchData, cartState }) => {
+const postOrder = async ({ response, info, cartState }) => {
 	const {
 		settingsState,
 	} = cartState
@@ -186,13 +186,13 @@ const postOrder = async ({ response, info, preFetchData, cartState }) => {
 					return event
 				}
 				return null
-			}
+			},
 		})
 	}
 
 	let url, payment_obj, payments = []
 
-	if (info.paymentType === 'paypal') {
+	if (info.paymentType === `paypal`) {
 		url = `/api/pay/paypal`
 		payment_obj = response.order_id.map(res => {
 			return JSON.stringify({
@@ -254,8 +254,8 @@ const postOrder = async ({ response, info, preFetchData, cartState }) => {
 			return {
 				success: false,
 				messages: {
-					error: `Something went wrong with submitting your payment, please try again.`
-				}
+					error: `Something went wrong with submitting your payment, please try again.`,
+				},
 			}
 		}
 	}
@@ -263,7 +263,7 @@ const postOrder = async ({ response, info, preFetchData, cartState }) => {
 	console.log(`PAYMENTS RESPONSE: `, JSON.stringify(payments, null, 2))
 
 	for (let x = 0; x < payments.length; x++) {
-		if(!!payments[x].failed) {
+		if(payments[x].failed) {
 			const { reason, avs, cvv } = payments[x]
 			const errorMessage = `
 			${reason} \n
@@ -280,53 +280,53 @@ const postOrder = async ({ response, info, preFetchData, cartState }) => {
 			return {
 				success: false,
 				messages: {
-					error: errorMessage
-				}
+					error: errorMessage,
+				},
 			}
 		}
 		if (payments[x].error && payments[x].error.length > 0) {
 			if (Sentry && Sentry.captureMessage) {
 				Sentry.withScope(scope => {
-					scope.setTag("zygote-plugin-esca-api", "order")
-					scope.setLevel('error')
+					scope.setTag(`zygote-plugin-esca-api`, `order`)
+					scope.setLevel(`error`)
 					Sentry.captureMessage(payments, Sentry.Severity.Error)
 				})
 			}
 			return {
 				success: false,
 				messages: {
-					error: payments[x].error[0].message
-				}
+					error: payments[x].error[0].message,
+				},
 			}
 		}
 		else if (payments[x].errorMessage) {
 			if (Sentry && Sentry.captureException) {
 				Sentry.withScope(scope => {
-					scope.setTag("zygote-plugin-esca-api", "order")
-					scope.setLevel('error')
+					scope.setTag(`zygote-plugin-esca-api`, `order`)
+					scope.setLevel(`error`)
 					Sentry.captureMessage(payments, Sentry.Severity.Error)
 				})
 			}
 			return {
 				success: false,
 				messages: {
-					error: `${payments[x].errorMessage}${payments[x].reasons ? ` ${payments[x].reasons.join(`. `)}` : ``}`
-				}
+					error: `${payments[x].errorMessage}${payments[x].reasons ? ` ${payments[x].reasons.join(`. `)}` : ``}`,
+				},
 			}
 		}
-		else if (payments[x].message && payments[x].message == 'Forbidden') {
+		else if (payments[x].message && payments[x].message == `Forbidden`) {
 			if (Sentry && Sentry.captureException) {
 				Sentry.withScope(scope => {
-					scope.setTag("zygote-plugin-esca-api", "order")
-					scope.setLevel('error')
+					scope.setTag(`zygote-plugin-esca-api`, `order`)
+					scope.setLevel(`error`)
 					Sentry.captureException(payments[x])
 				})
 			}
 			return {
 				success: false,
 				messages: {
-					error: 'There was an error trying to place payment on this order.'
-				}
+					error: `There was an error trying to place payment on this order.`,
+				},
 			}
 		}
 
@@ -334,8 +334,8 @@ const postOrder = async ({ response, info, preFetchData, cartState }) => {
 			return {
 				success: false,
 				messages: {
-					error: "Failed to verify transaction."
-				}
+					error: `Failed to verify transaction.`,
+				},
 			}
 		}
 	}
@@ -343,8 +343,8 @@ const postOrder = async ({ response, info, preFetchData, cartState }) => {
 	return {
 		success: true,
 		meta: {
-			orderId: response.order_id.map(order => `${info.paymentType}|${JSON.stringify(order)}`)
-		}
+			orderId: response.order_id.map(order => `${info.paymentType}|${JSON.stringify(order)}`),
+		},
 	}
 }
 
