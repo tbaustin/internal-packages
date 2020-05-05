@@ -24,10 +24,10 @@ export default async function shippingQuote(params) {
 				products,
 			},
 		}
-		const quote = await this.apiRequest(requestConfig, `evansville`)
+		const quote = await this.apiRequest(requestConfig)
 
 		console.log(JSON.stringify(quote, null, 2))
-		return Object.keys(quote).map(price => ({ ...quote[price], price: price }))
+		return quote
 	}
 	catch(err) {
 		// For HTTP error/fail responses

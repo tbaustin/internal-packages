@@ -11,6 +11,13 @@ const client = new EscaAPIClient({
 test(`Loads Lifeline products`, async () => {
 	expect.assertions(1)
 
+	const expected = {
+		"evansville": {
+			"options": {},
+		},
+	}
+
+
 	const quote = await client.shippingQuote({
 		"destination":{
 			"first_name": `Test`,
@@ -30,6 +37,5 @@ test(`Loads Lifeline products`, async () => {
 	})
 
 	console.log(JSON.stringify(quote, null, 2))
-	expect(quote).toBeInstanceOf(Array)
-	// expect(products).toHaveLength(2)
+	expect(quote).toMatchObject(expected)
 })
