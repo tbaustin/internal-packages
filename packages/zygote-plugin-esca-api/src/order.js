@@ -17,6 +17,9 @@ const slowFetch = async (order_objs, i, url) => {
 				return slowFetch(order_objs, i + 1, url)
 			}
 		})
+		// .then(response => {
+		// 	console.log(response)
+		// })
 
 	return responses
 }
@@ -101,7 +104,6 @@ const preOrder = async ({ preFetchData, info, cartState }) => {
 			}
 		}
 		orders[product.location].products[product.id.toUpperCase()] = {
-			...product,
 			length: product.length,
 			width: product.width,
 			height: product.height,
