@@ -32,6 +32,7 @@
     "axios": "^0.19.2",
     "babel-plugin-module-rewrite": "^0.2.0",
     "core-js": "^2.6.11",
+    "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
     "regenerator-runtime": "^0.13.3"
   },

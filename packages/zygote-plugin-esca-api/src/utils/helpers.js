@@ -11,12 +11,14 @@ const dollarsToCents = (price) => {
 	return centsNum
 }
 
-const centsToDollars = (price) => {
-	const dollars = +price / 100
-	return dollars
+const centsToDollars = (n) => {
+	if(!n) return 0
+	let str = n.toString()
+	str = str.substring(0, str.length - 2) + `.` + str.substring(str.length - 2)
+	return Number(str)
 }
 
 export {
 	dollarsToCents,
-	centsToDollars
+	centsToDollars,
 }

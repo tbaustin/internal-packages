@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch'
 import shortid from 'shortid'
 import * as Sentry from '@sentry/browser'
 
-import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
+import { centsToDollars } from './utils/helpers'
 
 const slowFetch = async (order_objs, i, url) => {
 	let responses = []

@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch'
 import * as Sentry from '@sentry/browser'
 
-import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
+import {centsToDollars} from './utils/helpers'
 import { dollarsToCents } from './utils/helpers'
 
 const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0, cartState }) => {

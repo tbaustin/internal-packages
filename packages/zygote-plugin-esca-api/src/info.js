@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch'
-import centsToDollars from '@escaladesports/zygote-cart/dist/utils/cents-to-dollars'
+import { centsToDollars } from './utils/helpers'
 import * as Sentry from '@sentry/browser'
 
 import { calculateTax } from './tax'

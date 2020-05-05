@@ -2,6 +2,7 @@ import 'core-js'
 import 'regenerator-runtime/runtime'
 import apiRequest from './api-request'
 import loadProducts from './load-products'
+import shippingQuote from './shipping-quote'
 
 
 
@@ -33,12 +34,14 @@ export default class EscaAPIClient {
 		this.makeUrl = makeUrl.bind(this)
 		this.apiRequest = apiRequest.bind(this)
 		this.loadProducts = loadProducts.bind(this)
+		this.shippingQuote = shippingQuote.bind(this)
 
 		// Set up default endpoints
 		this.endpoints = {
 			products: this.makeUrl(`products`),
 			inventory: this.makeUrl(`taxes`),
-			pricing: this.makeUrl(`shipping`),
+			pricing: this.makeUrl(`pricing`),
+			shipping: this.makeUrl(`shipping`),
 		}
 
 		// Set any custom endpoints defined in config

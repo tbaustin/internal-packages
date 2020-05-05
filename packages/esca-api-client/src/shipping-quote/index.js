@@ -1,23 +1,33 @@
 import ErrorReport from '../error-report'
 
-
-
 /**
- * Error handling logic for load products request
+ * Load products request wrapped in error handling logic
  */
-const controlFlow = async (loadProducts, params) => {
+export default async function shippingQuote(params) {
 	// To group all error reports related to this request
 	ErrorReport.flush()
 
 	// Extra info for error report if needed later
 	let reportOptions = {
-		tags: { action: `loadProducts` },
+		tags: { action: `shippingQuote` },
 		extra: { params },
 	}
 
 	try {
-		const products = await loadProducts(params)
-		return products
+		const { destination, products } = params || {}
+
+		const requestConfig = {
+			method: `post`,
+			url: this.endpoints.shipping,
+			data: {
+				destination,
+				products,
+			},
+		}
+		const quote = await this.apiRequest(requestConfig, `evansville`)
+
+		console.log(JSON.stringify(quote, null, 2))
+		return Object.keys(quote).map(price => ({ ...quote[price], price: price }))
 	}
 	catch(err) {
 		// For HTTP error/fail responses
@@ -45,38 +55,4 @@ const controlFlow = async (loadProducts, params) => {
 		 */
 		return []
 	}
-}
-
-
-
-/**
- * The actual load products request
- */
-async function loadProducts(params) {
-	const { fields, salsify, skus } = params || {}
-
-	const requestConfig = {
-		method: `post`,
-		url: this.endpoints.products,
-		data: {
-			fields,
-			salsify,
-			skus: skus || (this.site ? [`all`] : []),
-		},
-	}
-	console.log(this.endpoints.products)
-	const products = await this.apiRequest(requestConfig, `products`)
-	return Object.keys(products).map(productId => ({ ...products[productId], sku: productId }))
-}
-
-
-
-/**
- * Load products request wrapped in error handling logic
- */
-export default function(params) {
-	return controlFlow(
-		loadProducts.bind(this),
-		params,
-	)
 }
