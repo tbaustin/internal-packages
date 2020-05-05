@@ -9,10 +9,11 @@ export * from './currency'
  * Converts a graph structure to an Array containing the graph's original nodes
  */
 export function graphToArray(graph, path) {
-	const { edges = [] } = graph || {}
+	const { edges = [], nodes: origNodes } = graph || {}
 
-	return edges.map(edge => {
-		const { node } = edge || {}
+	const nodes = origNodes || edges.map(e => e?.node || {})
+
+	return nodes.map(node => {
 		return path ? _get(node, path) : node
 	})
 }

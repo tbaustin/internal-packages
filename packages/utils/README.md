@@ -14,7 +14,7 @@ Included functions:
 ---
 
 # `graphToArray`
-Makes a plain array out of the graph structure commonly returned by GraphQL APIs. Takes an object with an `edges` array as the argument.
+Makes a plain array out of the graph structure commonly returned by GraphQL APIs. Accepts an object with either an `edges` or `nodes` array.
 
 ### Example usage:
 ```javascript
@@ -38,12 +38,27 @@ graphToArray(mockData)
 //   { someProperty: `Marco` },
 //   { someProperty: `Polo` }
 // ]
+```
 
-/**
- * You can also pass a 2nd argument specifying a path for returning a nested
- * property in each node that is an object (uses lodash.get)
- */
+You can also pass a 2nd argument specifying a path for returning a nested
+property in each node that is an object (uses [`get()` from Lodash](https://lodash.com/docs/4.17.15#get) internally).
+
+```javascript
 graphToArray(mockData, `someProperty`)
+// [`Marco`, `Polo`]
+```
+
+Alternatively, you can pass an object containing `nodes` directly instead of `edges`. Some GraphQL APIs are able to return data this way.
+
+```javascript
+const mockData2 = {
+  nodes: [
+    { someProperty: `Marco` },
+    { someProperty: `Polo` }
+  ]
+}
+
+graphToArray(mockData2, `someProperty`)
 // [`Marco`, `Polo`]
 ```
 

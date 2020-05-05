@@ -40,6 +40,16 @@ const graph3 = {
 	}],
 }
 
+const graph4 = {
+	nodes: [
+		{
+			frontmatter: {
+				title: `Cowboy Bebop`,
+			},
+		},
+	],
+}
+
 
 const description = `Converts a graph structure to an Array containing `
   + `the graph's original nodes`
@@ -63,7 +73,12 @@ test(description, () => {
 	expect(result3).toHaveLength(1)
 	expect(result3[0]).toBe(`Jet Black`)
 
-	const result4 = graphToArray(null, `test`)
+	const result4 = graphToArray(graph4, `frontmatter.title`)
 	expect(result4).toBeInstanceOf(Array)
-	expect(result4).toHaveLength(0)
+	expect(result4).toHaveLength(1)
+	expect(result4[0]).toBe(`Cowboy Bebop`)
+
+	const result5 = graphToArray(null, `test`)
+	expect(result5).toBeInstanceOf(Array)
+	expect(result5).toHaveLength(0)
 })
