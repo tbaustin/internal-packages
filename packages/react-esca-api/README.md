@@ -1,11 +1,12 @@
 # react-esca-api
+React components & hooks for using Escalade Sports API data
 
-## Example Code 
+## Example Code
 
 ```js
 import React from 'react';
 import {
-  WithProducts,
+  ProductsProvider,
   useProducts,
   Products,
 } from '@escaladesports/react-esca-api';
@@ -17,7 +18,7 @@ const options = {
   salsify: ['Web Images'],
 };
 
-const CustomHook = () => {
+const CustomComponentWithHook = () => {
   const [products] = useProducts(options);
   return (
     <section>
@@ -40,7 +41,8 @@ const CustomHook = () => {
   );
 };
 
-const CustomComp = () => (
+// Note: <Products> renders a basic default display if no children specified
+const CustomComponentPlain = () => (
   <Products options={options}>
     {({ products, loading }) => (loading
       ? <div>Loading...</div>
@@ -60,12 +62,13 @@ const CustomComp = () => (
   </Products>
 );
 
-export default function Test() {
-  const useComp = true;
+export default function Test(props) {
+  const { useComp } = props
+
   return (
-    <WithProducts>
-      {useComp ? <CustomComp /> : <CustomHook />}
-    </WithProducts>
+    <ProductsProvider>
+      {useComp ? <CustomComponentPlain /> : <CustomComponentWithHook />}
+    </ProductsProvider>
   );
 }
 ```

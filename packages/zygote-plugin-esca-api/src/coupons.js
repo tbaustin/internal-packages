@@ -24,6 +24,8 @@ const coupons = async ({ info, shipping }) => {
 			},
 		}
 
+		console.log(`SENT TO COUPON CALCULATE API: `, JSON.stringify(check, null, 2))
+
 		const res = fetch(`/api/coupon/calculate`, { // Get packing dimensions
 			method: `post`,
 			body: JSON.stringify(check),

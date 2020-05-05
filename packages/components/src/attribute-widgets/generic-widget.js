@@ -10,7 +10,7 @@ export default function GenericWidget(props) {
 
 	return aintNothin ? null : (
 		<div css={styles}>
-			<h4>{label} from GenericeWidget</h4>
+			<label>{label}</label>
 			<select value={value} onChange={handleChange}>
 				{options.map((option, optionIdx) => {
 					const { value, sku } = option

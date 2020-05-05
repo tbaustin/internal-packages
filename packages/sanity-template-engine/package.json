@@ -1,7 +1,7 @@
 {
-  "name": "@escaladesports/components",
-  "version": "0.1.0",
-  "description": "",
+  "name": "@escaladesports/sanity-template-engine",
+  "version": "0.0.1",
+  "description": "A template engine with user-friendly syntax for Sanity schemas",
   "main": "dist/index.js",
   "scripts": {
     "build": "npx babel src --out-dir dist",
@@ -10,19 +10,19 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
-    "@escaladesports/babel-preset": "^1.0.3",
+    "@escaladesports/babel-preset": "^1.0.0",
     "jest": "^25.1.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@emotion/core": "^10.0.28",
-    "gatsby": "^2.19.45",
-    "lodash": "^4.17.15"
+    "core-js": "^3.6.4",
+    "lodash": "^4.17.15",
+    "regenerator-runtime": "^0.13.3"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "041e13265c59bd43300de901dc362255f07adfb5"
+  "gitHead": "a9d4c7ef3866f0c38117a744d3b9bf9d968728a8"
 }

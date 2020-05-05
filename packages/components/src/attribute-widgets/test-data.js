@@ -1,25 +1,23 @@
-const attributes = {
+export const config = {
 	color: {
 		label: `Color`,
 		section: `sectionOne`,
-		component: `CompOne`,
 		options: [],
 	},
 	size: {
 		label: `Size`,
 		section: `sectionOne`,
-		component: `CompTwo`,
 		options: [],
 	},
 	unit: {
 		label: `unit`,
 		section: `sectionTwo`,
-		component: `CompThree`,
 		options: [],
 	},
 }
 
-const variants = [
+
+export const variants = [
 	{
 		sku: `1`,
 		name: `Product One`,
@@ -63,15 +61,10 @@ const variants = [
 		unit: `grams`,
 	},
 	{
-		sku: `7`, 
-		name: `Product Seven`, 
+		sku: `7`,
+		name: `Product Seven`,
 		color: `Green`,
 		size: `Small`,
 		unit: `pounds`,
 	},
 ]
-
-export default {
-	attributes,
-	variants,
-}

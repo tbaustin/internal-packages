@@ -1,6 +1,1 @@
-export {
-	WithProducts,
-	useProducts,
-	Products,
-} from './components/esca-products'
-
+export * from './products'
