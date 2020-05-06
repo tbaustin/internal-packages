@@ -25,6 +25,7 @@
       "name": "Jest Esca Api Client",
       "program": "${workspaceFolder}/packages/esca-api-client/node_modules/.bin/jest",
       // "args": ["${fileBasenameNoExtension}", "--config", "jest.config.js"],
+      "args": ["--runInBand"],
       "cwd": "${workspaceFolder}/packages/esca-api-client",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",

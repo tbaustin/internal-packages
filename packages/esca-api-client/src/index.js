@@ -1,9 +1,10 @@
 import 'core-js'
 import 'regenerator-runtime/runtime'
 import apiRequest from './api-request'
-import loadProducts from './load-products'
-import shippingQuote from './shipping-quote'
-import calclateTaxs from './calculate-taxs'
+import { LoadProducts } from './products'
+import { ShippingQuotes } from './shipping'
+import { CalculateTaxes } from './taxes'
+import { LoadCoupon, CalculateDiscount, ValidateCoupon } from './coupons'
 
 
 
@@ -34,9 +35,12 @@ export default class EscaAPIClient {
 		// Bind functions declared above as methods
 		this.makeUrl = makeUrl.bind(this)
 		this.apiRequest = apiRequest.bind(this)
-		this.loadProducts = loadProducts.bind(this)
-		this.shippingQuote = shippingQuote.bind(this)
-		this.calclateTaxs = calclateTaxs.bind(this)
+		this.loadProducts = LoadProducts.bind(this)
+		this.shippingQuote = ShippingQuotes.bind(this)
+		this.calculateTaxes = CalculateTaxes.bind(this)
+		this.loadCoupon = LoadCoupon.bind(this)
+		this.calculateDiscount = CalculateDiscount.bind(this)
+		this.validateCoupon = ValidateCoupon.bind(this)
 
 		// Set up default endpoints
 		this.endpoints = {
@@ -45,6 +49,9 @@ export default class EscaAPIClient {
 			pricing: this.makeUrl(`pricing`),
 			shipping: this.makeUrl(`shipping`),
 			taxes: this.makeUrl(`taxes`, `calculate`),
+			coupon: this.makeUrl(`coupon`),
+			couponValidate: this.makeUrl(`coupon`, `validate`),
+			couponCalculate: this.makeUrl(`coupon`, `calculate`),
 		}
 
 		// Set any custom endpoints defined in config

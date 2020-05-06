@@ -15,14 +15,12 @@ test(`Calculates taxes for an order`, async () => {
 	}
 
 
-	const taxes = await client.calclateTaxs({
+	const taxes = await client.calculateTaxes({
 		"state": `CA`,
 		"subtotal": 50.01,
 		"shipping": 10.50,
 		"discounts": 5.00,
 	})
 
-	console.log(JSON.stringify(taxes, null, 2))
-	console.log(taxes.value)
 	expect(taxes).toMatchObject(expected)
 })

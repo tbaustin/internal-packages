@@ -1,0 +1,1 @@
+export { default as LoadProducts } from "./load-products"
