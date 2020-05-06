@@ -20,11 +20,11 @@ export default async function apiRequest(options, dataPath) {
 		},
 	}
 	
-	//DEV: log request and response data
-	axios.interceptors.request.use(request => {
-		console.log(`Starting Request`, request)
-		return request
-	})
+	// //DEV: log request and response data
+	// axios.interceptors.request.use(request => {
+	// 	console.log(`Starting Request`, request)
+	// 	return request
+	// })
 
 
 	try {

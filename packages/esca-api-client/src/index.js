@@ -5,6 +5,7 @@ import { LoadProducts } from './products'
 import { ShippingQuotes } from './shipping'
 import { CalculateTaxes } from './taxes'
 import { LoadCoupon, CalculateDiscount, ValidateCoupon } from './coupons'
+import { GetOrderId, LoadOrder, StoreOrder } from './orders'
 
 
 
@@ -41,6 +42,9 @@ export default class EscaAPIClient {
 		this.loadCoupon = LoadCoupon.bind(this)
 		this.calculateDiscount = CalculateDiscount.bind(this)
 		this.validateCoupon = ValidateCoupon.bind(this)
+		this.getOrderId = GetOrderId.bind(this)
+		this.loadOrder = LoadOrder.bind(this)
+		this.storeOrder = StoreOrder.bind(this)
 
 		// Set up default endpoints
 		this.endpoints = {
@@ -52,6 +56,10 @@ export default class EscaAPIClient {
 			coupon: this.makeUrl(`coupon`),
 			couponValidate: this.makeUrl(`coupon`, `validate`),
 			couponCalculate: this.makeUrl(`coupon`, `calculate`),
+			orderId: this.makeUrl(`orders`, `getid`),
+			orderSave: this.makeUrl(`orders`, `save`),
+			orderStore: this.makeUrl(`orders`, `store`),
+			order: this.makeUrl(`orders`),
 		}
 
 		// Set any custom endpoints defined in config

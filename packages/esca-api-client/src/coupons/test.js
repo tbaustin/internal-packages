@@ -67,12 +67,9 @@ test(`Validates a coupon`, async () => {
 	const expected = {
 		"valid": true,
 	}
-
-
 	const coupon = await client.validateCoupon({
 		"code": `10off`,
 	})
 
-	console.log(JSON.stringify(coupon, null, 2))
 	expect(coupon).toMatchObject(expected)
 })
