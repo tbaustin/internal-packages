@@ -1,7 +1,10 @@
 import ErrorReport from '../error-report'
 
 /**
- * Load products request wrapped in error handling logic
+ * The primary function of this service is to calculate taxes 
+ * for a set of totals based on the customer's delivery state.
+ * 
+ * Use this end point to calculate the taxes due for a set of monetary totals.
  */
 export default async function calculateTaxs(params) {
 	// To group all error reports related to this request

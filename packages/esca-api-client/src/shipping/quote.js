@@ -1,7 +1,7 @@
 import ErrorReport from '../error-report'
 
 /**
- * Load products request wrapped in error handling logic
+ * The primary function of this service is to gather shipping quotes for a customer order.
  */
 export default async function shippingQuote(params) {
 	// To group all error reports related to this request

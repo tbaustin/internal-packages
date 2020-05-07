@@ -1,7 +1,8 @@
 import ErrorReport from '../error-report'
 
 /**
- * Load products request wrapped in error handling logic
+ * You will use this end point to validate whether or not a 
+ * user submitted coupon code is valid.
  */
 export default async function couponValidate(params) {
 	// To group all error reports related to this request

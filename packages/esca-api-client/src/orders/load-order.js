@@ -1,7 +1,7 @@
 import ErrorReport from '../error-report'
 
 /**
- * Load products request wrapped in error handling logic
+ * Load a previously saved order
  */
 export default async function loadOrder(params) {
 	// To group all error reports related to this request

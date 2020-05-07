@@ -1,7 +1,8 @@
 import ErrorReport from '../error-report'
 
 /**
- * Load products request wrapped in error handling logic
+ * Use this end point to load an object containing all data 
+ * related to the supplied coupon code.
  */
 export default async function loadCoupon(params) {
 	// To group all error reports related to this request

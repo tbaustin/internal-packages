@@ -71,7 +71,7 @@ async function loadProducts(params) {
 
 
 /**
- * Load products request wrapped in error handling logic
+ * The primary function of this service is to return product details for requested SKUs.
  */
 export default function(params) {
 	return controlFlow(

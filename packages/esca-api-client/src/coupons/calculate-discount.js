@@ -1,7 +1,14 @@
 import ErrorReport from '../error-report'
 
 /**
- * Load products request wrapped in error handling logic
+ * Posting order data along with the coupon code will initiate a second 
+ * detailed set of validations for the code against the supplied order data. 
+ * The service will respond telling you whether or not the coupon is valid.
+ * If the coupon is valid you will also get back the value of the discount 
+ * as well as any modifications to the cart required by the coupon; 
+ * such as free shipping or a promotional item.
+ * If the coupon is invalid the service will also respond with an error 
+ * message and reason for the failure.
  */
 export default async function calculateDiscount(params) {
 	// To group all error reports related to this request

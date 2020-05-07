@@ -1,7 +1,7 @@
 import ErrorReport from '../error-report'
 
 /**
- * Load products request wrapped in error handling logic
+ * Takes multi-location order data and creates an order for each location
  */
 export default async function storeOrder(params) {
 	// To group all error reports related to this request
