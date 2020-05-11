@@ -12,6 +12,7 @@ export default async function productRequest(options) {
 		fields,
 		salsify,
 		skus,
+		endpoints,
 	} = options
 
 	// Instantiate the client only once
@@ -19,6 +20,7 @@ export default async function productRequest(options) {
 		client = new EscaAPIClient({
 			environment: env,
 			site,
+			endpoints,
 		})
 	}
 
