@@ -55,7 +55,7 @@ export function useProducts(options) {
 
 		// Don't try to fetch in a non-browser context
 		typeof window !== `undefined` && loadProducts()
-	}, [])
+	}, [options])
 
 	return [products, setProducts]
 }
