@@ -5,6 +5,7 @@ import {centsToDollars} from './utils/helpers'
 import { dollarsToCents } from './utils/helpers'
 
 const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, discount = 0, cartState }) => {
+	console.log(`Tax plugin`)
 	const { settingsState } = cartState
 	if (settingsState.state.sentryDsn) {
 		Sentry.init({
@@ -14,7 +15,7 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 					return event
 				}
 				return null
-			}
+			},
 		})
 	}
 	console.log(`Calculating tax for inside of tax.js`, shippingAddress)
@@ -43,10 +44,10 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 			if (jsonBody.errors) {
 				if (Sentry && Sentry.captureException) {
 					Sentry.withScope(scope => {
-						scope.setTag("zygote-plugin-esca-api", "tax")
-  					scope.setLevel('error')
-						Sentry.captureException("Request: " + JSON.stringify(checkTax), Sentry.Severity.Error)
-						Sentry.captureException("Response: " + JSON.stringify(jsonBody), Sentry.Severity.Error)
+						scope.setTag(`zygote-plugin-esca-api`, `tax`)
+						scope.setLevel(`error`)
+						Sentry.captureException(`Request: ` + JSON.stringify(checkTax), Sentry.Severity.Error)
+						Sentry.captureException(`Response: ` + JSON.stringify(jsonBody), Sentry.Severity.Error)
 					})
 				}
 				throw Error(jsonBody.errors)
@@ -57,7 +58,7 @@ const calculateTax = async ({ shippingAddress, subtotal = 0, shipping = 0, disco
 				value: dollarsToCents(jsonBody.tax.value.toString()),
 			}
 		})
-		.catch(error => console.log('Failed to calculate taxes', error))
+		.catch(error => console.log(`Failed to calculate taxes`, error))
 }
 
 export { calculateTax }

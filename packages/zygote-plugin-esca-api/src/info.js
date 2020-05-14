@@ -6,12 +6,27 @@ import { calculateTax } from './tax'
 import { coupons } from './coupons'
 
 const preInfo = async ({ info }) => {
+	console.log(info)
 	return {
 		skus: info.products ? info.products.map(function(product) { return product.id }) : [],
 	}
 }
 
 const postInfo = async ({ response, info, preFetchData, cartState }) => {
+	console.log(`postInfo`)
+
+	console.log(`response`)
+	console.log(response)
+
+	console.log(`info`)
+	console.log(info)
+
+	console.log(`preFetchData`)
+	console.log(preFetchData)
+
+	console.log(`cartState`)
+	console.log(cartState)
+
 	const {
 		productsState,
 		totalsState,

@@ -16,7 +16,7 @@ test(`Loads Lifeline products`, async () => {
 		skus: [`2-FMT-3`, `2-FMT-5`],
 	})
 
-	// console.log(JSON.stringify(products, null, 2))
+	console.log(JSON.stringify(products, null, 2))
 	expect(products).toBeInstanceOf(Array)
 	expect(products).toHaveLength(2)
 })

@@ -1,5 +1,5 @@
 // NOTE: this will get rewritten as @sentry/browser when building for browser
-import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/browser'
 
 
 const dsn = `https://e51b6f18c5cc485a9828f86e4e3ca8e4@sentry.io/3842502`
