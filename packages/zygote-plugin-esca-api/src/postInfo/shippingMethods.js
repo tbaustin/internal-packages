@@ -17,19 +17,29 @@ const  shippingMethods = async (info, products, callback) => {
 	})
 
 	//Build shipping methods object for Zygote
-	var shipping = []
+	let shipping = {
+		shippingMethods: [],
+		selectedShippingMethod: [],
+	}
+	// optionCount used to make unique shipping method IDs
+	let optionCount = 0
 	for (let [name, location] of Object.entries(shippingQuote)) {
 		let {
 			options,
 			products: locationItems,
 		} = location
-        
-		shipping.push({
+		//Get shipping methods for the location
+		let shippingMethods = mapShipping(options, optionCount)
+		//Add location shipping methods
+		shipping.shippingMethods.push({
 			id: name,
 			description: joinProductNames(locationItems, products),
-			shippingMethods: mapShipping(options),
-			tax: {},
-		})      
+			shippingMethods: shippingMethods,
+		})   
+		//Add default shipping method for the location
+		shipping.selectedShippingMethod.push(shippingMethods[0].id)
+		//Add to option count
+		optionCount += shippingMethods.length
 	}
 	return shipping
 }
@@ -44,15 +54,15 @@ function joinProductNames(items, products){
 }
 
 // reformat options object
-function mapShipping(options){
-	return Object.values(options).map((option, i) => {
+function mapShipping(options, outerIndex){
+	return Object.values(options).map((option, count) => {
 		var {
 			label,
 			value,
 			eta, 
 		} = option
 		return {
-			id: i,
+			id: `shipping-${(outerIndex + 1) + count}`,
 			description: label,
 			value: parseInt(value.replace(/\./g, ``), 10),
 			addInfo: ((eta == `-NA-`) || (!eta)) ? `` : `Get it ${eta}!`,

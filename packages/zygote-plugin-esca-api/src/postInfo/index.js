@@ -1,31 +1,41 @@
 import EscaAPIClient from '@escaladesports/esca-api-client'
+import loadProducts from './loadProducts'
 import shippingMethods from './shippingMethods'
-// import { coupons } from './coupons'
+import quantityMod from './quantityMod'
+import coupons from './coupons'
 
-const postInfo = async ({ response, info, preFetchData, cartState }) => {
-	console.log(`Response: `, response)
-	console.log(`Info: `, info)
-	console.log(`Prefetech:`, preFetchData)
-	console.log(`Cart State: `, cartState)
-
+const postInfo = async ({ response, info, preFetchData }) => {
+	console.log(`PostInfo`)
 	const client = new EscaAPIClient()
 
-	const products = await client.loadProducts({
-		fields: [`inventory`,`price`,`brand`,`category`,`subcategory`,`product_type`,`shipping`],
-		...preFetchData,
-	})
-	console.log(`Product API`, products)
+	let {
+		messages = { error: [], info: [] },
+		modifications = [],
+	} = response
 
+	const products = await loadProducts(preFetchData, info.products, client.loadProducts)
+	console.log(`Products: `, products)
+	const quantityModifications = await quantityMod(products)
 	const shipping = await shippingMethods(info, products, client.shippingQuote)
 
-	const res = {
-		success: true,
-		messages: {error: [], info: []},
-		modifications: [],
-		shippingMethods: shipping,
-		selectedShippingMethod: shipping[0],
-		quantityModifications: [],
+	//Calculate Coupon
+	if(info.coupon) {
+		const couponResponse = await coupons(info, products, client.calculateDiscount)
+		if(couponResponse.message)
+			messages.info.push(couponResponse.message)
+		if(couponResponse.coupon)
+			modifications.push(couponResponse.coupon)
 	}
+
+	const res = {
+		...response,
+		messages,
+		modifications,
+		quantityModifications,
+		...shipping,
+		success: true,
+	}
+	console.log(`Post Info Response: `, res)
 	return res
 }
 

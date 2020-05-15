@@ -20,9 +20,8 @@ export default async function calculateDiscount(params) {
 		extra: { params },
 	}
 
+	const { code, order } = params || {}
 	try {
-		const { code, order } = params || {}
-
 		const requestConfig = {
 			method: `post`,
 			url: this.endpoints.couponCalculate,
@@ -38,19 +37,24 @@ export default async function calculateDiscount(params) {
 		// For HTTP error/fail responses
 		if (err.response) {
 			let { status, data } = err.response
-
+			
+			//Coupon not applicable
+			if (status === 400) {
+				return {
+					errorMessage: `Coupon ${code} is invalid`,
+				}
+			}
 			// Report non-404 service errors
 			if (status !== 404) {
 				reportOptions.extra.responseData = data
 				ErrorReport.send(err, reportOptions)
 			}
-
-			// Log just the HTTP response
-			console.error(data)
+			
 		}
 		else {
 			// Report entire error object & log message for non-HTTP errors
 			ErrorReport.send(err, reportOptions)
+			console.log(`coupon error: `, err)
 			console.error(err.message || err)
 		}
 
