@@ -17,16 +17,16 @@ export default async function calculateTaxs(params) {
 	}
 
 	try {
-		const { state, subtotal, shipping, discounts } = params || {}
+		const { src, action, trans_id, order } = params || {}
 
 		const requestConfig = {
 			method: `post`,
 			url: this.endpoints.taxes,
 			data: {
-				state,
-				subtotal,
-				shipping,
-				discounts,
+				src,
+				action,
+				trans_id,
+				order,
 			},
 		}
 		const taxes = await this.apiRequest(requestConfig, `tax`)

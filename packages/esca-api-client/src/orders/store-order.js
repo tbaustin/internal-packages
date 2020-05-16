@@ -3,19 +3,17 @@ import ErrorReport from '../error-report'
 /**
  * Takes multi-location order data and creates an order for each location
  */
-export default async function storeOrder(params) {
+export default async function storeOrder(order) {
 	// To group all error reports related to this request
 	ErrorReport.flush()
 
 	// Extra info for error report if needed later
 	let reportOptions = {
 		tags: { action: `storeOrder` },
-		extra: { params },
+		// extra: ,
 	}
 
 	try {
-		const { order } = params || {}
-
 		const requestConfig = {
 			method: `post`,
 			url: this.endpoints.orderStore,

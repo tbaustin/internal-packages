@@ -20,6 +20,7 @@ const  shippingMethods = async (info, products, callback) => {
 	let shipping = {
 		shippingMethods: [],
 		selectedShippingMethod: [],
+		orderLocations: {},
 	}
 	// optionCount used to make unique shipping method IDs
 	let optionCount = 0
@@ -27,17 +28,38 @@ const  shippingMethods = async (info, products, callback) => {
 		let {
 			options,
 			products: locationItems,
+			service,
 		} = location
 		//Get shipping methods for the location
 		let shippingMethods = mapShipping(options, optionCount)
+		//Get location specific products
+		let locationProducts = joinProducts(locationItems, products)
 		//Add location shipping methods
 		shipping.shippingMethods.push({
 			id: name,
-			description: joinProductNames(locationItems, products),
+			description: locationProducts.map(product => product.name).join(),
 			shippingMethods: shippingMethods,
 		})   
 		//Add default shipping method for the location
-		shipping.selectedShippingMethod.push(shippingMethods[0].id)
+		shipping.selectedShippingMethod[name] = shippingMethods[0].id
+		//Create list of products grouped by location
+		shipping.orderLocations[name] = { 
+			products: {},
+			shipping: {
+				options: {
+					[`${shippingMethods[0].value}`]: {
+						label: shippingMethods[0].description,
+						value: shippingMethods[0].value,
+					},
+				},
+				skus: locationProducts.map(product => product.sku),
+				service,
+			}, 
+		}
+		locationItems.forEach(item => {
+			shipping.orderLocations[name].products[item] = {}
+			shipping.orderLocations[name].products[item] = products[item]
+		})
 		//Add to option count
 		optionCount += shippingMethods.length
 	}
@@ -46,11 +68,9 @@ const  shippingMethods = async (info, products, callback) => {
 
 // Get an array of items from the same location and 
 // return their names in 1 comma seperated string
-function joinProductNames(items, products){
+function joinProducts(items, products){
 	return Object.values(products)
 		.filter(product => items.includes(product.sku))
-		.map(product => product.name)
-		.join()
 }
 
 // reformat options object
@@ -62,7 +82,7 @@ function mapShipping(options, outerIndex){
 			eta, 
 		} = option
 		return {
-			id: `shipping-${(outerIndex + 1) + count}`,
+			id: `method-${(outerIndex + 1) + count}`,
 			description: label,
 			value: parseInt(value.replace(/\./g, ``), 10),
 			addInfo: ((eta == `-NA-`) || (!eta)) ? `` : `Get it ${eta}!`,

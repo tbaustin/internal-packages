@@ -1,6 +1,9 @@
 import { dollarsToCents } from '../utils/helpers'
 
 const  coupons = async (info, products, callback) => {
+	if(!info.coupon){
+		return {}
+	}
 	//Get coupon from the API
 	var response = await callback({
 		code: info.coupon,
