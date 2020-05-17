@@ -43,12 +43,12 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 		},
 	}
 	var {
-		order_id,
+		order_id: orderIds,
 	} = await callback(order)
 
 	return {
 		order,
-		order_id,
+		orderIds,
 	}
 }
 

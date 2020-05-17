@@ -4,6 +4,7 @@ import shippingMethods from './shippingMethods'
 import quantityMod from './quantityMod'
 import coupons from './coupons'
 import storeOrder from './storeOrder'
+import calculateTax from './calculateTax'
 
 const postInfo = async ({ response, info, preFetchData }) => {
 	console.log(`PostInfo`)
@@ -35,14 +36,16 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		modifications.push(couponResponse.coupon)
 
 	const order = await storeOrder(info, shipping.orderLocations, couponResponse, client.storeOrder)
-	console.log(`Order: `, order)
-	console.log(`Order Total:`, order.order.total)
-
-	modifications.push({
-		id: `tax`,
-		description: `Michigan Tax`,
-		value: parseInt(10),
+	const taxes = await calculateTax(order, client.calculateTaxes)
+	console.log(`Taxes: `, taxes)
+	Object.values(taxes).forEach(tax => {
+		modifications.push({
+			id: `tax`,
+			description: tax.label,
+			value: tax.value,
+		})
 	})
+	
 	const res = {
 		...response,
 		messages,
