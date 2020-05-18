@@ -54,6 +54,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		shippingMethods: shipping.shippingMethods,
 		selectedShippingMethod: shipping.selectedShippingMethod,
 		success: true,
+		meta: order,
 	}
 	console.log(`Post Info Response: `, res)
 	return res
