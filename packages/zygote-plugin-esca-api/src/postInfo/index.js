@@ -25,11 +25,16 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	} = response
 
 	const products = await loadProducts(preFetchData, info.products, client.loadProducts)
-	console.log(`Products: `, products)
-	const quantityModifications = await quantityMod(products)
-	const shipping = await shippingMethods(info, products, client.shippingQuote)
-	//Calculate Coupon
-	const couponResponse = await coupons(info, products, client.calculateDiscount)
+	//These tasks can be run in parallel to save time
+	const [
+		quantityModifications, 
+		shipping,
+		couponResponse,
+	] = await Promise.all([
+		quantityMod(products),
+		shippingMethods(info, products, client.shippingQuote),
+		coupons(info, products, client.calculateDiscount),
+	])
 	if(couponResponse.message)
 		messages.info.push(couponResponse.message)
 	if(couponResponse.coupon)
@@ -37,7 +42,6 @@ const postInfo = async ({ response, info, preFetchData }) => {
 
 	const order = await storeOrder(info, shipping.orderLocations, couponResponse, client.storeOrder)
 	const taxes = await calculateTax(order, client.calculateTaxes)
-	console.log(`Taxes: `, taxes)
 	Object.values(taxes).forEach(tax => {
 		modifications.push({
 			id: `tax`,

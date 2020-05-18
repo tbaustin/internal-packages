@@ -1,13 +1,8 @@
 import EscaAPIClient from '@escaladesports/esca-api-client'
 
-const preOrder = async ( { info, preFetchData: { meta: { order, orderIds } } })  => {
+const preOrder = async ( { info, preFetchData: { meta: { order } } })  => {
 	console.log(`PreOrder`)
-	//Add order id's into the order object
-	orderIds.forEach(element => {
-		let [location, orderId] = Object.entries(element)[0]
-		order.locations[location].order_id = orderId
-	})
-
+	
 	order.payment = {
 		name: info.billingFirstName,
 		number: info.billingCardNumber,

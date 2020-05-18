@@ -1,10 +1,8 @@
-const postOrder = async (data) => {
-	console.log(`PostOrder: `, data)
-
+const postOrder = async ( { response: { paid } }) => {
+	console.log(`PostOrder: `, paid)
+	let success = Object.values(paid).every(value => value === true)
 	return {
-		order: {
-			status: `success`,
-		},
+		success,
 	}
 }
 

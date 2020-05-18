@@ -11,7 +11,6 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 	}
 	//store the order
 	let order = {
-		bind_id: `123`,
 		email: info.infoEmail,
 		delivery: {
 			first_name: info.infoFirstName,
@@ -44,7 +43,15 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 	}
 	var {
 		order_id: orderIds,
+		bind_id,
 	} = await callback(order)
+	//Add bind id into the order to keep orders linked on future requests
+	order.bind_id = bind_id
+	//Add order id's into the order object
+	orderIds.forEach(element => {
+		let [location, orderId] = Object.entries(element)[0]
+		order.locations[location].order_id = orderId
+	})
 
 	return {
 		order,
