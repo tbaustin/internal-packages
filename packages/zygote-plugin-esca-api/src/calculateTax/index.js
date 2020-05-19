@@ -1,52 +1,67 @@
-export const calculateTax = async (data) => {
+import EscaAPIClient from '@escaladesports/esca-api-client'
+import { dollarsToCents, centsToDollars } from '../utils/helpers'
 
-	console.log(`calculateTax`, data)
-	// return {
-	// 	id: `tax`,
-	// 	description: `Michigan Tax`,
-	// 	value: parseInt(10),
-	// }
+export const calculateTax = async ({ 
+	cartState: {
+		shippingState: {
+			state: {
+				selected,
+				methods,
+			},
+		},
+		metaState: {
+			state: {
+				meta: {
+					order,
+				},
+			},
+		},
+	},
+}) => {
+	const client = new EscaAPIClient()
+
+	//Create array of shipping options and values for indexing
+	let shippingMethods = []
+	methods.forEach(element => {
+		element.shippingMethods.forEach(method => {
+			shippingMethods[method.id] = method.value
+		})
+	})
+	let taxValue = 0
+	let taxNames = []
+	for(let [locationName, locationData] of Object.entries(order.locations)){
+		//TODO: replace customer_nubmber
+		let tax = await client.calculateTaxes({
+			src: `WEB`,
+			action: `create`,
+			trans_id: locationData.order_id,
+			order: {
+				order_id: locationData.order_id,
+				customer_number: 19000,
+				warehouse: locationName,
+				ship_street1: order.delivery.street1,
+				ship_city: order.delivery.city,
+				ship_state: order.delivery.state,
+				ship_zip: order.delivery.zip,
+				ship_country: order.delivery.country,
+				bill_street1: order.delivery.street1,
+				bill_city: order.delivery.city,
+				bill_state: order.delivery.state,
+				bill_zip: order.delivery.zip,
+				bill_country: order.delivery.country,
+				products: order.locations[locationName].products,
+				shipping: centsToDollars(shippingMethods[selected[locationName]]),
+				discounts: order.discounts,
+				// duties: 20,
+				total: order.total,
+			},
+		})
+		taxValue += tax.value
+		taxNames.push(tax.label)
+	}
+	return {
+		id: `tax`,
+		description: `Tax`,
+		value: dollarsToCents(taxValue),
+	}
 }
-// import EscaAPIClient from '@escaladesports/esca-api-client'
-
-// const calculateTax = async ({ shippingAddress, shipping, subtotal, discount }) => {
-
-// 	console.log(`Calculate Tax`)
-// 	const client = new EscaAPIClient()
-// 	const tax = await client.calculateTaxes(
-// 		{
-// 			"src": `WEB`,
-// 			"action": `create`,
-// 			"trans_id": `CW006177-D`,
-// 			"order": {
-// 				"order_id": `CW006177-D`,
-// 				"customer_number": 19000,
-// 				"warehouse": `sandiego`,
-// 				"ship_street1": `163 Oakland Ave.`,
-// 				"ship_city": `Sacramento`,
-// 				"ship_state": `CA`,
-// 				"ship_zip": `95828`,
-// 				"ship_country": `US`,
-// 				"bill_street1": `163 Oakland Ave.`,
-// 				"bill_city": `Sacramento`,
-// 				"bill_state": `CA`,
-// 				"bill_zip": `95828`,
-// 				"bill_country": `US`,
-// 				"products": {
-// 					"T1265": {
-// 						"qty": `5`,
-// 						"price": `69.99`,
-// 					},
-// 				},
-// 				"shipping": `50.30`,
-// 				"discounts": [
-// 					`-5.12`,
-// 				],
-// 				"duties": 20,
-// 				"total": 395.13,
-// 			},
-// 		})
-// }
-
-
-// export { calculateTax }

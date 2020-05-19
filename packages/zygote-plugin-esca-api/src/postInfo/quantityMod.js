@@ -7,8 +7,6 @@ const quantityMod = async (products) => {
 		return {
 			id: id,
 			available: stock || 0,
-			// location: `gainesville`,
-			// location: inventory[id].locations && Object.keys(inventory[id].locations).length > 0 ? Object.keys(inventory[id].locations)[0] : ``,
 		}
 	})
 }
