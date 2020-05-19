@@ -25,6 +25,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 	} = response
 
 	const products = await loadProducts(preFetchData, info.products, client.loadProducts)
+	console.log(`Products: `,products)
 	//These tasks can be run in parallel to save time
 	const [
 		quantityModifications, 
@@ -50,6 +51,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		})
 	})
 	
+	// shippingState.subscriptions[`postinfo`](() => console.log(`Shipping Changed Triggered!!!`))
 	const res = {
 		...response,
 		messages,

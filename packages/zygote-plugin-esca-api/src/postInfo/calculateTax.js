@@ -28,7 +28,7 @@ const  calculateTax = async ({ order, orderIds }, callback) => {
 				products: order.locations[location].products,
 				shipping: Object.keys(order.locations[location].shipping.options)[0],
 				discounts: order.discounts,
-				duties: 20,
+				// duties: 20,
 				total: order.total,
 			},
 		})

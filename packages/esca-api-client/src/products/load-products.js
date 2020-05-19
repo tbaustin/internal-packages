@@ -53,7 +53,7 @@ const controlFlow = async (loadProducts, params) => {
  * The actual load products request
  */
 async function loadProducts(params) {
-	const { fields, salsify, skus } = params || {}
+	const { fields, salsify, skus, returnAsObject } = params || {}
 
 	const requestConfig = {
 		method: `post`,
@@ -65,8 +65,11 @@ async function loadProducts(params) {
 		},
 	}
 	const products = await this.apiRequest(requestConfig, `products`)
-	return products
-	// return Object.keys(products).map(productId => ({ ...products[productId], sku: productId }))
+
+	if(returnAsObject)
+		return products
+		
+	return Object.keys(products).map(productId => ({ ...products[productId], sku: productId }))
 }
 
 
