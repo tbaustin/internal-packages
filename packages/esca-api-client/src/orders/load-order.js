@@ -50,6 +50,6 @@ export default async function loadOrder(params) {
 		 * Since this is a simple load request, just return empty when there are
 		 * errors to keep usage more consistent/less complicated
 		 */
-		return []
+		return {}
 	}
 }

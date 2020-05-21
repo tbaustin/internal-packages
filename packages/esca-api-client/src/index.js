@@ -1,5 +1,6 @@
 import 'core-js'
 import 'regenerator-runtime/runtime'
+// import {} from 'dotenv/config'
 import apiRequest from './api-request'
 import { LoadProducts } from './products'
 import { ShippingQuotes } from './shipping'
@@ -25,6 +26,7 @@ export default class EscaAPIClient {
 			endpoints, 
 			site, 
 			apiKey, 
+			taxService,
 			/*reportDsn*/ 
 		} = config || {}
 
@@ -32,6 +34,7 @@ export default class EscaAPIClient {
 		this.apiKey = apiKey
 		this.environment = environment
 		this.site = site
+		this.taxService = taxService
 
 		// Bind functions declared above as methods
 		this.makeUrl = makeUrl.bind(this)
@@ -75,6 +78,7 @@ export default class EscaAPIClient {
 			"Content-Type": `application/json`,
 			...this.site ? { "ESC-API-Context": this.site } : {},
 			...this.apiKey ? { "X-API-Key": this.apiKey } : {},
+			...this.taxService ? { "ESC-Tax-Service": this.taxService } : {},
 		}
 	}
 }

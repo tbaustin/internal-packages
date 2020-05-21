@@ -25,13 +25,12 @@ export default async function storeOrder(order) {
 		return orderResponse
 	}
 	catch(err) {
+		console.log(err.response)
 		// For HTTP error/fail responses
 		if (err.response) {
 			let { status, data } = err.response
-
 			// Report non-404 service errors
 			if (status !== 404) {
-				reportOptions.extra.responseData = data
 				ErrorReport.send(err, reportOptions)
 			}
 
@@ -48,6 +47,6 @@ export default async function storeOrder(order) {
 		 * Since this is a simple load request, just return empty when there are
 		 * errors to keep usage more consistent/less complicated
 		 */
-		return []
+		return {}
 	}
 }

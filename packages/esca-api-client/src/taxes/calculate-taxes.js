@@ -6,19 +6,18 @@ import ErrorReport from '../error-report'
  * 
  * Use this end point to calculate the taxes due for a set of monetary totals.
  */
-export default async function calculateTaxs(params) {
+export default async function calculateTaxes(params) {
 	// To group all error reports related to this request
 	ErrorReport.flush()
 
 	// Extra info for error report if needed later
 	let reportOptions = {
-		tags: { action: `calculateTaxs` },
+		tags: { action: `calculateTaxes` },
 		extra: { params },
 	}
 
 	try {
 		const { src, action, trans_id, order } = params || {}
-
 		const requestConfig = {
 			method: `post`,
 			url: this.endpoints.taxes,
@@ -33,6 +32,7 @@ export default async function calculateTaxs(params) {
 		return taxes
 	}
 	catch(err) {
+		console.log(`Error: `, err)
 		// For HTTP error/fail responses
 		if (err.response) {
 			let { status, data } = err.response
@@ -56,6 +56,6 @@ export default async function calculateTaxs(params) {
 		 * Since this is a simple load request, just return empty when there are
 		 * errors to keep usage more consistent/less complicated
 		 */
-		return []
+		return {}
 	}
 }

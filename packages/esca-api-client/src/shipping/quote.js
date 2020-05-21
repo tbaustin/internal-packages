@@ -28,6 +28,7 @@ export default async function shippingQuote(params) {
 		return quote
 	}
 	catch(err) {
+		console.log(`Error: `, err)
 		// For HTTP error/fail responses
 		if (err.response) {
 			let { status, data } = err.response
@@ -51,6 +52,6 @@ export default async function shippingQuote(params) {
 		 * Since this is a simple load request, just return empty when there are
 		 * errors to keep usage more consistent/less complicated
 		 */
-		return []
+		return {}
 	}
 }

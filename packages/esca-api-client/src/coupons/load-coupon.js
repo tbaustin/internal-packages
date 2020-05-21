@@ -14,9 +14,8 @@ export default async function loadCoupon(params) {
 		extra: { params },
 	}
 
+	const { code } = params || {}
 	try {
-		const { code } = params || {}
-
 		const requestConfig = {
 			method: `post`,
 			url: this.endpoints.coupon,
@@ -31,6 +30,13 @@ export default async function loadCoupon(params) {
 		// For HTTP error/fail responses
 		if (err.response) {
 			let { status, data } = err.response
+
+			//Coupon not applicable
+			if (status === 400) {
+				return {
+					errorMessage: `Coupon ${code} is invalid`,
+				}
+			}
 
 			// Report non-404 service errors
 			if (status !== 404) {
@@ -51,6 +57,8 @@ export default async function loadCoupon(params) {
 		 * Since this is a simple load request, just return empty when there are
 		 * errors to keep usage more consistent/less complicated
 		 */
-		return []
+		return {
+			errorMessage: `Unable to load the coupon`,
+		}
 	}
 }
