@@ -1,9 +1,9 @@
 # esca-api-client
 A JavaScript client library for Escalade Sports microservices
 
-## Usage
+# Usage
 
-1) Instantiate the client:
+### Step 1 – Instantiate the client
 ```javascript
 /**
  * Note: the below import should work as written; if not, you may need
@@ -13,27 +13,31 @@ A JavaScript client library for Escalade Sports microservices
 import EscaAPIClient from '@escaladesports/esca-api-client'
 
 const client = new EscaAPIClient({
-  environment: `prod`,    // 'test' or 'prod'; defaults to 'test'
-  site: `lifeline`,       // site name; same as ESC-API-Context header
-  apiKey: `123abc789xyz`  // optional; uses relative URLs if not given
+  environment: `prod`,              // 'test' or 'prod'; defaults to 'test'
+  site: `lifeline`,                 // site name; same as ESC-API-Context header
+  apiKey: `123abc789xyz`,           // optional; uses relative URLs if not given
+  devHost: `http://localhost:8000`  // optional; specifies exact host/port in dev
 })
 ```
+**Important notes on API URLs:**  
+- If `apiKey` is not provided, relative URLs formatted like `/api/{resource}/{action}` will be used (e.g. `/api/products/load`). Otherwise, the full `escsportsapi.com` URLs will be used (e.g. `https://products.escsportsapi.com/load`) unless `devHost` is set.
+- If `devHost` is provided, URLs will **permanently** be the value of `devHost` followed by the relative URL structure described above. This config property should be conditionally included if using the client in a development context and left out completely for production.
 
-Note: if `apiKey` is not provided, relative URLs formatted like `/api/{resource}/{action}` will be used (e.g. `/api/products/load`). Otherwise, the full `escsportsapi.com` URLs will be used (e.g. `https://products.escsportsapi.com/load`).
-
-2) Use the client. Here's an example using the `loadProducts` method:
+### Step 2 – Use the client
+Here's an example using the `loadProducts` method:
 ```javascript
 const products = await client.loadProducts({
   fields: [`inventory`, `price`], // optional; returns name & sku by default
   skus: [`2-FMT-3`, `2-FMT-5`],   // optional; defaults to 'all'
-  byParent: true                  // optional; these are also accepted:
-                                  //    groupByParent: true
-                                  //    groupby: `parent`
-                                  //    groupBy: `parent`
+  byParent: true  // optional; groups variants by base product
+  // These alternatives are also accepted:
+  //    groupByParent: true
+  //    groupby: `parent`
+  //    groupBy: `parent`
 })
 ```
 
-## Methods
+# Methods
 TODO: document these
 
 | Method              | Description |
@@ -49,7 +53,7 @@ TODO: document these
 | `storeOrder`        |             |
 
 
-## Error Handling & Reporting
+# Error Handling & Reporting
 
 The client is meant to handle & report most errors. All functions will either:
 
@@ -59,7 +63,7 @@ B) potentially throw an error (for create/update/delete actions); the error will
 
  Functions which only load data (e.g. `loadProducts`) will never throw errors but may log failed requests or other problems to the console. Any problems such as failed API calls (non-404) will be reported to Sentry.
 
-## Development Notes
+# Development Notes
 This package uses Jest for testing. Run `yarn test` to run all tests throughout the package.
 
 The test files use these environment variables to make requests to the services, so make sure they are set:
