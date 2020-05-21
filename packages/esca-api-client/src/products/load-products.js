@@ -12,7 +12,7 @@ const controlFlow = async (loadProducts, params) => {
 	// Extra info for error report if needed later
 	let reportOptions = {
 		tags: { action: `loadProducts` },
-		extra: { params }
+		extra: { params },
 	}
 
 	try {
@@ -43,7 +43,7 @@ const controlFlow = async (loadProducts, params) => {
 		 * Since this is a simple load request, just return empty when there are
 		 * errors to keep usage more consistent/less complicated
 		 */
-    return []
+		return []
 	}
 }
 
@@ -53,30 +53,33 @@ const controlFlow = async (loadProducts, params) => {
  * The actual load products request
  */
 async function loadProducts(params) {
-	const { fields, salsify, skus } = params || {}
+	const { fields, salsify, skus, returnAsObject } = params || {}
 
-  const requestConfig = {
+	const requestConfig = {
 		method: `post`,
 		url: this.endpoints.products,
 		data: {
 			fields,
 			salsify,
-			skus: skus || (this.site ? [`all`] : [])
-		}
+			skus: skus || (this.site ? [`all`] : []),
+		},
 	}
+	const products = await this.apiRequest(requestConfig, `products`)
 
-  const products = await this.apiRequest(requestConfig, `products`)
+	if(returnAsObject)
+		return products
+		
 	return Object.keys(products).map(productId => ({ ...products[productId], sku: productId }))
 }
 
 
 
 /**
- * Load products request wrapped in error handling logic
+ * The primary function of this service is to return product details for requested SKUs.
  */
 export default function(params) {
 	return controlFlow(
 		loadProducts.bind(this),
-		params
+		params,
 	)
 }
