@@ -1,6 +1,5 @@
 import 'core-js'
 import 'regenerator-runtime/runtime'
-// import {} from 'dotenv/config'
 import apiRequest from './api-request'
 import { LoadProducts } from './products'
 import { ShippingQuotes } from './shipping'
@@ -21,13 +20,13 @@ function makeUrl(entity, action = `load`) {
 
 export default class EscaAPIClient {
 	constructor(config) {
-		const { 
-			environment, 
-			endpoints, 
-			site, 
-			apiKey, 
+		const {
+			environment,
+			endpoints,
+			site,
+			apiKey,
 			taxService,
-			/*reportDsn*/ 
+			/*reportDsn*/
 		} = config || {}
 
 		// Set properties from config

@@ -2,10 +2,14 @@ import EscaAPIClient from '../index'
 
 
 const client = new EscaAPIClient({
-	environment: process.env.ENV,
+	environment: TEST_API_ENV,
 	site: `goalrilla`,
-	apiKey: process.env.API_KEY,
+	apiKey: TEST_API_KEY,
 })
+
+
+// These shipping endpoints like to take longer than 5 seconds...
+jest.setTimeout(30000)
 
 
 test(`Generates shipping quote for a Goalrilla item`, async () => {

@@ -2,9 +2,9 @@ import EscaAPIClient from '../index'
 
 
 const client = new EscaAPIClient({
-	environment: process.env.ENV,
+	environment: TEST_API_ENV,
 	site: `lifeline`,
-	apiKey: process.env.API_KEY,
+	apiKey: TEST_API_KEY,
 })
 
 

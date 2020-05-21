@@ -2,11 +2,15 @@ import EscaAPIClient from '../index'
 
 
 const client = new EscaAPIClient({
-	environment: process.env.ENV,
+	environment: TEST_API_ENV,
 	site: `rocket`,
-	apiKey: process.env.API_KEY,
-	taxService: `sovos`, 
+	apiKey: TEST_API_KEY,
+	taxService: `sovos`,
 })
+
+
+// These shipping endpoints like to take longer than 5 seconds...
+jest.setTimeout(30000)
 
 
 test(`Calculates taxes for an order`, async () => {

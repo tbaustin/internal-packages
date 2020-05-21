@@ -13,3 +13,4 @@ temp-*
 /node_modules/
 **/node_modules/**
 packages/gatsby-source-esca-api/*.js
+**/test.js
