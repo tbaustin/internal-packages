@@ -1,7 +1,7 @@
 import EscaAPIClient from '@escaladesports/esca-api-client'
-import { dollarsToCents, centsToDollars } from '../utils/helpers'
+import { toCents, toDollars } from '@escaladesports/utils'
 
-export const calculateTax = async ({ 
+export const calculateTax = async ({
 	cartState: {
 		shippingState: {
 			state: {
@@ -50,7 +50,7 @@ export const calculateTax = async ({
 				bill_zip: order.delivery.zip,
 				bill_country: order.delivery.country,
 				products: order.locations[locationName].products,
-				shipping: centsToDollars(shippingMethods[selected[locationName]]),
+				shipping: toDollars(shippingMethods[selected[locationName]]),
 				discounts: order.discounts,
 				// duties: 20,
 				total: order.total,
@@ -62,6 +62,6 @@ export const calculateTax = async ({
 	return {
 		id: `tax`,
 		description: `Tax`,
-		value: dollarsToCents(taxValue),
+		value: toCents(taxValue),
 	}
 }

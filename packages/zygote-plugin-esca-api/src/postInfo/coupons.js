@@ -1,4 +1,4 @@
-import { dollarsToCents } from '../utils/helpers'
+import { toCents } from '@escaladesports/utils'
 
 const  coupons = async (info, products, callback) => {
 	if(!info.coupon){
@@ -29,16 +29,16 @@ const  coupons = async (info, products, callback) => {
 
 	console.log(`Coupon Response: `, response)
 	if(response.valid) {
-		return { 
+		return {
 			coupon: {
 				id: info.coupon,
 				description: response.label,
-				value: parseInt(`-` + dollarsToCents(response.discount)),
+				value: 0 - toCents(response.discount),
 				type: response.type || `discount`,
-			},			
+			},
 		}
 	}
-	
+
 	return {
 		message: response.errorMessage,
 	}

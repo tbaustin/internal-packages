@@ -1,4 +1,4 @@
-import { centsToDollars } from '../utils/helpers'
+import { toDollars } from '@escaladesports/utils'
 
 
 const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
@@ -38,7 +38,7 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 				return locationTotal + productTotal + shippingTotal
 			}, 0)
 			let discountTotal = Object.values(this.discounts).reduce((disTotal, currentDis) => disTotal + currentDis, 0)
-			return orderTotal + centsToDollars(discountTotal)
+			return orderTotal + toDollars(discountTotal)
 		},
 	}
 	var {
