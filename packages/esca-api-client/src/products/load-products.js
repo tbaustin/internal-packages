@@ -55,6 +55,11 @@ const controlFlow = async (loadProducts, params) => {
 async function loadProducts(params) {
 	const { fields, salsify, skus, returnAsObject } = params || {}
 
+	const { byParent, groupByParent, groupby, groupBy } = params || {}
+	const groupByVal = byParent || groupByParent
+		? `parent`
+		: (groupby || groupBy)
+
 	const requestConfig = {
 		method: `post`,
 		url: this.endpoints.products,
@@ -62,14 +67,40 @@ async function loadProducts(params) {
 			fields,
 			salsify,
 			skus: skus || (this.site ? [`all`] : []),
+			...groupByVal && { groupby: groupByVal },
 		},
 	}
-	const products = await this.apiRequest(requestConfig, `products`)
 
-	if(returnAsObject)
-		return products
-		
-	return Object.keys(products).map(productId => ({ ...products[productId], sku: productId }))
+	// Fetch from API
+	const result = await this.apiRequest(requestConfig, `products`)
+
+	// Build new object of products w/ improved formatting
+	const products = {}
+	for (let sku in result) {
+		let product = result[sku]
+		let { salsify_data, variants: variantsObj, ...other } = product
+
+		// Base product Salsify fields come from service as JSON string
+		let salsify = JSON.parse(salsify_data || `{}`)
+
+		/**
+		 * Convert variants to an array; used for return value & to check length
+		 * If returnAsObject is true, return variants object to keep consistency
+		 * with top-level products
+		 */
+		let variantsArr = Object.values(variantsObj || {})
+		let variants = returnAsObject ? variantsObj : variantsArr
+
+		products[sku] = {
+			sku,
+			salsify,
+			// Only include variants property if there are variants
+			...variantsArr.length ? { variants } : {},
+			...other,
+		}
+	}
+
+	return returnAsObject ? products : Object.values(products)
 }
 
 
