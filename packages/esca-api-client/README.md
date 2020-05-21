@@ -9,7 +9,7 @@ A JavaScript client library for Escalade Sports microservices
  * Note: the below import should work as written; if not, you may need
  * to import from either '@escaladesports/esca-api-client/browser' or
  * '@escaladesports/esca-api-client/node' depending on your environment
- */ 
+ */
 import EscaAPIClient from '@escaladesports/esca-api-client'
 
 const client = new EscaAPIClient({
@@ -25,7 +25,11 @@ Note: if `apiKey` is not provided, relative URLs formatted like `/api/{resource}
 ```javascript
 const products = await client.loadProducts({
   fields: [`inventory`, `price`], // optional; returns name & sku by default
-  skus: [`2-FMT-3`, `2-FMT-5`]    // optional; defaults to 'all'
+  skus: [`2-FMT-3`, `2-FMT-5`],   // optional; defaults to 'all'
+  byParent: true                  // optional; these are also accepted:
+                                  //    groupByParent: true
+                                  //    groupby: `parent`
+                                  //    groupBy: `parent`
 })
 ```
 

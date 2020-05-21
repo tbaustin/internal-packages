@@ -12,7 +12,7 @@ const controlFlow = async (loadProducts, params) => {
 	// Extra info for error report if needed later
 	let reportOptions = {
 		tags: { action: `loadProducts` },
-		extra: { params }
+		extra: { params },
 	}
 
 	try {
@@ -43,7 +43,7 @@ const controlFlow = async (loadProducts, params) => {
 		 * Since this is a simple load request, just return empty when there are
 		 * errors to keep usage more consistent/less complicated
 		 */
-    return []
+		return []
 	}
 }
 
@@ -55,18 +55,38 @@ const controlFlow = async (loadProducts, params) => {
 async function loadProducts(params) {
 	const { fields, salsify, skus } = params || {}
 
-  const requestConfig = {
+	const { byParent, groupByParent, groupby, groupBy } = params || {}
+	const groupByVal = byParent || groupByParent
+		? `parent`
+		: (groupby || groupBy)
+
+	const requestConfig = {
 		method: `post`,
 		url: this.endpoints.products,
 		data: {
 			fields,
 			salsify,
-			skus: skus || (this.site ? [`all`] : [])
-		}
+			skus: skus || (this.site ? [`all`] : []),
+			...groupByVal && { groupby: groupByVal },
+		},
 	}
 
-  const products = await this.apiRequest(requestConfig, `products`)
-	return Object.keys(products).map(productId => ({ ...products[productId], sku: productId }))
+	const products = await this.apiRequest(requestConfig, `products`)
+
+	return Object.keys(products).map(sku => {
+		const product = products[sku]
+		const { salsify_data, variants: variantsObj, ...other } = product
+
+		const salsify = JSON.parse(salsify_data || `{}`)
+		const variants = Object.values(variantsObj || {})
+		
+		return {
+			sku,
+			salsify,
+			...variants.length && { variants },
+			...other,
+		}
+	})
 }
 
 
@@ -77,6 +97,6 @@ async function loadProducts(params) {
 export default function(params) {
 	return controlFlow(
 		loadProducts.bind(this),
-		params
+		params,
 	)
 }
