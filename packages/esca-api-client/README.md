@@ -21,7 +21,7 @@ const client = new EscaAPIClient({
 
 Note: if `apiKey` is not provided, relative URLs formatted like `/api/{resource}/{action}` will be used (e.g. `/api/products/load`). Otherwise, the full `escsportsapi.com` URLs will be used (e.g. `https://products.escsportsapi.com/load`).
 
-2) Use the client. Currently, `loadProducts` is the only available function:
+2) Use the client. Here's an example using the `loadProducts` method:
 ```javascript
 const products = await client.loadProducts({
   fields: [`inventory`, `price`], // optional; returns name & sku by default
@@ -33,6 +33,22 @@ const products = await client.loadProducts({
 })
 ```
 
+## Methods
+TODO: document these
+
+| Method              | Description |
+| ---                 | ---         |
+| `loadProducts`      |             |
+| `shippingQuote`     |             |
+| `calculateTaxes`    |             |
+| `loadCoupon`        |             |
+| `calculateDiscount` |             |
+| `validateCoupon`    |             |
+| `getOrderId`        |             |
+| `loadOrder`         |             |
+| `storeOrder`        |             |
+
+
 ## Error Handling & Reporting
 
 The client is meant to handle & report most errors. All functions will either:
@@ -42,3 +58,15 @@ A) return the expected data or appropriate empty structure (e.g. empty array for
 B) potentially throw an error (for create/update/delete actions); the error will always be a proper `Error` object with a message suitable for displaying to the user
 
  Functions which only load data (e.g. `loadProducts`) will never throw errors but may log failed requests or other problems to the console. Any problems such as failed API calls (non-404) will be reported to Sentry.
+
+## Development Notes
+This package uses Jest for testing. Run `yarn test` to run all tests throughout the package.
+
+The test files use these environment variables to make requests to the services, so make sure they are set:
+
+| Variable        | Description                                               |
+| ---             | ---                                                       |
+| `TEST_API_ENV`  | Environment for the API to use (`dev`, `test`, or `prod`) |
+| `TEST_API_KEY`  | API key to use for the services                           |
+
+Within the test files, these variables can be accessed simply as `TEST_API_ENV` and `TEST_API_KEY` (without `process.env` prepended). They are set up as Jest globals in `jest.config.js` via the `dotenv` package.

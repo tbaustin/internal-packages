@@ -11,8 +11,7 @@ export default async function apiRequest(options, dataPath) {
 	const axiosOptions = {
 		...options,
 		headers: options.headers || this.headers,
-	}
-
+	} 
 	// Base set of options for error reporting if needed
 	let reportOptions = {
 		tags: { action: `apiRequest` },
@@ -20,6 +19,13 @@ export default async function apiRequest(options, dataPath) {
 			request: JSON.stringify(axiosOptions),
 		},
 	}
+	
+	// //DEV: log request and response data
+	// axios.interceptors.request.use(request => {
+	// 	console.log(`Starting Request`, request)
+	// 	return request
+	// })
+
 
 	try {
 		let { data } = await axios(axiosOptions)

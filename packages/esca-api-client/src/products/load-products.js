@@ -53,7 +53,7 @@ const controlFlow = async (loadProducts, params) => {
  * The actual load products request
  */
 async function loadProducts(params) {
-	const { fields, salsify, skus } = params || {}
+	const { fields, salsify, skus, returnAsObject } = params || {}
 
 	const { byParent, groupByParent, groupby, groupBy } = params || {}
 	const groupByVal = byParent || groupByParent
@@ -71,28 +71,42 @@ async function loadProducts(params) {
 		},
 	}
 
-	const products = await this.apiRequest(requestConfig, `products`)
+	// Fetch from API
+	const result = await this.apiRequest(requestConfig, `products`)
 
-	return Object.keys(products).map(sku => {
-		const product = products[sku]
-		const { salsify_data, variants: variantsObj, ...other } = product
+	// Build new object of products w/ improved formatting
+	const products = {}
+	for (let sku in result) {
+		let product = result[sku]
+		let { salsify_data, variants: variantsObj, ...other } = product
 
-		const salsify = JSON.parse(salsify_data || `{}`)
-		const variants = Object.values(variantsObj || {})
-		
-		return {
+		// Base product Salsify fields come from service as JSON string
+		let salsify = JSON.parse(salsify_data || `{}`)
+
+		/**
+		 * Convert variants to an array; used for return value & to check length
+		 * If returnAsObject is true, return variants object to keep consistency
+		 * with top-level products
+		 */
+		let variantsArr = Object.values(variantsObj || {})
+		let variants = returnAsObject ? variantsObj : variantsArr
+
+		products[sku] = {
 			sku,
 			salsify,
-			...variants.length && { variants },
+			// Only include variants property if there are variants
+			...variantsArr.length ? { variants } : {},
 			...other,
 		}
-	})
+	}
+
+	return returnAsObject ? products : Object.values(products)
 }
 
 
 
 /**
- * Load products request wrapped in error handling logic
+ * The primary function of this service is to return product details for requested SKUs.
  */
 export default function(params) {
 	return controlFlow(
