@@ -12,7 +12,9 @@ import { GetOrderId, LoadOrder, StoreOrder } from './orders'
 function makeUrl(entity, action = `load`) {
 	const envSuffix = this.environment === `prod` ? `` : `-test`
 	const fullUrl = `https://${entity}${envSuffix}.escsportsapi.com/${action}`
-	const relativeUrl = `${this.devHost}/api/${entity}/${action}`
+	const relativeUrl = `/api/${entity}/${action}`
+
+	if (this.devHost) return `${this.devHost}${relativeUrl}`
 	return this.apiKey ? fullUrl : relativeUrl
 }
 
