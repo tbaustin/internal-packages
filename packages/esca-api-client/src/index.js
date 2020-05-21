@@ -8,7 +8,7 @@ import loadProducts from './load-products'
 function makeUrl(entity, action = `load`) {
 	const envSuffix = this.environment === `prod` ? `` : `-test`
 	const fullUrl = `https://${entity}${envSuffix}.escsportsapi.com/${action}`
-	const relativeUrl = `/api/${entity}/${action}`
+	const relativeUrl = `${this.devHost}/api/${entity}/${action}`
 	return this.apiKey ? fullUrl : relativeUrl
 }
 
@@ -16,18 +16,19 @@ function makeUrl(entity, action = `load`) {
 
 export default class EscaAPIClient {
 	constructor(config) {
-		const { 
-			environment, 
-			endpoints, 
-			site, 
-			apiKey, 
-			/*reportDsn*/ 
+		const {
+			environment,
+			endpoints,
+			site,
+			apiKey,
+			devHost,
 		} = config || {}
 
 		// Set properties from config
 		this.apiKey = apiKey
 		this.environment = environment
 		this.site = site
+		this.devHost = devHost
 
 		// Bind functions declared above as methods
 		this.makeUrl = makeUrl.bind(this)
@@ -44,6 +45,7 @@ export default class EscaAPIClient {
 		// Set any custom endpoints defined in config
 		for (let type in endpoints) {
 			let endpoint = endpoints[type]
+			// Don't use if the key is set but value is falsey
 			if (endpoint) this.endpoints[type] = endpoint
 		}
 	}
