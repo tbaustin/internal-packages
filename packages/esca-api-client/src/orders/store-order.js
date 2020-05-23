@@ -17,9 +17,7 @@ export default async function storeOrder(order) {
 		const requestConfig = {
 			method: `post`,
 			url: this.endpoints.orderStore,
-			data: {
-				order,
-			},
+			data: order,
 		}
 		const orderResponse = await this.apiRequest(requestConfig)
 		return orderResponse
