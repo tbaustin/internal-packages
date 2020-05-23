@@ -12,7 +12,9 @@ export const calculateTax = async ({
 		metaState: {
 			state: {
 				meta: {
-					order,
+					orderRequest: {
+						order,
+					},
 				},
 			},
 		},

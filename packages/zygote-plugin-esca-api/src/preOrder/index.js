@@ -1,10 +1,9 @@
 import EscaAPIClient from '@escaladesports/esca-api-client'
 
-const preOrder = async ( { info, preFetchData: { meta: { order } } })  => {
+const preOrder = async ( { info, preFetchData: { meta: { orderRequest } } })  => {
 	console.log(`PreOrder`)
 	
-	order.payment = {
-		name: info.billingFirstName,
+	orderRequest.card = {
 		number: info.billingCardNumber,
 		expire: {
 			month: info.billingCardExpiration.split(`/`)[0].trim(),
@@ -12,7 +11,7 @@ const preOrder = async ( { info, preFetchData: { meta: { order } } })  => {
 		},
 		code: info.billingCardCVC,
 	}
-	console.log(`PreOrder: `, order, info)
+	console.log(`PreOrder: `, orderRequest, info)
 	
 	const client = new EscaAPIClient()
 	var {
@@ -20,7 +19,7 @@ const preOrder = async ( { info, preFetchData: { meta: { order } } })  => {
 		order_id,
 		bind_id,
 		paid,
-	} = await client.storeOrder(order)
+	} = await client.storeOrder(orderRequest)
 
 	return {
 		warnings,
