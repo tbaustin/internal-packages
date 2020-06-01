@@ -29,6 +29,7 @@ export default class EscaAPIClient {
 			apiKey,
 			devHost,
 			taxService,
+			recaptchaToken,
 		} = config || {}
 
 		// Set properties from config
@@ -37,6 +38,7 @@ export default class EscaAPIClient {
 		this.site = site
 		this.devHost = devHost
 		this.taxService = taxService
+		this.recaptchaToken = recaptchaToken
 
 		// Bind functions declared above as methods
 		this.makeUrl = makeUrl.bind(this)
@@ -82,6 +84,7 @@ export default class EscaAPIClient {
 			...this.site ? { "ESC-API-Context": this.site } : {},
 			...this.apiKey ? { "X-API-Key": this.apiKey } : {},
 			...this.taxService ? { "ESC-Tax-Service": this.taxService } : {},
+			...this.recaptchaToken ? { "Recaptcha-Token": this.recaptchaToken } : {},
 		}
 	}
 }
