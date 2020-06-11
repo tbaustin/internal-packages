@@ -9,14 +9,20 @@ const client = new EscaAPIClient({
 
 
 test(`Loads Lifeline products`, async () => {
-	expect.assertions(2)
+	expect.assertions(4)
 
-	const products = await client.loadProducts({
+	const options = {
 		fields: [`inventory`, `price`],
-		skus: [`2-FMT-3`, `2-FMT-5`],
-	})
+		skus: [`2-FMT-3`, `2-FMT-5`]
+	}
 
-	console.log(JSON.stringify(products, null, 2))
-	expect(products).toBeInstanceOf(Array)
-	expect(products).toHaveLength(2)
+	const variants = await client.loadProducts(options)
+	expect(variants).toBeInstanceOf(Array)
+	expect(variants).toHaveLength(2)
+
+	const baseProducts = await client.loadProducts({
+		...options, byParent: true
+	})
+	expect(baseProducts).toBeInstanceOf(Array)
+	expect(baseProducts).toHaveLength(1)
 })
