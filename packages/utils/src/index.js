@@ -68,3 +68,37 @@ export const trimCommon = (items = [], propPath = ``) => {
 		return setString(item, string)
 	})
 }
+
+
+
+/**
+ * Combines multiple arrays of objects into one
+ * Objects w/ matching values for given key are spread together
+ *
+ * Each array can be a different length and/or have objects with IDs (values
+ * for given key) that aren't present in the other arrays
+ *
+ * Result will include every ID that appears at least once
+ */
+export function combineArrays(key, ...arrays) {
+	// ID (value for given key) of every object in every supplied array
+	const allIds = [].concat(...arrays).map(v => v?.[key]).filter(Boolean)
+	// Remove duplicates from above
+	const uniqueIds = [ ...new Set(allIds) ]
+	/**
+   * The "starting point" array of objects
+   * Each object contains only an ID value at the key specified in 1st arg
+   * Has every ID that is present in any of the supplied arrays
+   */
+	const baseArray = uniqueIds.map(id => ({ [key]: id }))
+
+	// Merge objects from other arrays w/ objects in starting point array
+	return arrays.reduce((combined, curr) => {
+		const array = Array.isArray(curr) ? curr : []
+
+		return combined.map(item => {
+			const matchingItem = array.find(el => el?.[key] === item?.[key])
+			return { ...item, ...matchingItem }
+		})
+	}, baseArray)
+}

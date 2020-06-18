@@ -78,10 +78,7 @@ async function loadProducts(params) {
 	const products = {}
 	for (let sku in result) {
 		let product = result[sku]
-		let { salsify_data, variants: variantsObj, ...other } = product
-
-		// Base product Salsify fields come from service as JSON string
-		let salsify = JSON.parse(salsify_data || `{}`)
+		let { salsify_data: salsify, variants: variantsObj, ...other } = product
 
 		/**
 		 * Convert variants to an array; used for return value & to check length
@@ -92,11 +89,15 @@ async function loadProducts(params) {
 		let variants = returnAsObject ? variantsObj : variantsArr
 
 		products[sku] = {
-			sku,
 			salsify,
 			// Only include variants property if there are variants
 			...variantsArr.length ? { variants } : {},
 			...other,
+			/**
+			 * Overwrite the inner 'sku' property w/ the key in case they're different
+			 * (can happen for certain parent products w/ 1 variant)
+			 */
+			sku,
 		}
 	}
 

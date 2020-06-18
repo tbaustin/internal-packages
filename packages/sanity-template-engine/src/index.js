@@ -1,28 +1,14 @@
 import 'core-js'
 import 'regenerator-runtime/runtime'
 import _get from 'lodash/get'
+import sampleSchema from './sample-schema'
 
 
 /**
  * Sanity schema to be used by parser
- * Sample written out below as fallback
+ * Use sample schema as fallback
  */
-let schema = [{
-	name: `person`,
-	title: `Person`,
-	type: `document`,
-	fields: [
-		{
-			name: `name`,
-			title: `Full Name`,
-			type: `object`,
-			fields: [
-				{ name: `first`, title: `First Name` },
-				{ name: `last`, title: `Last Name` },
-			],
-		},
-	],
-}]
+let schema = sampleSchema
 
 
 /**
@@ -51,26 +37,62 @@ const convertPath = (colonPath = ``, data = {}) => {
 	const segments = colonPath.split(`:`)
 	return segments.reduce((dotPath, segment) => {
 		/**
-     * Find inner field that has title matching current segment; point the
-     * reference cursor at it
-     */
-		if (cursor.fields) {
-			let foundField = cursor.fields.find(f => f.title === segment)
-			cursor = foundField || {}
+		 * Allow accessing members of arrays via numeric path segments
+		 * Treat 1 as first instead of 0 (more intuitive for non-dev CMS users)
+		 * i.e. "Some List:1" might translate to "someList[0]"
+		 *
+		 * If the segment is numeric, add the square bracket array accessor (as
+		 * long as the corresponding type/field in the schema is actually an array
+		 * type) & then move on to next segment
+		 */
+		let segmentIsNumber = /^\d+$/.test(segment)
+		if (segmentIsNumber) {
+			let index = Math.max(segment - 1, 0)
+
+			if (cursor.type === `array`) {
+				let contents = cursor.of?.[0] || {}
+
+				let nextCursorType = contents.type === `reference`
+					? contents.to?.[0]?.type
+					: contents.type
+
+				let nextCursor = schema.find(t => t.name === nextCursorType)
+				if (nextCursor) cursor = nextCursor
+
+				return `${dotPath}[${index}]`
+			}
+
+			return dotPath
 		}
 
 		/**
-     * As long as a field has been found above, use its 'name' property from the
-     * schema as the new property for the converted path
+     * Find inner field that has title matching current segment; point the
+     * reference cursor at that field OR any matching top-level schema type
+		 * (based on the field's type or the referenced schema type if the field
+		 * type is 'reference')
      */
-		let prop = cursor.title === segment ? cursor.name : null
+		let prop = ``
+		if (cursor.fields) {
+			let foundField = cursor.fields.find(f => f.title === segment) || {}
+			/**
+	     * As long as a field has been found above, use its 'name' property from
+			 * the schema as the new property for the converted path
+	     */
+			prop = foundField.name || ``
+			/**
+	     * Values for Sanity's slug types are objects with an inner 'current'
+	     * property; append this if current segment is a slug type (as long as
+	     * string has been found for property)
+	     */
+			if (foundField.type === `slug`) prop += `.current`
 
-		/**
-     * Values for Sanity's slug types are objects with an inner 'current'
-     * property; append this if current segment is a slug type (as long as
-     * string has been found for property)
-     */
-		if (prop && cursor.type === `slug`) prop += `.current`
+			let nextCursorType = foundField.type === `reference`
+				? foundField.to?.[0]?.type
+				: foundField.type
+
+			let nextCursor = schema.find(type => type.name === nextCursorType)
+			cursor = nextCursor || foundField
+		}
 
 		/**
      * Add property to the path; use dot in between if property has been found
@@ -87,7 +109,7 @@ const convertPath = (colonPath = ``, data = {}) => {
  */
 const resolveProperty = (colonPath, data = defaultData) => {
 	const dotPath = convertPath(colonPath, data)
-	return _get(data, dotPath)
+	return _get(data, dotPath) || ``
 }
 
 

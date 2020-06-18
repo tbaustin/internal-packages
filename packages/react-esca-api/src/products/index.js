@@ -3,6 +3,7 @@ import React, {
 	createContext,
 	useContext,
 	useEffect,
+	useMemo,
 } from 'react'
 import productRequest from './request'
 import DefaultRenderer from './default-renderer'
@@ -47,15 +48,19 @@ export function useProducts(options) {
 		return []
 	}
 
+	const memoizedOptions = useMemo(() => {
+		return { ...options }
+	}, [options])
+
 	useEffect(() => {
 		const loadProducts = async () => {
-			const data = await productRequest(options)
+			const data = await productRequest(memoizedOptions)
 			setProducts(data)
 		}
 
 		// Don't try to fetch in a non-browser context
 		typeof window !== `undefined` && loadProducts()
-	}, [options])
+	}, [memoizedOptions])
 
 	return [products, setProducts]
 }
