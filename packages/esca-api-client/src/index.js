@@ -6,6 +6,7 @@ import { ShippingQuotes } from './shipping'
 import { CalculateTaxes } from './taxes'
 import { LoadCoupon, CalculateDiscount, ValidateCoupon } from './coupons'
 import { GetOrderId, LoadOrder, StoreOrder } from './orders'
+import { ValidateAddress } from './address'
 
 
 
@@ -29,6 +30,7 @@ export default class EscaAPIClient {
 			apiKey,
 			devHost,
 			taxService,
+			recaptchaToken,
 		} = config || {}
 
 		// Set properties from config
@@ -37,6 +39,7 @@ export default class EscaAPIClient {
 		this.site = site
 		this.devHost = devHost
 		this.taxService = taxService
+		this.recaptchaToken = recaptchaToken
 
 		// Bind functions declared above as methods
 		this.makeUrl = makeUrl.bind(this)
@@ -50,6 +53,7 @@ export default class EscaAPIClient {
 		this.getOrderId = GetOrderId.bind(this)
 		this.loadOrder = LoadOrder.bind(this)
 		this.storeOrder = StoreOrder.bind(this)
+		this.validateAddress = ValidateAddress.bind(this)
 
 		// Set up default endpoints
 		this.endpoints = {
@@ -65,6 +69,7 @@ export default class EscaAPIClient {
 			orderSave: this.makeUrl(`orders`, `save`),
 			orderStore: this.makeUrl(`orders`, `store`),
 			order: this.makeUrl(`orders`),
+			addressValidate: this.makeUrl(`validate`, `address`),
 		}
 
 		// Set any custom endpoints defined in config
@@ -82,6 +87,7 @@ export default class EscaAPIClient {
 			...this.site ? { "ESC-API-Context": this.site } : {},
 			...this.apiKey ? { "X-API-Key": this.apiKey } : {},
 			...this.taxService ? { "ESC-Tax-Service": this.taxService } : {},
+			...this.recaptchaToken ? { "Recaptcha-Token": this.recaptchaToken } : {},
 		}
 	}
 }
