@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/zygote-plugin-esca-api",
-  "version": "3.0.6",
+  "version": "3.1.0",
   "description": "Zygote plugin for Escalade Sports API",
   "main": "dist/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "jest": "^25.1.0"
   },
   "dependencies": {
-    "@escaladesports/esca-api-client": "^2.0.0",
+    "@escaladesports/esca-api-client": "^2.1.0",
     "@escaladesports/utils": "^0.2.0",
     "@escaladesports/zygote-cart": "^3.1.0",
     "@sentry/browser": "^5.2.0",
