@@ -31,6 +31,7 @@ export const calculateTax = async ({
 	})
 	let taxValue = 0
 	let taxNames = []
+	let locations = []
 	for(let [locationName, locationData] of Object.entries(order.locations)){
 		//TODO: replace customer_nubmber
 		let tax = await client.calculateTaxes({
@@ -60,10 +61,15 @@ export const calculateTax = async ({
 		})
 		taxValue += tax.value
 		taxNames.push(tax.label)
+		locations.push({
+			name: locationName,
+			value: tax.value,
+		})
 	}
 	return {
 		id: `tax`,
 		description: `Tax`,
 		value: toCents(taxValue),
+		locations,
 	}
 }
