@@ -12,6 +12,22 @@ const preOrder = async ( data )  => {
 		},
 		code: info.billingCardCVC,
 	}
+
+	//if billing address is different, add that to the order object
+	if(!info.sameBilling){
+		orderRequest.order.billing = {
+			first_name: info.billingFirstName,
+			last_name: info.billingLastName,
+			company: info.billingCompany,
+			street1: info.billingAddress1,
+			street2: info.billingAddress2,
+			city: info.billingCity,
+			state: info.billingStateAbbr,
+			zip: info.billingZip,
+			country: `US`,
+			phone: info.infoPhone,
+		}
+	}
 	console.log(`PreOrder: `, orderRequest, info)
 	
 	const client = new EscaAPIClient({recaptchaToken: info.recaptchaToken})
