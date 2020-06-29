@@ -99,7 +99,6 @@ export function getFixedGatsbyImage(image, args, sanityConfig) {
 	if(!image.includes(`salsify`) && !image.includes(`http`)){
 		return sanityFixed(image, args, sanityConfig)
 	} else if(image.includes(`http`) && !image.includes(`salsify`)) {
-		console.log(`Non sanity salsify image fixed`)
 		const props = getBasicImageProps(image, args)
 		const width = args.width || DEFAULT_FIXED_WIDTH
 		const height = args.height
@@ -186,7 +185,6 @@ export function getFluidGatsbyImage(image, args, sanityConfig) {
 	if(!image.includes(`salsify`) && !image.includes(`http`)){
 		return sanityFluid(image, args, sanityConfig)
 	} else if(image.includes(`http`) && !image.includes(`salsify`)) {
-		console.log(`Non sanity salsify image fluid`)
 		const props = getBasicImageProps(image, args)
 		const maxWidth = Math.min(args.maxWidth || DEFAULT_FLUID_MAX_WIDTH, props.width || DEFAULT_FLUID_MAX_WIDTH)
 		const specifiedMaxHeight = args.maxHeight
