@@ -3,6 +3,7 @@ import _set from 'lodash/set'
 
 
 export * from './currency'
+export * from './getGatsbyImage'
 
 
 /**
