@@ -10,7 +10,65 @@ Included functions:
   - [unformatPrice](#unformatprice)
   - [toCents](#tocents)
   - [toDollars](#todollars)
+- [getGatsbyImage](#getGatsbyImage)
+  - [getFixedGatsbyImage](#getFixedGatsbyImage)
+  - [getFluidGatsbyImage](#getFluidGatsbyImage)
+---
+# `getGatsbyImage`
 
+Creates a fixed/fluid objec to pass to [Gatsby Image](https://www.gatsbyjs.org/packages/gatsby-image/). Will work fully with salsify/sanity (besides base64 on salsify images), and partially with other urls.
+
+### Example usage:
+```jsx
+import { getFixedGatsbyImage, getFluidGatsbyImage } from '@escaladesports/utils'
+import Img from 'gatsby-image'
+
+// Salsify Fixed/Fluid
+const salsifyUrl = `http://images.salsify.com/image/upload/s--q4bsEzUQ--/qqfmqkexp77wmzirnvrv.jpg`
+
+const salsifyFixed = getFixedGatsbyImage(salsifyUrl, { maxWidth: 1600 })
+const salsifyFluid = getFluidGatsbyImage(salsifyUrl, { width: 800 })
+
+// With Gatsby Image
+return (
+  <>
+    <Img fixed={salsifyFixed} />
+    <Img fluid={salsifyFluid} />
+  </>
+)
+
+// Sanity Fixed/Fluid
+const sanityConfig = {
+  projectId: `yourProjectId`,
+  dataset: `yourDataset`,
+}
+const sanityImageId = `image-ae1185e833772f2c39366f69a425d78ae5517965-2000x2000-png`
+
+const sanityFixed = getFixedGatsbyImage(sanityImageId, { maxWidth: 1600 }, sanityConfig)
+const sanityFluid = getFluidGatsbyImage(sanityImageId, { width: 800 }, sanityConfig)
+
+// With Gatsby Image
+return (
+  <>
+    <Img fixed={sanityFixed} />
+    <Img fluid={sanityFluid} />
+  </>
+)
+
+// Other Fixed/Fluid
+const otherUrl = `https://via.placeholder.com/1600`
+
+const otherFixed = getFixedGatsbyImage(otherUrl, { maxWidth: 1600 })
+const otherFluid = getFluidGatsbyImage(otherUrl, { width: 800 })
+
+// With Gatsby Image
+return (
+  <>
+    <Img fixed={otherFixed} />
+    <Img fluid={otherFluid} />
+  </>
+)
+```
 ---
 
 # `graphToArray`
