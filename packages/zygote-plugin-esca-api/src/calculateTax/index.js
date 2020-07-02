@@ -32,15 +32,19 @@ export const calculateTax = async ({
 	let taxValue = 0
 	let taxNames = []
 	let locations = []
+	let discounts = {}
+	//convert discount values to dollars
+	for (const [key, value] of Object.entries(order.discounts)) {
+		discounts[key] = toDollars(value)
+	}
+
 	for(let [locationName, locationData] of Object.entries(order.locations)){
-		//TODO: replace customer_nubmber
 		let tax = await client.calculateTaxes({
 			src: `WEB`,
 			action: `create`,
 			trans_id: locationData.order_id,
 			order: {
 				order_id: locationData.order_id,
-				customer_number: 19000,
 				warehouse: locationName,
 				ship_street1: order.delivery.street1,
 				ship_city: order.delivery.city,
@@ -54,7 +58,7 @@ export const calculateTax = async ({
 				bill_country: order.delivery.country,
 				products: order.locations[locationName].products,
 				shipping: toDollars(shippingMethods[selected[locationName]]),
-				discounts: order.discounts,
+				discounts,
 				// duties: 20,
 				total: order.total,
 			},
