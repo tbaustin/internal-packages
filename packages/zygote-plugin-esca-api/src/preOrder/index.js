@@ -14,6 +14,7 @@ const preOrder = async ( data )  => {
 	}
 
 	//if billing address is different, add that to the order object
+	console.log(`Billing Info`, info)
 	if(!info.sameBilling){
 		orderRequest.order.billing = {
 			first_name: info.billingFirstName,

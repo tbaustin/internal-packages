@@ -1,14 +1,7 @@
-import { toDollars } from '@escaladesports/utils'
+import { toDollars, toCents } from '@escaladesports/utils'
 
 
 const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
-	//Get list of products grouped by location
-	let discounts = {}
-	if(coupon) {
-		discounts = {
-			[`${coupon.id}`]: coupon.value,
-		}
-	}
 	//store the order
 	let orderRequest = {
 		order: {
@@ -27,7 +20,14 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 			},
 			billing: `delivery`,
 			locations: orderLocations,
-			discounts,
+			get discount() {
+				return Object.values(this.locations).reduce((discountTotal, currentLocation) => {
+					if(currentLocation.discount){
+						return discountTotal + currentLocation.discount
+					}
+					return discountTotal
+				}, 0)
+			},
 			get total() {
 				let orderTotal = Object.values(this.locations).reduce((locationTotal, currentLocation) => {
 					let productTotal = Object.values(currentLocation.products).reduce((prodTotal, currentProd) => {
@@ -36,13 +36,20 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 					let shippingTotal = Object.values(currentLocation.shipping.options).reduce((shipTotal, currentShip) => {
 						return shipTotal + currentShip.value
 					}, 0)
-					return locationTotal + productTotal + shippingTotal
+					let taxes = currentLocation.taxes ? currentLocation.taxes.value : 0
+					return locationTotal + productTotal + shippingTotal + taxes
 				}, 0)
-				let discountTotal = Object.values(this.discounts).reduce((disTotal, currentDis) => disTotal + currentDis, 0)
-				return orderTotal + toDollars(discountTotal)
+				return toDollars(toCents(orderTotal) - toCents(this.discount))
 			},
 		},
 	}
+	//Add discounts to each location
+	if(coupon) {
+		for (const [key, value] of Object.entries(coupon.locations)) {
+			orderRequest.order.locations[key].discount = value.discount
+		}
+	}
+
 	var {
 		order_id: orderIds,
 		bind_id,
@@ -54,6 +61,8 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 		let [location, orderId] = Object.entries(element)[0]
 		orderRequest.order.locations[location].order_id = orderId
 	})
+
+	
 
 	return {
 		orderRequest,

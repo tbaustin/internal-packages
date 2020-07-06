@@ -32,11 +32,6 @@ export const calculateTax = async ({
 	let taxValue = 0
 	let taxNames = []
 	let locations = []
-	let discounts = {}
-	//convert discount values to dollars
-	for (const [key, value] of Object.entries(order.discounts)) {
-		discounts[key] = toDollars(value)
-	}
 
 	for(let [locationName, locationData] of Object.entries(order.locations)){
 		let tax = await client.calculateTaxes({
@@ -58,7 +53,7 @@ export const calculateTax = async ({
 				bill_country: order.delivery.country,
 				products: order.locations[locationName].products,
 				shipping: toDollars(shippingMethods[selected[locationName]]),
-				discounts,
+				discount: order.locations[locationName].discount,
 				// duties: 20,
 				total: order.total,
 			},

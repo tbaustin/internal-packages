@@ -35,6 +35,7 @@ const  coupons = async (info, products, callback) => {
 				description: response.label,
 				value: 0 - toCents(response.discount),
 				type: response.type || `discount`,
+				locations: response.locations,
 			},
 		}
 	}
