@@ -85,8 +85,7 @@ export default async function cmsSync(args) {
 		const existingBaseProduct = checkedProducts?.[productId]
 		const cmsVariants = existingBaseProduct ? existingBaseProduct.variants : []
 		const { variants } = baseProduct
-		const salsifyData = baseProduct.salsify
-		const name = salsifyData?.[useAsNameField]
+		const name = baseProduct?.[useAsNameField]
 		/*
     *
     *  			START OF VARIANT SECTION
