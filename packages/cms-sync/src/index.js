@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid'
 
 import { productRequest, sanityRequest } from './request'
-import { sanityId, slugify, getSkus, createImageMutations } from './utils'
+import { sanityId, slugify, getSkus, createImageMutations, imageFields } from './utils'
 
 export default async function cmsSync(args) {
 	const { 
@@ -98,7 +98,7 @@ export default async function cmsSync(args) {
   */
 
 		cmsVariants.forEach(cmsVar => {
-			const { _id } = cmsVar
+			const { _id, sku } = cmsVar
 			console.log(`Using existing variant: ${_id}...`)
 			let mutation = {}
 			const apiVariant = variants?.[_id]
@@ -117,7 +117,7 @@ export default async function cmsSync(args) {
 
 					patches = { 
 						...patches, 
-						...createImageMutations({ apiImages, cmsImages, name }),
+						...createImageMutations({ apiImages, cmsImages, name, sku }),
 					}
 				})
 				// the variant needs to be updated on the product in the cms
@@ -183,11 +183,7 @@ export default async function cmsSync(args) {
 					variantMutation.customFieldEntries.push({
 						fieldName: name,
 						fieldValue: {
-							images: variantImages.map(url => ({ 
-								_key: nanoid(),
-								_type: `customFieldImage`, 
-								externalUrl: url, 
-							})),
+							images: variantImages.map(url => imageFields({ url, sku })),
 						},
 					})
 				}
@@ -239,7 +235,7 @@ export default async function cmsSync(args) {
 
 				mutation = { 
 					...mutation, 
-					...createImageMutations({ apiImages, cmsImages, name }),
+					...createImageMutations({ apiImages, cmsImages, name, sku: existingBaseProduct.sku }),
 				}
       
 			})
@@ -284,7 +280,7 @@ export default async function cmsSync(args) {
 				customFieldEntries: [],
 			}
 
-			// images from salsify here
+			// new images from salsify here
 			imageTypes.forEach(imgType => {
 				const { salsifyName, name } = imgType
 				const images = baseProduct?.[salsifyName]
@@ -293,11 +289,7 @@ export default async function cmsSync(args) {
 					baseMutation.customFieldEntries.push({
 						fieldName: name,
 						fieldValue: {
-							images: images.map(url => ({ 
-								_key: nanoid(), 
-								_type: `customFieldImage`,
-								externalUrl: url,
-							})),
+							images: images.map(url => imageFields({ url, sku: productId }) ),
 						},
 					})
 				}

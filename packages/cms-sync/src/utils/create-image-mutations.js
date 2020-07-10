@@ -1,6 +1,6 @@
-import { nanoid } from 'nanoid'
+import { imageFields } from '../utils'
 
-export default function createImageMutation({ apiImages, cmsImages, name }) {
+export default function createImageMutation({ apiImages, cmsImages, name, sku }) {
 	// images that exists in the cms but not in the api
 	const imagesToDelete = cmsImages?.filter?.(({ externalUrl }) => {
 		return !apiImages?.find?.(apiUrl => apiUrl === externalUrl)
@@ -38,10 +38,9 @@ export default function createImageMutation({ apiImages, cmsImages, name }) {
 			after: `customFieldEntries[-1]`,
 			items: [{
 				fieldName: name,
-				fieldValue: { images: imagesToAdd.map(url => ({ 
-					_key: nanoid(), 
-					_type: `customFieldImage`,
-					externalUrl: url })) },
+				fieldValue: { 
+					images: imagesToAdd.map(url => imageFields({ url, sku }) ), 
+				},
 			}],
 		}
 
@@ -50,11 +49,7 @@ export default function createImageMutation({ apiImages, cmsImages, name }) {
 
 		mutation.insert = {
 			after: `customFieldEntries[fieldName == "${name}"].fieldValue.images[-1]`,
-			items: imagesToAdd.map(url => ({ 
-				_key: nanoid(),
-				_type: `customFieldImage`, 
-				externalUrl: url, 
-			})),
+			items: imagesToAdd.map(url => imageFields({ url, sku }) ),
 		}
 	}
 
