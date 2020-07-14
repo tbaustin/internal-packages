@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/utils",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Utility functions for use in Escalade Sports projects",
   "publishConfig": {
     "access": "public"
