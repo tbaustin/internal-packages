@@ -1,29 +1,22 @@
 # escalade-internal
 
-Shared packages & libraries used internally for Escalade Sports websites.
+### Shared packages & libraries used internally for Escalade Sports websites.
 
 
-# Publishing NPM packages though git cli
+## Publishing NPM packages
 
-Determine version with\
-`npm version`
+1. Make sure to be on the most up-to-date master with all changes pulled from GH & your branch merged in
 
-Bump the version with (PREFERRED METHOD)\
-`npm version patch || npm version minor || npm version major`
+2. Determine what changed in the monorepo root to double-check & verify what packages it thinks need to be versioned/published\
+`yarn changed`
 
-If you bump the version manually by editing package.json, \
-When you `git push`, TravisCI will state\
-`Skipping a deployment with the npm provider because this is not a tagged commit`\
-    To fix this, you must run\
-    `git tag [versionnumber]`
+3. Bump the version with (PREFERRED METHOD)\
+`yarn new-version`
 
-Once the version is properly set by either method\
-`git push --tags`\
-will trigger the TravisCI build, and then the NPM publish
+4. Build and Publish packages\
+`yarn new-publish`\
+or\
+`yarn build` \
+`yarn publish-packages`
 
-Then\
-`git push`\
-will commit the updated version number on github repo
-
-If the packacge is not set up to use Travis CI, then\
-`npm publish`
+If an error happens during all that, Lerna will probably leave you with a gitHead property added to all the package.json files. Discard those changes and for the love of all that is good, don't commit them to Git. Most likely, the error was with just one or two of the packages and the rest published just fine – but it will mess things up if you commit package.json files containing the gitHead property.
