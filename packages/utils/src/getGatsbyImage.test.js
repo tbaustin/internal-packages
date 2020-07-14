@@ -8,27 +8,27 @@ test(`Gatsby functions should return correct object`, () => {
 	/**
 	 * WITH SALSIFY URL - FLUID GATSBY IMAGE
 	 */
-	const salsifyFluidUrl = `http://images.salsify.com/image/upload/123xyz.jpg`
+	const salsifyFluidUrl = `https://images.salsify.com/image/upload/123xyz.jpg`
 
 	const salsifyFluidExpected = {
 		base64: testBase64,
-		src: `http://images.salsify.com/image/upload/w_800,h_600,q_90,c_fit/123xyz.jpg`,
-		srcWebp: `http://images.salsify.com/image/upload/w_800,h_600,q_90,c_fit/123xyz.webp`,
+		src: `https://images.salsify.com/image/upload/w_800,h_600,q_90,c_fit/123xyz.jpg`,
+		srcWebp: `https://images.salsify.com/image/upload/w_800,h_600,q_90,c_fit/123xyz.webp`,
 		srcSet: [
-			`http://images.salsify.com/image/upload/w_200,h_150,q_90,c_fit/123xyz.jpg 200w`,
-			`http://images.salsify.com/image/upload/w_400,h_300,q_90,c_fit/123xyz.jpg 400w`,
-			`http://images.salsify.com/image/upload/w_800,h_600,q_90,c_fit/123xyz.jpg 800w`,
-			`http://images.salsify.com/image/upload/w_1200,h_900,q_90,c_fit/123xyz.jpg 1200w`,
-			`http://images.salsify.com/image/upload/w_1600,h_1200,q_90,c_fit/123xyz.jpg 1600w`,
-			`http://images.salsify.com/image/upload/w_2400,h_1800,q_90,c_fit/123xyz.jpg 2400w`,
+			`https://images.salsify.com/image/upload/w_200,h_150,q_90,c_fit/123xyz.jpg 200w`,
+			`https://images.salsify.com/image/upload/w_400,h_300,q_90,c_fit/123xyz.jpg 400w`,
+			`https://images.salsify.com/image/upload/w_800,h_600,q_90,c_fit/123xyz.jpg 800w`,
+			`https://images.salsify.com/image/upload/w_1200,h_900,q_90,c_fit/123xyz.jpg 1200w`,
+			`https://images.salsify.com/image/upload/w_1600,h_1200,q_90,c_fit/123xyz.jpg 1600w`,
+			`https://images.salsify.com/image/upload/w_2400,h_1800,q_90,c_fit/123xyz.jpg 2400w`,
 		].join(`,\n`),
 		srcSetWebp: [
-			`http://images.salsify.com/image/upload/w_200,h_150,q_90,c_fit/123xyz.webp 200w`,
-			`http://images.salsify.com/image/upload/w_400,h_300,q_90,c_fit/123xyz.webp 400w`,
-			`http://images.salsify.com/image/upload/w_800,h_600,q_90,c_fit/123xyz.webp 800w`,
-			`http://images.salsify.com/image/upload/w_1200,h_900,q_90,c_fit/123xyz.webp 1200w`,
-			`http://images.salsify.com/image/upload/w_1600,h_1200,q_90,c_fit/123xyz.webp 1600w`,
-			`http://images.salsify.com/image/upload/w_2400,h_1800,q_90,c_fit/123xyz.webp 2400w`,
+			`https://images.salsify.com/image/upload/w_200,h_150,q_90,c_fit/123xyz.webp 200w`,
+			`https://images.salsify.com/image/upload/w_400,h_300,q_90,c_fit/123xyz.webp 400w`,
+			`https://images.salsify.com/image/upload/w_800,h_600,q_90,c_fit/123xyz.webp 800w`,
+			`https://images.salsify.com/image/upload/w_1200,h_900,q_90,c_fit/123xyz.webp 1200w`,
+			`https://images.salsify.com/image/upload/w_1600,h_1200,q_90,c_fit/123xyz.webp 1600w`,
+			`https://images.salsify.com/image/upload/w_2400,h_1800,q_90,c_fit/123xyz.webp 2400w`,
 		].join(`,\n`),
 		sizes: `(max-width: 800px) 100vw, 800px`,
 		aspectRatio: 4 / 3,
@@ -49,19 +49,19 @@ test(`Gatsby functions should return correct object`, () => {
 
 	const salsifyFixedExpected = {
 		base64: null,
-		src: `http://images.salsify.com/image/upload/w_800,h_800,q_60,c_fit/123xyz.jpg`,
-		srcWebp: `http://images.salsify.com/image/upload/w_800,h_800,q_60,c_fit/123xyz.webp`,
+		src: `https://images.salsify.com/image/upload/w_800,h_800,q_60,c_fit/123xyz.jpg`,
+		srcWebp: `https://images.salsify.com/image/upload/w_800,h_800,q_60,c_fit/123xyz.webp`,
 		srcSet: [
-			`http://images.salsify.com/image/upload/w_800,h_800,q_60,c_fit/123xyz.jpg 1x`,
-			`http://images.salsify.com/image/upload/w_1200,h_1200,q_60,c_fit/123xyz.jpg 1.5x`,
-			`http://images.salsify.com/image/upload/w_1600,h_1600,q_60,c_fit/123xyz.jpg 2x`,
-			`http://images.salsify.com/image/upload/w_2400,h_2400,q_60,c_fit/123xyz.jpg 3x`,
+			`https://images.salsify.com/image/upload/w_800,h_800,q_60,c_fit/123xyz.jpg 1x`,
+			`https://images.salsify.com/image/upload/w_1200,h_1200,q_60,c_fit/123xyz.jpg 1.5x`,
+			`https://images.salsify.com/image/upload/w_1600,h_1600,q_60,c_fit/123xyz.jpg 2x`,
+			`https://images.salsify.com/image/upload/w_2400,h_2400,q_60,c_fit/123xyz.jpg 3x`,
 		].join(`,\n`),
 		srcSetWebp: [
-			`http://images.salsify.com/image/upload/w_800,h_800,q_60,c_fit/123xyz.webp 1x`,
-			`http://images.salsify.com/image/upload/w_1200,h_1200,q_60,c_fit/123xyz.webp 1.5x`,
-			`http://images.salsify.com/image/upload/w_1600,h_1600,q_60,c_fit/123xyz.webp 2x`,
-			`http://images.salsify.com/image/upload/w_2400,h_2400,q_60,c_fit/123xyz.webp 3x`,
+			`https://images.salsify.com/image/upload/w_800,h_800,q_60,c_fit/123xyz.webp 1x`,
+			`https://images.salsify.com/image/upload/w_1200,h_1200,q_60,c_fit/123xyz.webp 1.5x`,
+			`https://images.salsify.com/image/upload/w_1600,h_1600,q_60,c_fit/123xyz.webp 2x`,
+			`https://images.salsify.com/image/upload/w_2400,h_2400,q_60,c_fit/123xyz.webp 3x`,
 		].join(`,\n`),
 		width: 800,
 		height: 800,

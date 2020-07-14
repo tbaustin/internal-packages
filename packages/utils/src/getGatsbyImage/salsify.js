@@ -41,7 +41,8 @@ export function buildSalsifyImageUrl(baseUrl, options) {
 	urlParts.push(transformString)
 
 	const urlWithTransform = `${urlParts.join(`/`)}/${fileName}`
-	return setFileExtension(urlWithTransform, extension)
+	const httpsUrl = urlWithTransform.replace(`http://`, `https://`)
+	return setFileExtension(httpsUrl, extension)
 }
 
 
