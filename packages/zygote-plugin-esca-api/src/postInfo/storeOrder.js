@@ -20,10 +20,12 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 			},
 			billing: `delivery`,
 			locations: orderLocations,
-			get discount() {
+			discounts: function() {
 				return Object.values(this.locations).reduce((discountTotal, currentLocation) => {
-					if(currentLocation.discount){
-						return discountTotal + currentLocation.discount
+					if(currentLocation.discounts){
+						return discountTotal + Object.values(currentLocation.discounts).reduce((locationDiscountTotal, currentDiscount) => {
+							return locationDiscountTotal + currentDiscount
+						}, 0)
 					}
 					return discountTotal
 				}, 0)
@@ -39,14 +41,17 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 					let taxes = currentLocation.taxes ? currentLocation.taxes.value : 0
 					return locationTotal + productTotal + shippingTotal + taxes
 				}, 0)
-				return toDollars(toCents(orderTotal) - toCents(this.discount))
+				return toDollars(toCents(orderTotal) - toCents(this.discounts()))
 			},
 		},
 	}
 	//Add discounts to each location
+	console.log(`Coupons`, coupon)
 	if(coupon) {
 		for (const [key, value] of Object.entries(coupon.locations)) {
-			orderRequest.order.locations[key].discount = value.discount
+			orderRequest.order.locations[key].discounts = {
+				[coupon.id]: value.discount,
+			} 
 		}
 	}
 
