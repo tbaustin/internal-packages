@@ -10,65 +10,10 @@ Included functions:
   - [unformatPrice](#unformatprice)
   - [toCents](#tocents)
   - [toDollars](#todollars)
-- [getGatsbyImage](#getGatsbyImage)
-  - [getFixedGatsbyImage](#getFixedGatsbyImage)
-  - [getFluidGatsbyImage](#getFluidGatsbyImage)
----
-# `getGatsbyImage`
+- [Image Functions](#image-functions)
+  - [getFixedGatsbyImage and getFluidGatsbyImage](#getFixedGatsbyImage-and-getFluidGatsbyImage)
+  - [buildSalsifyImageUrl](#buildSalsifyImageUrl)
 
-Creates a fixed/fluid objec to pass to [Gatsby Image](https://www.gatsbyjs.org/packages/gatsby-image/). Will work fully with salsify/sanity (besides base64 on salsify images), and partially with other urls.
-
-### Example usage:
-```jsx
-import { getFixedGatsbyImage, getFluidGatsbyImage } from '@escaladesports/utils'
-import Img from 'gatsby-image'
-
-// Salsify Fixed/Fluid
-const salsifyUrl = `http://images.salsify.com/image/upload/s--q4bsEzUQ--/qqfmqkexp77wmzirnvrv.jpg`
-
-const salsifyFixed = getFixedGatsbyImage(salsifyUrl, { maxWidth: 1600 })
-const salsifyFluid = getFluidGatsbyImage(salsifyUrl, { width: 800 })
-
-// With Gatsby Image
-return (
-  <>
-    <Img fixed={salsifyFixed} />
-    <Img fluid={salsifyFluid} />
-  </>
-)
-
-// Sanity Fixed/Fluid
-const sanityConfig = {
-  projectId: `yourProjectId`,
-  dataset: `yourDataset`,
-}
-const sanityImageId = `image-ae1185e833772f2c39366f69a425d78ae5517965-2000x2000-png`
-
-const sanityFixed = getFixedGatsbyImage(sanityImageId, { maxWidth: 1600 }, sanityConfig)
-const sanityFluid = getFluidGatsbyImage(sanityImageId, { width: 800 }, sanityConfig)
-
-// With Gatsby Image
-return (
-  <>
-    <Img fixed={sanityFixed} />
-    <Img fluid={sanityFluid} />
-  </>
-)
-
-// Other Fixed/Fluid
-const otherUrl = `https://via.placeholder.com/1600`
-
-const otherFixed = getFixedGatsbyImage(otherUrl, { maxWidth: 1600 })
-const otherFluid = getFluidGatsbyImage(otherUrl, { width: 800 })
-
-// With Gatsby Image
-return (
-  <>
-    <Img fixed={otherFixed} />
-    <Img fluid={otherFluid} />
-  </>
-)
-```
 ---
 
 # `graphToArray`
@@ -313,4 +258,93 @@ toDollars(undefined, true)  // ``
 
 toDollars(false)            // null
 toDollars(false, true)      // ``
+```
+
+---
+
+# `Image Functions`
+
+## `getFixedGatsbyImage` and `getFluidGatsbyImage`
+
+Creates a fixed/fluid object to pass to [Gatsby Image](https://www.gatsbyjs.org/packages/gatsby-image/). Works fully with Sanity asset IDs and Salsify URLs. Works partially with all other image URLs (multiple sizes are not generated).
+
+### Example usage:
+```jsx
+import { getFixedGatsbyImage, getFluidGatsbyImage } from '@escaladesports/utils'
+import Img from 'gatsby-image'
+
+// Salsify Fixed/Fluid
+const salsifyUrl = `http://images.salsify.com/image/upload/s--q4bsEzUQ--/qqfmqkexp77wmzirnvrv.jpg`
+
+const salsifyFixed = getFixedGatsbyImage(salsifyUrl, { maxWidth: 1600 })
+const salsifyFluid = getFluidGatsbyImage(salsifyUrl, { width: 800 })
+
+// With Gatsby Image
+return (
+  <>
+    <Img fixed={salsifyFixed} />
+    <Img fluid={salsifyFluid} />
+  </>
+)
+
+// Sanity Fixed/Fluid
+const sanityConfig = {
+  projectId: `yourProjectId`,
+  dataset: `yourDataset`,
+}
+const sanityImageId = `image-ae1185e833772f2c39366f69a425d78ae5517965-2000x2000-png`
+
+const sanityFixed = getFixedGatsbyImage(sanityImageId, { maxWidth: 1600 }, sanityConfig)
+const sanityFluid = getFluidGatsbyImage(sanityImageId, { width: 800 }, sanityConfig)
+
+// With Gatsby Image
+return (
+  <>
+    <Img fixed={sanityFixed} />
+    <Img fluid={sanityFluid} />
+  </>
+)
+
+// Other Fixed/Fluid
+const otherUrl = `https://via.placeholder.com/1600`
+
+const otherFixed = getFixedGatsbyImage(otherUrl, { maxWidth: 1600 })
+const otherFluid = getFluidGatsbyImage(otherUrl, { width: 800 })
+
+// With Gatsby Image
+return (
+  <>
+    <Img fixed={otherFixed} />
+    <Img fluid={otherFluid} />
+  </>
+)
+```
+
+## `buildSalsifyImageUrl`
+
+Takes an existing Salsify image URL and inserts image transformation parameters based on options passed. Any existing transformation parameters in the original URL are detected and replaced.
+
+### Arguments
+1. Original URL
+2. Options object
+
+### Options Object
+| Property    | Prefix in URL | Default |
+| ---         | ---           | ---     |
+| `width`     | `w_`          |         |    
+| `height`    | `h_`          |         |
+| `quality`   | `q_`          | `60`    |
+| `cropMode`  | `c_`          | `"fit"` |
+
+### Example usage:
+
+```javascript
+const url = `http://images.salsify.com/image/upload/w_2000,h_2000/abc123.jpg`
+
+const fullUrl = buildSalsifyImageUrl(url, {
+  width: 1200,
+  quality: 90,
+  cropMode: `fill`
+})
+// output: `http://images.salsify.com/image/upload/w_1200,q_90,c_fill/abc123.jpg`
 ```
