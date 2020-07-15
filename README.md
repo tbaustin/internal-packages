@@ -34,7 +34,7 @@ or:
 yarn build
 yarn publish-packages
 ```
-If an error happens during this step, see [Gotchas and Important Notes](#publish-errors-and-githead) below.
+If an error happens during this step, see [Gotchas and Important Notes](#publish-errors-and-githead-in-packagejson) below.
 
 ---
 
