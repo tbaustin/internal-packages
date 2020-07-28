@@ -1,5 +1,3 @@
-import 'core-js'
-import 'regenerator-runtime/runtime'
 import apiRequest from './api-request'
 import { LoadProducts } from './products'
 import { ShippingQuotes } from './shipping'

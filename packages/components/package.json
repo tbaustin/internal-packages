@@ -10,15 +10,14 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
-    "@escaladesports/babel-preset": "^1.0.3",
-    "jest": "^25.1.0"
+    "@escaladesports/babel-preset": "^2.7.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@emotion/core": "^10.0.28",
-    "gatsby": "^2.19.45",
+    "gatsby": "^2.24.12",
     "lodash": "^4.17.15"
   },
   "publishConfig": {

@@ -1,5 +1,3 @@
-import 'core-js'
-import 'regenerator-runtime/runtime'
 import _get from 'lodash/get'
 import sampleSchema from './sample-schema'
 
