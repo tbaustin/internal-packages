@@ -32,9 +32,10 @@ const  coupons = async (info, products, callback) => {
 		return {
 			coupon: {
 				id: info.coupon,
-				description: response.label,
+				description: response.label || `Coupon`,
 				value: 0 - toCents(response.discount),
 				type: response.type || `discount`,
+				dollarDiscount: response.discount,
 				locations: response.locations,
 			},
 		}

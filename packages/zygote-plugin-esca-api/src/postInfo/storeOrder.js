@@ -46,13 +46,15 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 		},
 	}
 	//Add discounts to each location
-	console.log(`Coupons`, coupon)
 	if(coupon) {
-		for (const [key, value] of Object.entries(coupon.locations)) {
-			orderRequest.order.locations[key].discounts = {
-				[coupon.id]: value.discount,
-			} 
-		}
+		//This works with AWS coupon service
+		// for (const [key, value] of Object.entries(coupon.locations)) {
+		// 	orderRequest.order.locations[key].discounts = {
+		// 		[coupon.id]: value.discount,
+		// 	} 
+		// }
+		const firstLocation = Object.keys(orderRequest.order.locations)[0]
+		orderRequest.order.locations[firstLocation].discounts = {[coupon.id]: coupon.dollarDiscount }
 	}
 
 	var {

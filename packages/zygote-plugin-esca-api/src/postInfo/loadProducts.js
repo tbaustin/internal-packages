@@ -12,7 +12,6 @@ const  loadProducts = async (skus, products, callback) => {
 		response[sku].qty = product.quantity
 		//find location with most quantity or default to 1st
 		const locations = Object.entries(response[sku].all_stocks)
-		console.log(`locations entries`, locations)
 		const itemLocation = locations.reduce((location, currentLocation) => {
 			const [, val] = location
 			const [, curVal] = currentLocation
@@ -20,12 +19,10 @@ const  loadProducts = async (skus, products, callback) => {
 			return location
 		}, locations[0])
 
-		console.log(`location reduced`, itemLocation)
 		const [name, val] = itemLocation
 		response[sku].location = {
 			[name]: val,
 		}
-		console.log(`load products response`, response)
 	})
 	
 	return response
