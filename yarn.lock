@@ -1412,19 +1412,6 @@
     react-input-mask "^2.0.3"
     statable "^1.0.1"
 
-"@escaladesports/zygote-plugin-esca-api@^4.1.1":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@escaladesports/zygote-plugin-esca-api/-/zygote-plugin-esca-api-4.1.2.tgz#15f968e7fab4e1f281973fdfa327ae12c3dccaf3"
-  integrity sha512-Vplf/f31yev+i2o1x5AeU9d6NQo+EiZKHYJIV/aor+3snm4GzcCOTH67p6Chs5VQjg7EI0SMNMe8GmudAMSHrg==
-  dependencies:
-    "@escaladesports/esca-api-client" "^3.0.0"
-    "@escaladesports/utils" "^2.0.0"
-    "@escaladesports/zygote-cart" "^4.0.0"
-    "@sentry/browser" "^5.2.0"
-    isomorphic-fetch "^2.2.1"
-    react-load-script "^0.0.6"
-    shortid "^2.2.14"
-
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@evocateur/libnpmaccess/-/libnpmaccess-3.1.2.tgz#ecf7f6ce6b004e9f942b098d92200be4a4b1c845"
