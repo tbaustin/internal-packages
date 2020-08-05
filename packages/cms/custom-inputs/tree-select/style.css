@@ -1,0 +1,11 @@
+
+.esca-tree-input .dropdown-content {
+  padding: 10px !important;
+  z-index: 9001 !important;
+}
+
+.esca-tree-input-label {
+  color: rgb(48, 48, 48);
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}

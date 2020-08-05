@@ -1,0 +1,124 @@
+
+fragment CategoryFields on Category {
+  _id
+  _type
+  name
+  slug {
+    current
+  }
+  ancestry {
+    _id
+    _type
+    name
+    slug {
+      current
+    }
+  }
+  description
+  banner {
+    asset {
+      _ref
+    }
+  }
+  video {
+    nonFile {
+      url
+      youtubeID
+    }
+    # file {
+    #   asset {
+    #     url
+    #   }
+    # }
+  }
+  template {
+    _ref
+  }
+}
+
+
+fragment ProductFields on BaseProduct {
+  _type
+  _id
+  sku
+  slug {
+    current
+  }
+  relatedProducts {
+    _id
+    sku
+  }
+  categories {
+    _id
+    name
+    slug {
+      current
+    }
+    ancestry {
+      _id
+      name
+      slug {
+        current
+      }
+    }
+  }
+  salsify
+  customFieldEntries
+  variants {
+    _type
+    _id
+    sku
+    price
+    stock
+    salsify
+    customFieldEntries
+  }
+  template {
+    _id
+  }
+}
+
+
+query {
+  sanityPersistedSchema(_id: { eq: "sanity-schema" }) {
+    json
+  }
+  allCategory {
+    nodes {
+      ...CategoryFields
+    }
+  }
+  allBaseProduct {
+    nodes {
+      ...ProductFields
+    }
+  }
+  allSanityTemplate {
+    nodes {
+      _id
+      title
+      path
+      breadcrumbs {
+        title
+        path
+        category {
+          dataSource {
+            category {
+              _id
+              name
+              slug {
+                current
+              }
+              _rawParent
+            }
+            templateVariable
+            useTemplateDataSource
+          }
+          insertParentCategories
+          disableLastLink
+        }
+      }
+      _rawContent(resolveReferences: { maxDepth: 5 })
+    }
+  }
+}

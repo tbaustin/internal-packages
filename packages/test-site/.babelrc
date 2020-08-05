@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "babel-preset-gatsby",
+    [
+      "@escaladesports/babel-preset",
+      {
+        "gatsby": true
+      }
+    ]
+  ]
+}
