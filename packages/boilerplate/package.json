@@ -1,6 +1,9 @@
 {
   "name": "@escaladesports/boilerplate",
   "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "boilerplate": "bin/index.js",
     "esca": "bin/index.js"

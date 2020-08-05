@@ -1,6 +1,9 @@
 {
   "name": "@escaladesports/cms",
   "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "sanity start",
     "test": "sanity check",
