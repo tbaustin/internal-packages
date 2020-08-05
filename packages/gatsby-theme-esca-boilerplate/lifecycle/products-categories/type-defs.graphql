@@ -1,0 +1,84 @@
+type Reference {
+  _ref: String
+}
+
+type ResolvedTemplateReference {
+  _id: String
+  path: String
+  title: String
+}
+
+type BaseProduct implements Node @infer {
+  _id: String
+  _type: String
+  sku: String
+  slug: Slug
+  categories: [Category]
+  variants: [Variant]
+  customFieldEntries: JSON
+  salsify: JSON
+  template: ResolvedTemplateReference
+  relatedProducts: [RelatedProduct]
+}
+
+type RelatedProduct {
+  _id: String
+  sku: String
+}
+
+type Variant {
+  _id: String
+  _type: String
+  sku: String
+  price: Float
+  stock: Int
+  customFieldEntries: JSON
+  salsify: JSON
+}
+
+type Slug {
+  current: String
+}
+
+type Asset {
+  _id: String
+  _ref: String
+  url: String
+}
+
+type Image {
+  asset: Asset
+}
+
+type VideoNonFileSource {
+  url: String
+  youtubeID: String
+}
+
+type VideoFileSource {
+  asset: Asset
+}
+
+type Video {
+  nonFile: VideoNonFileSource
+  file: VideoFileSource
+}
+
+type AncestorCategory {
+  _id: String
+  _type: String
+  name: String
+  slug: Slug
+}
+
+type Category implements Node @infer {
+  _id: String
+  ancestry: [AncestorCategory]
+  slug: Slug
+  name: String
+  description: String
+  banner: Image
+  video: Video
+  parent: Reference
+  template: ResolvedTemplateReference
+}

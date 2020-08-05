@@ -11,16 +11,6 @@
 		"new-version": "npx lerna version --yes",
 		"new-publish": "run-s build publish-packages"
 	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"lint-staged": {
-		"!(legacy|node_modules)/**/*.js": [
-			"eslint --fix"
-		]
-	},
 	"devDependencies": {
 		"@escaladesports/eslint-config": "^0.0.4",
 		"eslint": "^6.8.0",
