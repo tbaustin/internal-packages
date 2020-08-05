@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/boilerplate",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -10,7 +10,7 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@escaladesports/cms": "^0.0.2",
+    "@escaladesports/cms": "^0.0.3",
     "@escaladesports/cms-sync": "^1.0.0",
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
