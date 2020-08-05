@@ -1,15 +1,15 @@
 {
   "name": "test-site",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "gatsby": "^2.24.12",
-    "@escaladesports/boilerplate": "^0.0.1",
-    "netlify-lambda": "^2.0.1",
+    "@escaladesports/boilerplate": "^0.0.2",
     "@sanity/cli": "^1.149.9",
+    "gatsby": "^2.24.12",
+    "netlify-lambda": "^2.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
