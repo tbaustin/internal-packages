@@ -44,7 +44,6 @@ exports.handler = async () => {
 
   // Build Sanity Studio in public/admin directory
   console.log(chalk.blueBright(`\nBuilding Sanity Studio...\n`))
-  // sanity build ../site/public/admin -y
   const studioPathAbs = `${dirs.site}/public/admin`
   const studioPathRel = path.relative(dirs.cms, studioPathAbs)
   child_process.spawn(
@@ -62,7 +61,12 @@ exports.handler = async () => {
   const configPathRel = path.relative(dirs.site, configPathAbs)
   child_process.spawnSync(
     `netlify-lambda`,
-    [`build`, `--config`, configPathRel, `netlify-functions`],
+    [
+      `build`,
+      `--babelrc`, `false`,
+      `--config`, configPathRel,
+      `netlify-functions`
+    ],
     {
       cwd: dirs.site,
       stdio: `inherit`

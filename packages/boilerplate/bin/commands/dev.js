@@ -50,7 +50,12 @@ exports.handler = async (argv) => {
   const configPathRel = path.relative(dirs.site, configPathAbs)
   child_process.spawn(
     `netlify-lambda`,
-    [`serve`, `--config`, configPathRel, `netlify-functions`],
+    [
+      `serve`,
+      `--babelrc`, `false`,
+      `--config`, configPathRel,
+      `netlify-functions`
+    ],
     {
       cwd: dirs.site,
       stdio: `inherit`
