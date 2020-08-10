@@ -22,16 +22,6 @@ module.exports = {
 		`gatsby-plugin-sitemap`,
 		`gatsby-transformer-sharp`,
 		`gatsby-plugin-sharp`,
-		// {
-    //   resolve: `gatsby-plugin-module-resolver`,
-    //   options: {
-    //     aliases: {
-		// 			config: path.relative(dirs.gatsbyTheme, configPath),
-		// 			site: path.relative(dirs.gatsbyTheme, dirs.site),
-		// 			boilerplate: `gatsby-theme-esca-boilerplate`
-    //     }
-    //   }
-    // },
 		{
 			resolve: `gatsby-plugin-alias-imports`,
 			options: {
