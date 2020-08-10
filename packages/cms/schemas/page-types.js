@@ -1,6 +1,6 @@
 import * as widgetTypes from './widget-types'
-import PageIcon from 'react-icons/lib/fa/file'
-import TemplateIcon from 'react-icons/lib/fa/copy'
+import { FaFile as PageIcon } from 'react-icons/fa'
+import { FaCopy as TemplateIcon} from 'react-icons/fa'
 import { path as pathValidation } from '../validation'
 
 
