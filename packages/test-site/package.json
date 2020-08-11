@@ -1,12 +1,12 @@
 {
   "name": "test-site",
   "private": true,
-  "version": "0.0.5",
+  "version": "0.0.6",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@escaladesports/boilerplate": "^0.0.6",
+    "@escaladesports/boilerplate": "^0.0.7",
     "@sanity/cli": "^1.149.9",
     "gatsby": "^2.24.12",
     "netlify-lambda": "^2.0.1",
