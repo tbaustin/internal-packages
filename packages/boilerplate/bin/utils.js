@@ -1,7 +1,6 @@
 const path = require(`path`)
 const { outputJson, copy, remove } = require(`fs-extra`)
 const chalk = require(`chalk`)
-const dirs = require(`./../dirs`)
 
 
 const warn = text => console.log(chalk.yellow(text))
@@ -11,15 +10,16 @@ const resolveDir = moduleName => path.dirname(require.resolve(moduleName))
 const cwd = process.cwd()
 
 
-async function setDirs() {
-  const dirs = {
-    cli: path.resolve(__dirname, `..`),
-    site: cwd,
-    gatsbyTheme: resolveDir(`gatsby-theme-esca-boilerplate/package.json`),
-    cms: resolveDir(`@escaladesports/cms/package.json`),
-    tempCms: `${cwd}/temp-cms`
-  }
+const dirs = {
+  cli: path.resolve(__dirname, `..`),
+  site: cwd,
+  gatsbyTheme: resolveDir(`gatsby-theme-esca-boilerplate/package.json`),
+  cms: resolveDir(`@escaladesports/cms/package.json`),
+  tempCms: `${cwd}/temp-cms`
+}
 
+
+async function setDirs() {
   try {
     await outputJson(`${dirs.cli}/dirs.json`, dirs, { spaces: `\t` })
   }
