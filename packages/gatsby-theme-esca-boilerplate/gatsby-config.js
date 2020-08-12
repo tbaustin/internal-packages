@@ -9,7 +9,7 @@ const siteConfig = require(configPath)
 const isDevMode = process.env.NODE_ENV === `development`
 
 
-module.exports = {
+module.exports = ({ icon }) => ({
 	siteMetadata: {
 		title: `Escalade Website Boilerplate`,
 		description: `Test boilerplate website & CMS`,
@@ -18,7 +18,6 @@ module.exports = {
 	},
 	plugins: [
 		`gatsby-plugin-react-helmet`,
-		// `gatsby-plugin-loadable-components-ssr`,
 		`gatsby-plugin-sitemap`,
 		`gatsby-transformer-sharp`,
 		`gatsby-plugin-sharp`,
@@ -26,7 +25,7 @@ module.exports = {
 			resolve: `gatsby-plugin-alias-imports`,
 			options: {
 				alias: {
-					config: `${dirs.site}/config`
+					config: configPath
 				}
 			}
 		},
@@ -46,13 +45,6 @@ module.exports = {
 			},
 		},
 		{
-			resolve: `gatsby-source-filesystem`,
-			options: {
-				name: `images`,
-				path: `${dirs.site}/src/images`,
-			},
-		},
-		{
 			resolve: `gatsby-plugin-emotion`,
 			options: {
 				hoist: true,
@@ -68,7 +60,7 @@ module.exports = {
 				background_color: `#45A4EC`,
 				theme_color: `#45A4EC`,
 				display: `minimal-ui`,
-				icon: `${dirs.site}/src/images/escalade-icon.png`,
+				icon: icon || `${dirs.gatsbyTheme}/static/icon.png`,
 				// icon: `src/images/escalade-icon.png`
 			},
 		},
@@ -83,4 +75,4 @@ module.exports = {
 		},
 	],
 	developMiddleware
-}
+})
