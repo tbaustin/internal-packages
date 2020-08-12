@@ -1,1 +1,6 @@
 netlify.toml
+node_modules
+public
+.cache
+.env
+temp-cms
