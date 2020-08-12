@@ -1,7 +1,7 @@
 const child_process = require(`child_process`)
 const path = require(`path`)
+const { notify, copyTempCms } = require(`./../utils`)
 const dirs = require(`./../../dirs`)
-const chalk = require(`chalk`)
 const createNetlifyConfig = require(`../create-netlify-config`)
 const createSanityConfig = require(`../create-sanity-config`)
 
@@ -15,14 +15,14 @@ exports.handler = async () => {
    * Regenerate Netlify & Sanity configs
    */
   try {
-    console.log(chalk.blueBright(
-      `Regenerating configs for Netlify and Sanity...`
-    ))
-
+    notify(`Regenerating configs for Netlify and Sanity...`)
     await createNetlifyConfig()
     await createSanityConfig()
+    notify(`Configs rewritten!\n`)
 
-    console.log(chalk.blueBright(`Configs rewritten!\n`))
+    notify(`Making temp copy of CMS directory...`)
+    await copyTempCms()
+    notify(`Copy made!\n`)
   }
   catch(err) {
 		console.error(err)
@@ -36,27 +36,27 @@ exports.handler = async () => {
   })
 
   // Run `gatsby build`
-  console.log(chalk.blueBright(`\nBuilding Gatsby site...\n`))
+  notify(`\nBuilding Gatsby site...\n`)
   const buildProcess = child_process.spawnSync(`gatsby`, [`build`], {
     cwd: dirs.site,
     stdio: `inherit`
   })
 
   // Build Sanity Studio in public/admin directory
-  console.log(chalk.blueBright(`\nBuilding Sanity Studio...\n`))
+  notify(`\nBuilding Sanity Studio...\n`)
   const studioPathAbs = `${dirs.site}/public/admin`
-  const studioPathRel = path.relative(dirs.cms, studioPathAbs)
+  const studioPathRel = path.relative(dirs.tempCms, studioPathAbs)
   child_process.spawn(
     `sanity`,
     [`build`, studioPathRel, `-y`],
     {
-      cwd: dirs.cms,
+      cwd: dirs.tempCms,
       stdio: `inherit`
     }
   )
 
   // Build Netlify functions
-  console.log(chalk.blueBright(`\nBuilding Netlify functions...\n`))
+  notify(`\nBuilding Netlify functions...\n`)
   const configPathAbs = `${dirs.cli}/webpack.functions.js`
   const configPathRel = path.relative(dirs.site, configPathAbs)
   child_process.spawnSync(

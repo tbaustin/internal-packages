@@ -1,6 +1,6 @@
-const path = require(`path`)
-const chalk = require(`chalk`)
 const child_process = require(`child_process`)
+const path = require(`path`)
+const { notify, copyTempCms } = require(`./../utils`)
 const dirs = require(`./../../dirs`)
 const createNetlifyConfig = require(`../create-netlify-config`)
 const createSanityConfig = require(`../create-sanity-config`)
@@ -10,19 +10,19 @@ exports.command = `dev`
 exports.describe = `Runs entire stack in development mode`
 
 
-exports.handler = async (argv) => {
+exports.handler = async () => {
   /**
    * Regenerate Netlify & Sanity configs
    */
   try {
-    console.log(chalk.blueBright(
-      `Regenerating configs for Netlify and Sanity...`
-    ))
-
+    notify(`Regenerating configs for Netlify and Sanity...`)
     await createNetlifyConfig()
     await createSanityConfig()
+    notify(`Configs rewritten!\n`)
 
-    console.log(chalk.blueBright(`Configs rewritten!\n`))
+    notify(`Making temp copy of CMS directory...`)
+    await copyTempCms()
+    notify(`Copy made!\n`)
   }
   catch(err) {
 		console.error(err)
@@ -39,7 +39,7 @@ exports.handler = async (argv) => {
    * Start Sanity Studio dev server
    */
   child_process.spawn(`sanity`, [`start`], {
-    cwd: dirs.cms,
+    cwd: dirs.tempCms,
     stdio: `inherit`
   })
 

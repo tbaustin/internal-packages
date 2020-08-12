@@ -1,8 +1,8 @@
 /* eslint-disable no-empty */
 const { join } = require(`path`)
 const fetch = require(`isomorphic-fetch`)
-const chalk = require(`chalk`)
 const { readFile, outputFile } = require(`fs-extra`)
+const { notify, warn } = require(`./../utils`)
 const dirs = require(`./../../dirs`)
 const homeDir = require(`os`).homedir()
 const { siteId } = require(`${dirs.site}/config`)
@@ -46,7 +46,7 @@ const fetchToken = async () => {
 		return tokens.find(Boolean)
 	}
 	catch(err) {
-		console.error(`Can't find key\nPlease install and login with Netlify CLI`)
+		warn(`Can't find key.\nPlease install and login with Netlify CLI.\n`)
 		console.error(err)
 		return null
 	}
@@ -67,7 +67,7 @@ const fetchEnv = async (token, id) => {
 		return data.build_settings.env
 	}
 	catch(err) {
-		console.error(`Can't fetch environment from Netlify`)
+		warn(`Can't fetch environment from Netlify`)
 		return null
 	}
 }
@@ -90,12 +90,10 @@ exports.describe = `Copies Netlify environment variables to local .env file`
 
 
 exports.handler = async () => {
-  console.log(
-		chalk.blueBright(`Copying environment variables from Netlify...`)
-	)
+  notify(`Copying environment variables from Netlify...`)
 
 	if (!siteId) {
-		console.error(`No site ID found.`)
+		warn(`No site ID found.`)
 		return
 	}
 
@@ -103,12 +101,10 @@ exports.handler = async () => {
 	 	const token = await fetchToken()
 		const env = await fetchEnv(token, siteId)
 		await writeDotenv(env)
-		console.log(
-			chalk.blueBright(`Environment variables copied!\n`)
-		)
+		notify(`Environment variables copied!\n`)
 	}
 	catch(err) {
-		console.error(`Unable to copy environment variables from Netlify`)
+		warn(`Unable to copy environment variables from Netlify. See below.\n`)
 		console.error(err)
 	}
 }

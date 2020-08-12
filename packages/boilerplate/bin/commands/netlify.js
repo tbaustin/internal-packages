@@ -1,5 +1,5 @@
-const chalk = require(`chalk`)
-const createNetlifyConfig = require(`../create-netlify-config`)
+const { notify, warn } = require(`./../utils`)
+const createNetlifyConfig = require(`./../create-netlify-config`)
 
 
 exports.command = `netlify`
@@ -8,12 +8,14 @@ exports.describe = `Creates the netlify.toml file in website project`
 
 exports.handler = async () => {
   try {
-		console.log(chalk.blueBright(`Creating Netlify config...`))
+		notify(`Creating Netlify config...`)
 		await createNetlifyConfig()
-		console.log(chalk.blueBright(`Netlify config created!\n`))
+		notify(`Netlify config created!\n`)
 	}
 	catch(err) {
+    warn(`Unable to create Netlify config. See below.\n`)
 		console.error(err)
+    warn(`\nExiting...\n`)
 		process.exit(1)
 	}
 }

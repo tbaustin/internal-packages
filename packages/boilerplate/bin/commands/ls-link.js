@@ -1,7 +1,7 @@
 const fs = require(`fs`)
 const util = require(`util`)
 const readDir = util.promisify(fs.readdir)
-const chalk = require(`chalk`)
+const { notify } = require(`./../utils`)
 const dirs = require(`./../../dirs`)
 
 
@@ -31,13 +31,10 @@ async function getLinkedPackageNames(searchPath, parentNamespace) {
 }
 
 
-const message = chalk.bold.cyan(
-  `\nThese packages are locally linked to your current project:`
-)
-
-const noPackagesMessage = chalk.bold.yellowBright(`
+const message = `\nThese packages are locally linked to your current project:`
+const noPackagesMessage = `
   There are no packages locally linked to your current project.
-`)
+`
 
 
 exports.command = `ls-link`
@@ -50,11 +47,11 @@ exports.handler = async () => {
     let linkedPackageNames = await getLinkedPackageNames(modulesPath)
 
     if (!linkedPackageNames.length) {
-      console.log(noPackagesMessage)
+      notify(noPackagesMessage)
       return
     }
 
-    console.log(message)
+    notify(message)
     console.log(
       linkedPackageNames
         .map(name => `\t${name}`)
@@ -64,6 +61,6 @@ exports.handler = async () => {
   catch(err) {
     // Just don't show errors...we don't care :P
     // (most likely node_modules not existing)
-    console.log(noPackagesMessage)
+    notify(noPackagesMessage)
   }
 }
