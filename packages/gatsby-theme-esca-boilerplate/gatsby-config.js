@@ -19,8 +19,6 @@ module.exports = ({ icon }) => ({
 	plugins: [
 		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-sitemap`,
-		`gatsby-transformer-sharp`,
-		`gatsby-plugin-sharp`,
 		{
 			resolve: `gatsby-plugin-alias-imports`,
 			options: {
