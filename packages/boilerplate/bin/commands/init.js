@@ -27,6 +27,9 @@ async function initProjectFiles() {
       version: `0.0.0`,
       private: true,
       scripts: {
+        env: `esca env`,
+        netlify: `esca netlify`,
+        "ls-link": `esca ls-link`,
         dev: `esca dev`,
         build: `esca build`
       },
@@ -121,6 +124,17 @@ exports.handler = async () => {
   try {
     await initProjectFiles()
     notify(`Files written!\n`)
+    notify(`
+      Next steps:
+      \t- Add a name in package.json
+      \t- Fill out config.js with necessary info
+      \t- Run 'nvm use'
+      \t- Run 'yarn'
+      \t- Run 'yarn env'
+      \t- Run 'yarn netlify'
+      \t- Run 'git init'
+      \t- Push repo to GitHub
+    `)
   }
   catch(err) {
     warn(`Unable to initialize project. See below.\n`)
