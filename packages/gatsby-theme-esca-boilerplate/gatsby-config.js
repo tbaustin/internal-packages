@@ -23,7 +23,8 @@ module.exports = ({ icon }) => ({
 			resolve: `gatsby-plugin-alias-imports`,
 			options: {
 				alias: {
-					config: configPath
+					config: configPath,
+					boilerplate: `${dirs.gatsbyTheme}/src`
 				}
 			}
 		},

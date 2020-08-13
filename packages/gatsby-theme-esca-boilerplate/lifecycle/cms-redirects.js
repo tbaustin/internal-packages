@@ -1,7 +1,7 @@
-const { resolve } = require(`path`)
 const { readFile, outputFile } = require(`fs-extra`)
 const chalk = require(`chalk`)
-const redirectsPath = resolve(`./../../public/_redirects`)
+const dirs = require(`@escaladesports/boilerplate/dirs`)
+const redirectsPath = `${dirs.site}/public/_redirects`
 
 
 /**
