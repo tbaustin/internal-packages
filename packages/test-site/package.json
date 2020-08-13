@@ -5,10 +5,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "dev": "esca dev",
+    "build": "esca build"
+  },
   "dependencies": {
     "@escaladesports/boilerplate": "^0.0.10",
     "@sanity/cli": "^1.149.9",
     "gatsby": "^2.24.12",
+    "gatsby-plugin-compile-es6-packages": "^2.1.0",
     "netlify-lambda": "^2.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
