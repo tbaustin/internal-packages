@@ -12,6 +12,7 @@
   "dependencies": {
     "@escaladesports/cms": "^0.0.5",
     "@escaladesports/cms-sync": "^1.0.0",
+    "boxen": "^4.2.0",
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "fs-extra": "^8.1.0",

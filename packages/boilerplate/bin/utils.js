@@ -1,7 +1,20 @@
 const path = require(`path`)
 const { outputJson, copy, remove } = require(`fs-extra`)
 const chalk = require(`chalk`)
+const boxen = require(`boxen`)
 
+
+const welcome = () => console.log(
+  boxen(
+    `Welcome to the Escalade Sports Website Boilerplate`,
+    {
+      padding: 1,
+      borderStyle: `round`,
+      borderColor: `blue`,
+      float: `center`
+    }
+  )
+)
 
 const warn = text => console.log(chalk.yellow(text))
 const notify = text => console.log(chalk.blueBright(text))
@@ -71,6 +84,7 @@ async function copyTempCms() {
 
 
 module.exports = {
+  welcome,
   warn,
   notify,
   setDirs,
