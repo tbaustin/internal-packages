@@ -71,6 +71,11 @@ export default [
 				type: `string`,
 			},
 			{
+				name: `rating`,
+				title: `Rating`,
+				type: `number`,
+			},
+			{
 				name: `info`,
 				title: `Other Info`,
 				type: `miscInfo`,

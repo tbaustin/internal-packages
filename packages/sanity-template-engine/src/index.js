@@ -107,7 +107,9 @@ const convertPath = (colonPath = ``, data = {}) => {
  */
 const resolveProperty = (colonPath, data = defaultData) => {
 	const dotPath = convertPath(colonPath, data)
-	return _get(data, dotPath) || ``
+	const value = _get(data, dotPath)
+
+	return value === 0 ? 0 : value || ``
 }
 
 

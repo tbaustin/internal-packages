@@ -2,6 +2,7 @@
 export default {
 	_type: `movie`,
 	title: `The Matrix`,
+	rating: 0,
 	info: {
 		_type: `miscInfo`,
 		synopsis: (

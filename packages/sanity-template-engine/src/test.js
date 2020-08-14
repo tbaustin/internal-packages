@@ -8,6 +8,7 @@ const engine = TemplateEngine({ schema, data })
 
 test(`Resolves a single property by field title`, () => {
   expect(engine.resolveProperty(`Title`)).toBe(`The Matrix`)
+  expect(engine.resolveProperty(`Rating`)).toBe(0)
   expect(engine.resolveProperty(`Other Info:Release Year`)).toBe(1999)
   expect(engine.resolveProperty(`Other Info:Tags:2`)).toBe(`Sci-Fi`)
 
