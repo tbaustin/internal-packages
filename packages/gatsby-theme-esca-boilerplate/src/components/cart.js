@@ -75,6 +75,7 @@ export default function Cart() {
 				zygoteEscaApi,
 				zygoteActiveCampaign
 			]}
+			customerServiceTel="800-694-9494"
 			{...reCaptchaProps}
 			totalModifications={[
 				{
