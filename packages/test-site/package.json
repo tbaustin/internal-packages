@@ -7,7 +7,9 @@
   "license": "ISC",
   "scripts": {
     "dev": "esca dev",
-    "build": "esca build"
+    "build": "esca build",
+    "serve": "esca serve",
+    "ls-link": "esca ls-link"
   },
   "dependencies": {
     "@escaladesports/boilerplate": "^0.0.13",
