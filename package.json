@@ -4,6 +4,7 @@
 	"scripts": {
 		"bootstrap": "npx lerna bootstrap --use-workspaces",
 		"build": "npx lerna run --ignore test-site build --stream",
+		"build:all": "npx lerna run build --stream",
 		"clean:all": "npx lerna run clean --stream",
 		"clean": "npx lerna clean",
 		"changed": "npx lerna changed",
