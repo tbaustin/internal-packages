@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { css } from '@emotion/core'
 import { useStaticQuery, graphql } from 'gatsby'
-import { getFixedGatsbyImage } from 'gatsby-source-sanity'
+import { getFixedGatsbyImage } from '@escaladesports/utils'
 import { addToCart } from '@escaladesports/zygote-cart'
 import { formatPrice, toCents } from '@escaladesports/utils'
 import { useTemplateEngine } from '../context/template-engine'
@@ -40,14 +40,15 @@ export default function AddToCartWidget(props) {
 	const templateValue = templateEngine.resolveProperty(templateVariable)
 	const { asset: templateAsset } = templateValue || {}
 
-	// Use asset ID derived from template variable or the "hard-coded" one
-	const imageAssetId = templateAsset?._id
-		|| templateAsset?._ref
+	// Use asset ID/URL derived from template variable or the "hard-coded" one
+	const imageId = templateValue?.asset?._id
+		|| templateValue?.asset?._ref
+		|| templateValue?.externalUrl
 		|| asset?._id
 		|| asset?._ref
 
 	const fixedGatsbyImage = getFixedGatsbyImage(
-		imageAssetId,
+		imageId,
 		{ width: 100 },
 		sanityConfig
 	)
