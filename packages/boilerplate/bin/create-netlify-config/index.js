@@ -4,6 +4,7 @@ const dirs = require(`./../../dirs`)
 const { siteId } = require(`${dirs.site}/config`)
 const apiRedirects = require(`./redirects-api`)
 const adminRedirects = require(`./redirects-admin`)
+const activeCampaignRedirects = require(`./redirects-active-campaign`)
 
 
 const config = {
@@ -15,7 +16,8 @@ const config = {
 	},
 	redirects: [
 		...adminRedirects,
-		...apiRedirects
+		...apiRedirects,
+		...activeCampaignRedirects
 	]
 }
 

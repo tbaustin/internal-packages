@@ -79,7 +79,16 @@ async function initProjectFiles() {
 	sanityName: \`\`,
 	sanityProjectId: \`\`,
 	sanityDataset: \`\`,
-	activeCampaignSite: \`\`,
+  activeCampaign: {
+		integrationName: \`\`,
+		integrationLogo: \`\`,
+		account: \`\`,
+		sandboxAccount: \`\`,
+		origin: \`\`,
+		devOrigin: \`\`,
+		host: \`\`,
+		devMode: false
+	},
 	apiStages: {
 		cart: \`test\`,
 		products: \`prod\`
