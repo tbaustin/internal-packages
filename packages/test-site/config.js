@@ -6,13 +6,13 @@ module.exports = {
 	sanityDataset: `dev-aaron`,
 	activeCampaign: {
 		integrationName: `Boilerplate Test Site`,
-		integrationLogo: `https://escalade-website-boilerplate.netlify.app/icon.png`,
+		integrationLogo: `https://escalade-boilerplate-test.netlify.app/icon.png`,
 		account: `escaladesports1568235963`,
 		sandboxAccount: `escaladesports1568235963`,
-		origin: `https://escalade-website-boilerplate.netlify.app`,
-		devOrigin: `https://escalade-website-boilerplate.netlify.app`,
-		host: `escalade-website-boilerplate.netlify.app`,
-		devMode: false
+		origin: `https://escalade-boilerplate-test.netlify.app`,
+		devOrigin: `https://boilerplate-cart-upgrade--escalade-boilerplate-test.netlify.app`,
+		host: `escalade-boilerplate-test.netlify.app`,
+		devMode: true
 	},
 	apiStages: {
 		cart: `test`,
