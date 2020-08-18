@@ -8,13 +8,13 @@ const sandboxApiKey = process.env.ACTIVE_CAMPAIGN_SANDBOX_KEY
 
 
 const makeRedirect = (from, isSandbox) => {
-  const fullPath = isSandbox ? `/dev${from}` : from
+  const fullFrom = isSandbox ? `/dev${from}` : from
   const subdomain = isSandbox ? sandboxAccount : account
   const token = isSandbox ? sandboxApiKey : apiKey
 
   return {
-    from: fullPath,
-    to: `https://${subdomain}.api-us1.com${fullPath}`,
+    from: fullFrom,
+    to: `https://${subdomain}.api-us1.com${from}`,
     status: 200,
     force: true,
     headers: {
