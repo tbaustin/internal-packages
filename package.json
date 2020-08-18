@@ -3,8 +3,10 @@
 	"private": true,
 	"scripts": {
 		"bootstrap": "npx lerna bootstrap --use-workspaces",
+		"copy-netlify-toml": "cp packages/test-site/netlify.toml netlify.toml",
 		"build": "npx lerna run --ignore test-site build --stream",
 		"build:all": "npx lerna run build --stream",
+		"build:test-site-deploy": "run-s build:all copy-netlify-toml",
 		"clean:all": "npx lerna run clean --stream",
 		"clean": "npx lerna clean",
 		"changed": "npx lerna changed",
