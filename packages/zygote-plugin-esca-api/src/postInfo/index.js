@@ -23,7 +23,7 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		const products = await loadProducts(preFetchData, info.products, client.loadProducts)
 		//These tasks can be run in parallel to save time
 		const [
-			quantityModifications, 
+			quantityModifications,
 			shipping,
 			couponResponse,
 		] = await Promise.all([
@@ -51,14 +51,16 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		console.log(`Post Info Response: `, res)
 		return res
 	} catch (error) {
-		messages.error.push(error.message )
+		messages.error.push(error.message)
+		console.error(error)
+		debugger;
 		return {
 			...response,
 			messages,
 			success: false,
 		}
 	}
-	
+
 }
 
 export { postInfo }
