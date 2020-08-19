@@ -7,6 +7,8 @@ export const colors = {
 	textLight: `aliceblue`,
 	textMedium: `#999`,
 	textDark: `#333`,
+	grey: `#ccc`,
+	darkGrey: `#999`,
 	lightGrey: `#e8e7e7`,
 	navLight: `#fff`,
 	navMedium: `#1b1b1b`,
@@ -14,12 +16,13 @@ export const colors = {
 	blackRGB: `0, 0, 0`,
 	red: `#c8202e`,
 	white: `#fff`,
+	backgroundGrey: `#ddd`,
 }
 
 
 export const shadows = {
 	low: `0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)`,
-	high: `0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)`
+	high: `0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)`,
 }
 
 
@@ -27,7 +30,7 @@ export const sizes = {
 	alertBarHeight: `40px`,
 	navHeight: `6rem`,
 	breadcrumbsHeight: `3.5rem`,
-	constrainWidth: `1400px`
+	constrainWidth: `1400px`,
 }
 
 

@@ -7,57 +7,61 @@ import ContentRenderer from './index'
 import PriceStockWidget from './PriceStockWidget'
 import VariantSelectorWidget from './VariantSelectorWidget'
 import AddToCartWidget from './AddToCartWidget'
+import ReviewSnippetWidget from './ReviewSnippetWidget'
+import WriteReviewWidget from './WriteReviewWidget'
 import { colors, breakpoints } from '../styles/variables'
 
 
 export default function ProductOverviewWidget(props) {
-  const {
-    sku,
-    name,
-    brandText,
-    shippingInfo,
-    variantSelectionMethod,
-    trimVariantLabels
-  } = props
+	const {
+		sku,
+		name,
+		brandText,
+		shippingInfo,
+		variantSelectionMethod,
+		trimVariantLabels,
+	} = props
 
-  const templateEngine = useTemplateEngine()
+	const templateEngine = useTemplateEngine()
 
-  const resolveVal = val => templateEngine.data
-    ? templateEngine.parse(val)
-    : val
+	const resolveVal = val => templateEngine.data
+		? templateEngine.parse(val)
+		: val
 
-  return (
-    <Container width="constrained" direction="row" smartPadding>
-      <div css={carouselStyle}>
-        <CarouselWidget {...props.carousel} />
-      </div>
-      <div css={infoStyle}>
-        <div className="skuDisplay">
-          <span>
-            {resolveVal(brandText) || `Lifeline`}
+	return (
+		<Container width="constrained" direction="row" smartPadding>
+			<div css={carouselStyle}>
+				<CarouselWidget {...props.carousel} />
+			</div>
+			<div css={infoStyle}>
+				<div className="skuDisplay">
+					<span>
+						{resolveVal(brandText) || `Lifeline`}
             &nbsp;/&nbsp;
-          </span>
-          <span>{resolveVal(sku)}</span>
-        </div>
-        <h1>{resolveVal(name)}</h1>
-        <PriceStockWidget {...props} />
-        <hr />
-        {shippingInfo && (
-          <>
-            <ContentRenderer blocks={shippingInfo} />
-            <hr />
-          </>
-        )}
-        {variantSelectionMethod && (
-          <VariantSelectorWidget
-            method={variantSelectionMethod}
-            trimLabels={trimVariantLabels}
-          />
-        )}
-        <AddToCartWidget {...props} />
-      </div>
-    </Container>
-  )
+					</span>
+					<span>{resolveVal(sku)}</span>
+				</div>
+				<h1>{resolveVal(name)}</h1>
+				<PriceStockWidget {...props} />
+				<ReviewSnippetWidget sku={resolveVal(sku)}/> 
+				<WriteReviewWidget sku={resolveVal(sku)}/>
+				<hr />
+				{shippingInfo && (
+					<>
+						<ContentRenderer blocks={shippingInfo} />
+						<hr />
+					</>
+				)}
+				{variantSelectionMethod && (
+					<VariantSelectorWidget
+						method={variantSelectionMethod}
+						trimLabels={trimVariantLabels}
+					/>
+				)}
+				<AddToCartWidget {...props} />
+			</div>
+		</Container>
+	)
 }
 
 
@@ -101,7 +105,7 @@ const infoStyle = css`
       font-size: 0.8rem;
       font-weight: bold;
 
-      &:first-child {
+      &:first-of-type {
         color: ${colors.textMedium}
       }
     }

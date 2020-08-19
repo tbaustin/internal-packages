@@ -1,5 +1,6 @@
 import client from 'part:@sanity/base/client'
 import category from './category'
+import swatches from './swatches'
 import { baseProduct, variant } from './product-types'
 import * as pageTypes from './page-types'
 import * as widgetTypes from './widget-types'
@@ -12,6 +13,7 @@ import * as variableTypes from './variable-types'
  * EXCEPT FOR THE ONE BELOW - we don't want any Inception here...
  */
 export const schemaTypes = [
+	swatches,
 	category,
 	baseProduct,
 	variant,

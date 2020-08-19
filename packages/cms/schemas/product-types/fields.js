@@ -13,13 +13,11 @@ const isUnique = async (slug, options) => {
 	return !count
 }
 
-
 function checkDups(arr){
 	const items = arr.filter((item, index) => arr.findIndex(({_ref}) => _ref === item._ref) !== index)
 	if(items.length) return true
 	return false
 }
-
 
 const slugify = str => (str || ``)
 	.toLowerCase()
@@ -28,13 +26,12 @@ const slugify = str => (str || ``)
 	.replace(/[^a-z0-9\-_&]+/g, ``)
 	.replace(`&`, `and`)
 
-
 export default [
 	{
 		name: `sku`,
 		title: `Sku`,
 		type: `string`,
-		inputComponent: ProductInfoDisplay
+		inputComponent: ProductInfoDisplay,
 	},
 	{
 		name: `slug`,
