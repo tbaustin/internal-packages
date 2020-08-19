@@ -69,6 +69,8 @@ export default function AddToCartWidget(props) {
 		quantity: parseInt(quantity),
 	})
 
+	console.log("STOCK VALUE:", resolveValue(stock), typeof resolveValue(stock))
+
 	if (!resolveValue(stock)) return null
 
 	return (
