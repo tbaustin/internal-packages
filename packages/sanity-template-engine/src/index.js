@@ -107,9 +107,7 @@ const convertPath = (colonPath = ``, data = {}) => {
  */
 const resolveProperty = (colonPath, data = defaultData) => {
 	const dotPath = convertPath(colonPath, data)
-	const value = _get(data, dotPath)
-
-	return value === 0 ? 0 : value || ``
+	return _get(data, dotPath)
 }
 
 
@@ -123,7 +121,8 @@ const parse = (excerpt, data) => {
 	const regex = /{{([^{}]+)}}/g
 
 	return excerpt.replace(regex, (match, colonPath) => {
-		return resolveProperty(colonPath, data)
+		const value = resolveProperty(colonPath, data)
+		return [0, false].includes(value) ? value : value || ``
 	})
 }
 
