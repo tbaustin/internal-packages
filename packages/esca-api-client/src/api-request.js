@@ -3,7 +3,12 @@ import _get from 'lodash/get'
 import ErrorReport from './error-report'
 
 
+let tries = 0
+
+
 export default async function apiRequest(options, dataPath) {
+	console.log("MODIFIED API REQUEST IN CLIENT")
+	tries++
 	// Generic error to throw later if needed
 	const genericError = new Error(`API request failed`)
 
@@ -11,7 +16,8 @@ export default async function apiRequest(options, dataPath) {
 	const axiosOptions = {
 		...options,
 		headers: options.headers || this.headers,
-	} 
+	}
+
 	// Base set of options for error reporting if needed
 	let reportOptions = {
 		tags: { action: `apiRequest` },
@@ -19,24 +25,20 @@ export default async function apiRequest(options, dataPath) {
 			request: JSON.stringify(axiosOptions),
 		},
 	}
-	
-	// //DEV: log request and response data
-	// axios.interceptors.request.use(request => {
-	// 	console.log(`Starting Request`, request)
-	// 	return request
-	// })
-
 
 	try {
-		let { data } = await axios(axiosOptions)
-    
+		let axiosResult = await axios(axiosOptions)
+		let responseBody = axiosResult?.data || {}
+
 		// Get nested property from response data at requested path
-		if (typeof data === `object`) {
-			return dataPath ? _get(data, dataPath) : data
+		if (typeof responseBody === `object`) {
+			let output = dataPath ? _get(responseBody, dataPath) : responseBody
+			tries = 0 // reset tries for next unique request
+			return output
 		}
 
-		// Response is a string containing Python error
-		throw data
+		// Response is likely a string containing Python error
+		throw axiosResult
 	}
 	catch(err) {
 		let { response } = err || {}
@@ -49,7 +51,11 @@ export default async function apiRequest(options, dataPath) {
      * This could contain more sensitive info, so send report instead of logging
      * to console & throw a generic error
      */
-		if (typeof err === `string` || typeof data === `string`) {
+		if (typeof data === `string`) {
+			let isTimedOut = data.toLowerCase().includes(`timed out`)
+			if (isTimedOut && tries < 3) {
+				return apiRequest(options, dataPath)
+			}
 			/**
        * Add in the original error object to extra data for report
        * (generic error is getting sent in case a string has been caught)
