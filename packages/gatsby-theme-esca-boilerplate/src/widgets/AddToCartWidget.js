@@ -70,7 +70,6 @@ export default function AddToCartWidget(props) {
 	})
 
 	const stockValue = Number(resolveValue(stock)) || 0
-	console.log("STOCK VALUE:", stockValue, typeof stockValue)
 	if (!stockValue) return null
 
 	return (

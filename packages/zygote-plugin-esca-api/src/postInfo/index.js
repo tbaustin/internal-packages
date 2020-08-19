@@ -52,8 +52,6 @@ const postInfo = async ({ response, info, preFetchData }) => {
 		return res
 	} catch (error) {
 		messages.error.push(error.message)
-		console.error(error)
-		debugger;
 		return {
 			...response,
 			messages,
