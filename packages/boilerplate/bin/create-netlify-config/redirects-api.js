@@ -37,6 +37,9 @@ const getApiHeaders = (path, stage) => {
     "ESC-API-Context": escaladeSite,
     ...path === `orders/store` && {
       "Recaptcha-Secret": process.env.CART_RECAPTCHA_SECRET
+    },
+    ...path === `taxes/calculate` && {
+      "ESC-Tax-Service": `sovos`
     }
   }
 }
