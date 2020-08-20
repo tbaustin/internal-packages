@@ -44,7 +44,7 @@ export default function ProductOverviewWidget(props) {
 				<h1>{resolveVal(name)}</h1>
 				<PriceStockWidget {...props} />
 				<ReviewSnippetWidget sku={resolveVal(sku)}/> 
-				<WriteReviewWidget sku={resolveVal(sku)}/>
+				<WriteReviewWidget sku={resolveVal(sku)}/> 
 				<hr />
 				{shippingInfo && (
 					<>

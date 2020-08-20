@@ -1,35 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import axios from 'axios'
 import { css } from '@emotion/core'
 
 import { powerReviews } from 'config'
 import Stars from '../components/stars'
 import { colors } from '../styles/variables'
+import usePromise from '../hooks/usePromise'
 
 export default function ReviewSnippetWidget(props){
 	const { sku } = props
 	const { merchantId, apiKey } = powerReviews
 
-	const [rating, setRating] = useState(null)
+	const url = `https://readservices-b2c.powerreviews.com/m/${merchantId}/l/en_US/product/B8400W/snippet?apikey=${apiKey}`
+	const loadReview = async () => await axios.get(url)
 
-	useEffect(() => {
-		const loadReview = async () => {
-			const url = `https://readservices-b2c.powerreviews.com/m/${merchantId}/l/en_US/product/B8400W/snippet?apikey=${apiKey}`
-			const { data } = await axios.get(url)
-			const averageRating = data?.results?.[0]?.rollup?.average_rating
-			if(averageRating){
-				setRating(averageRating)
-			} else {
-				setRating(0)
-			}
-		}
-    
-		loadReview()
-	}, [])
+	const [response, error, pending] = usePromise(loadReview, {})
   
-	if(rating === null) {
+	if(pending) {
 		return <div>Loading...</div>
 	}
+
+	if(error) {
+		console.log(`Error: `, error)
+		return <div>Error fetching rating...</div>
+	}
+
+	const { data } = response
+	const rating = data?.results?.[0]?.rollup?.average_rating || 0
 
 	return (
 		<div css={styles}>

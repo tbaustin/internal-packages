@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { css } from '@emotion/core'
 import get from 'lodash/get'
@@ -10,10 +10,12 @@ import { powerReviews } from 'config'
 
 import WriteQuestionWidget from './WriteQuestionWidget'
 import WriteAnswerWidget from './WriteAnswerWidget'
+import loadQuestions from '../utils/reviews/load-questions'
+import usePromise from '../hooks/usePromise'
 
 import { colors, breakpoints } from '../styles/variables'
 
-const { merchantId, apiKey } = powerReviews
+const { merchantId } = powerReviews
 
 const sortArr = (arr, dir, val) => {
 	return [...arr].sort((a, b) => {
@@ -28,52 +30,28 @@ const sortArr = (arr, dir, val) => {
 }
 
 export default function QuestionDisplayWidget(props){
-	
-	const [isLoading, setLoading] = useState(false)
-	const [questions, setQuestions] = useState(null)
-	const [pageCount, setPageCount] = useState(null)
-	const [pageSize, setPageSize] = useState(null)
 	const [offset, setOffset] = useState(0)
 	const [votes, setVotes] = useState({})
+	const [sortedQuestions, setSortedQuestions] = useState(null)
   
-	useEffect(() => {
-		const baseUrl = `https://readservices-b2c.powerreviews.com`
-		const defaultUrl = `${baseUrl}/m/${merchantId}/l/en_US/product/B5402W/questions?apikey=${apiKey}`
-		setLoading(true)
-		let storedQuestions = []
-		let init = false 
-		
-		const loadReviews = async (url) => {
-			const { data } = await axios.get(url || defaultUrl)
-			const results = data?.results
-			const paging = data?.paging
-			const {  
-				page_size,
-				pages_total, 
-				next_page_url, 
-				current_page_number, 
-			} = paging || {}
-			
-			if(results){
-				storedQuestions = [...storedQuestions, ...results]
-			}
+	const [data, error, pending] = usePromise(loadQuestions, {})
+	const { allQuestions: questions, paging } = data
 
-			if(!init){
-				setPageSize(page_size || 10)
-				setPageCount(pages_total || 10)
-				init = true
-			}			
+	const pageSize = paging?.page_size
+	const pageCount = paging?.pages_total
 
-			if(current_page_number < pages_total) {
-				await loadReviews(`${baseUrl}${next_page_url}&apikey=${apiKey}`)
-			} else {
-				setQuestions(storedQuestions)
-				setLoading(false)
-			}
-		}
+	if(pending) {
+		return <div>Loading...</div>
+	}
 
-		loadReviews()
-	}, [])
+	if(error) {
+		console.log(`Error: `, error)
+		return <div>Error fetching reviews...</div>
+	}
+
+	if(!questions || !questions.length) {
+		return null
+	}
   
 	const handleVote = async (vote, ugcId) => {
 		const voteUrl = `https://writeservices.powerreviews.com/voteugc`
@@ -93,39 +71,31 @@ export default function QuestionDisplayWidget(props){
 	}
 
 	const handleSort = e => {
-		let sortedQuestions = []
+		let newSort = []
 
 		switch(e.target.value){
 			case `oldest`: 
-				sortedQuestions = sortArr(questions, `desc`, `details.created_date`)
+				newSort = sortArr(questions, `desc`, `details.created_date`)
 				break
 			case `newest`: 
-				sortedQuestions = sortArr(questions, `asc`, `details.created_date`)
+				newSort = sortArr(questions, `asc`, `details.created_date`)
 				break
 			case `mostAnswers`:
-				sortedQuestions = sortArr(questions, `asc`, `answer.length`)
+				newSort = sortArr(questions, `asc`, `answer.length`)
 				break
 			default: 
 				break
 		}
 
-		if(sortedQuestions.length) setQuestions(sortedQuestions)
+		if(newSort.length) setSortedQuestions(newSort)
 	}
   
 	const handlePaginate = data => {
 		const { selected } = data
 		setOffset(Math.ceil(selected * pageSize))
 	}
-  
-	if(isLoading) {
-		return <div>Loading...</div>
-	}
-	
-	if(!questions || !questions.length) {
-		return null
-	}
 
-	const slicedQuestions = questions.slice(offset, pageSize + offset)
+	const slicedQuestions = (sortedQuestions || questions).slice(offset, pageSize + offset)
 
 	return (
 		<div css={styles}>

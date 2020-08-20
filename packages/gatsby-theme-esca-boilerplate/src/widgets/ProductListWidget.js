@@ -18,73 +18,52 @@ import filterProducts from '../utils/product/filter-products'
 const { colors } = variables
 
 export default function ProductListWidget(props) {
-	const { _key, title, display, filters: initFilters } = props
+	const { _key, title, display, filters: initFilters = {} } = props
 	const [activeFilters, setActiveFilters] = useState({})
+
+	const enableFilter = initFilters?.enableFilter
 	
 	// Try to replace template variable w/ value in case one is provided
 	const templateEngine = useTemplateEngine()
 	const parsedTitle = templateEngine.parse(title)
 
-	const customFields = templateEngine?.schema
-		?.find(type => type.name === `variant`)?.fields
-		?.find(field => field?.name === `customFields`)
-		?.fields || []
-	
-	const filters = customFields.filter(field => field?.filterWidget)
 	const products = useLivePriceAndStock(useProductList(_key))
 
-	const filterValues = generateFilters(filters, products, templateEngine, initFilters)
-	const filteredProducts = filterProducts(activeFilters, products, templateEngine)
-
-	function renderList() {
+	function renderList(productList) {
 		switch(display){
 			case `carousel`: 
 				return (
 					<CarouselList
-						products={products}
+						products={productList}
 						title={parsedTitle}
 					/>
 				)
 			default: 
 				return (
 					<GridList 
-						products={filteredProducts}
+						products={productList}
 						activeFilters={activeFilters}
 					/>
 				)
 		}
 	}
 
-	if(display !== `grid`) {
-		renderList()
-	} else {
+	if(!enableFilter || display !== `grid`) {
+		return renderList(products)
+	} else if (enableFilter &&  display === `grid`) {
+		const customFields = templateEngine?.schema
+			?.find(type => type.name === `variant`)?.fields
+			?.find(field => field?.name === `customFields`)
+			?.fields || []
+	
+		const filters = customFields.filter(field => field?.filterWidget)
+		const filterValues = generateFilters(filters, products, templateEngine, initFilters)
+		const filteredProducts = filterProducts(activeFilters, products, templateEngine)
+
 		return (
 			<section css={styles}>
 				{!!filterValues.length && (
 					<div className="filters">
-						{/* {!!Object.keys(activeFilters).length && (
-							<div className="activeFilters">
-								<div className="activeFiltersTitle">Active Filters</div>
-								{Object.keys(activeFilters).map((key, i) => {
-									if(!activeFilters[key].length) return null
-
-									return (
-										<div key={i}>
-											<div className="title">
-												{key}
-											</div>
-											<div className="activeList">
-												{activeFilters[key].map((filter, i) => {
-													return (
-														<div key={i}>{filter}</div>
-													)
-												})}
-											</div>
-										</div>
-									)
-								})}
-							</div>
-						)} */}
 						{filterValues.map((filter, i) => {
 							return (
 								<FilterWidget 
@@ -98,7 +77,7 @@ export default function ProductListWidget(props) {
 					</div>
 				)}
 				<div className="productList">
-					{renderList()}
+					{renderList(filteredProducts)}
 				</div>
 			</section>
 		)

@@ -11,6 +11,10 @@ import { powerReviews } from 'config'
 import Stars from '../components/stars'
 import WriteReviewWidget from './WriteReviewWidget'
 import { colors, breakpoints, screenWidths } from '../styles/variables'
+import loadReviews from '../utils/reviews/load-reviews'
+import usePromise from '../hooks/usePromise'
+
+const { merchantId, apiKey } = powerReviews
 
 const sortArr = (arr, dir, val) => {
 	return [...arr].sort((a, b) => {
@@ -27,61 +31,42 @@ const sortArr = (arr, dir, val) => {
 
 export default function ReviewDisplayWidget(props){
 	const { sku } = props
-	const { merchantId, apiKey } = powerReviews
 
 	/*
 		* Hooks start
 	*/
 
-	const [reviews, setReviews] = useState(null)
-	const [reviewData, setReviewData] = useState(null)
-	const [isLoading, setLoading] = useState(false)
 	const [showProps, setProps] = useState({})
 	const [votes, setVotes] = useState({})
-	const [pageCount, setPageCount] = useState(null)
-	const [pageSize, setPageSize] = useState(null)
 	const [offset, setOffset] = useState(0)
+	const [sortedReviews, setSortedReviews] = useState(null)
 
-	useEffect(() => {
-		const baseUrl = `https://readservices-b2c.powerreviews.com`
-		const defaultUrl = `${baseUrl}/m/${merchantId}/l/en_US/product/B8400W/reviews?apikey=${apiKey}`
-		setLoading(true)
-		let storedReviews = []
-		let init = false 
-		
-		const loadReviews = async (url) => {
-			const { data } = await axios.get(url || defaultUrl)
-			const results = data?.results?.[0]
-			const paging = data?.paging
-			const {  
-				page_size,
-				pages_total, 
-				next_page_url, 
-				current_page_number, 
-			} = paging || {}
-			
-			if(results?.reviews){
-				storedReviews = [...storedReviews, ...results?.reviews]
-			}
+	const [data, error, pending] = usePromise(loadReviews, {})
+	const { allReviews: reviews, paging, results } = data
 
-			if(!init){
-				setPageSize(page_size || 10)
-				setPageCount(pages_total || 10)
-				setReviewData(results)
-				init = true
-			}			
+	const rollup = results?.[0]?.rollup
+	const pageSize = paging?.page_size
+	const pageCount = paging?.pages_total
 
-			if(current_page_number < pages_total) {
-				await loadReviews(`${baseUrl}${next_page_url}&apikey=${apiKey}`)
-			} else {
-				setReviews(storedReviews)
-				setLoading(false)
-			}
-			
-		}
+	const { 
+		average_rating,
+		review_count,
+		rating_histogram,
+		recommended_ratio,
+	} = rollup || {}
 
-		loadReviews()
-	}, [])
+	if(pending) {
+		return <div>Loading...</div>
+	}
+
+	if(error) {
+		console.log(`Error: `, error)
+		return <div>Error fetching reviews...</div>
+	}
+
+	if(!reviews || !reviews.length) {
+		return null
+	}
 
 	/*
 	 * Functions start 
@@ -110,47 +95,28 @@ export default function ReviewDisplayWidget(props){
 	}
 
 	const handleSort = e => {
-		let sortedReviews = []
+		let newSort = []
 		switch(e.target.value){
 			case `oldest`: 
-				sortedReviews = sortArr(reviews, `desc`, `details.created_date`)
+				newSort = sortArr(reviews, `desc`, `details.created_date`)
 				break
 			case `newest`: 
-				sortedReviews = sortArr(reviews, `asc`, `details.created_date`)
+				newSort = sortArr(reviews, `asc`, `details.created_date`)
 				break
 			case `helpful`: 
-				sortedReviews = sortArr(reviews, `asc`, `metrics.helpful_score`)
+				newSort = sortArr(reviews, `asc`, `metrics.helpful_score`)
 				break
 			case `ratedAsc`: 
-				sortedReviews = sortArr(reviews, `asc`, `metrics.rating`)
+				newSort = sortArr(reviews, `asc`, `metrics.rating`)
 				break	
 			case `ratedDesc`: 
-				sortedReviews = sortArr(reviews, `desc`, `metrics.rating`)
+				newSort = sortArr(reviews, `desc`, `metrics.rating`)
 				break
 			default: 
 				break
 		}
 
-		if(sortedReviews.length) setReviews(sortedReviews)
-	}
-
-	/*
-	 * Vars start 
-	*/
-	const rollup = reviewData?.rollup
-	const { 
-		average_rating,
-		review_count,
-		rating_histogram,
-		recommended_ratio,
-	} = rollup || {}
-
-	if(isLoading) {
-		return <div>Loading...</div>
-	}
-	
-	if(!reviews || !reviews.length) {
-		return null
+		if(newSort.length) setSortedReviews(newSort)
 	}
 
 	return (
@@ -226,7 +192,7 @@ export default function ReviewDisplayWidget(props){
 			{/* ---- */}
 
 			<ul className={`reviewList`}>
-				{reviews.slice(offset, pageSize + offset).map((review, i) => {
+				{(sortedReviews || reviews).slice(offset, pageSize + offset).map((review, i) => {
 					const { details, metrics, ugc_id } = review
 					const { 
 						created_date, headline, comments, 

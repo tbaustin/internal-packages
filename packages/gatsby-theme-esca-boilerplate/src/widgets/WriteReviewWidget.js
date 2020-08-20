@@ -6,6 +6,7 @@ import { FaWindowClose } from 'react-icons/fa'
 
 import { powerReviews } from 'config'
 import { colors } from '../styles/variables'
+import usePromise from '../hooks/usePromise'
 
 function DefaultInput(props) {
 	return (
@@ -37,29 +38,35 @@ export default function WriteReviewWidget(props){
 	const { sku } = props
 	const { merchantId, writeApiKey } = powerReviews
 
-	const [fields, setFields] = useState(null)
 	const [active, setActive] = useState(false)
-	const [reviewData, setReviewData] = useState({})
 	const [mediaData, setMedia] = useState({})
 	const [errors, setErrors] = useState(null)
 	const [reviewStatus, setStatus] = useState(null)
+	const [fieldData, setFieldData] = useState({})
+
+	const url = `https://writeservices.powerreviews.com/api/b2b/writereview/review_template?apikey=${writeApiKey}&merchant_id=${merchantId}&page_id=B8400W`
+	const loadReview = async () => await axios.get(url)
+
+	const [response, error, pending] = usePromise(loadReview, {})
+
+	const { data } = response
+
+	const fields = data?.fields
 
 	useEffect(() => {
-		const loadReview = async () => {
-			const url = `https://writeservices.powerreviews.com/api/b2b/writereview/review_template?apikey=${writeApiKey}&merchant_id=${merchantId}&page_id=B8400W`
-			const { data } = await axios.get(url)
-			if(data?.fields){
-				setFields(data?.fields)
-				const hashData = data?.fields?.reduce((acc, cur) => {
-					return { ...acc, [cur.key]: cur }
-				}, {})
+		setFieldData(fields?.reduce((acc, cur) => {
+			return { ...acc, [cur.key]: cur }
+		}, {}))
+	}, [fields])
 
-				setReviewData(hashData)
-			}
-		}
-    
-		loadReview()
-	}, [])
+	if(pending){
+		return <div>Loading...</div>
+	}
+
+	if(error) {
+		console.log(`Error: `, error)
+		return <div>Error fetching review...</div>
+	}
 
 	function renderField(field, idx){
 		const { 
@@ -85,7 +92,7 @@ export default function WriteReviewWidget(props){
 							// video or image
 							setMedia({ ...mediaData, [composite_type]: value })
 						} else { 
-							setReviewData({ ...reviewData, [key]: { ...field, value } })
+							setFieldData({ ...fieldData, [key]: { ...field, value } })
 						}
 					}}
 				/>
@@ -97,20 +104,20 @@ export default function WriteReviewWidget(props){
 		e.preventDefault()
 
 		const errs = []
-		const fields = []
+		const fieldsWithValue = []
 
-		Object.values(reviewData).forEach(review => {
-			if(review.required && isEmpty(review.value)){
-				errs.push(`"${review.label || review.prompt}" is required`)
+		Object.values(fieldData).forEach(field => {
+			if(field.required && isEmpty(field.value)){
+				errs.push(`"${field.label || field.prompt}" is required`)
 			} 
 			if (!isEmpty(review.value)) {
-				fields.push(review)
+				fieldsWithValue.push(review)
 			}
 		})
 
 		Object.values(mediaData).forEach(mediaArr => {
 			mediaArr.forEach(media => {
-				fields.push(media)
+				fieldsWithValue.push(media)
 
 				media.fields?.forEach(f => {
 					if(f.required && isEmpty(f.value)){
@@ -130,7 +137,7 @@ export default function WriteReviewWidget(props){
 				method: `POST`,
 				url: submitUrl,
 				data: {
-					fields
+					fields: fieldsWithValue
 				},
 			})
 			if(data?.status_code === 200){
