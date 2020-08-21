@@ -36,7 +36,9 @@ export default function(promiseOrFunction, defaultValue) {
 					setState({ value, error: null, isPending: false })
 				}
 			} catch(error) {
-				setState({ value: defaultValue, error: error, isPending: false })
+				if(isSubscribed) {
+					setState({ value: defaultValue, error: error, isPending: false })
+				}
 			}
 		}
 

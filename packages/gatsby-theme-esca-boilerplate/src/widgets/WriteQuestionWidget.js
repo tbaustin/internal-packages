@@ -13,7 +13,7 @@ import { colors } from '../styles/variables'
 const { merchantId /*, apiKey*/ } = powerReviews
 
 function ModalContent(props) {
-	const { qType, setError, setSuccess } = props
+	const { qType, setError, setSuccess, sku } = props
 	const [activeCat, setActiveCat] = useState(null)
 	
 	const [form, setForm] = useState({})
@@ -34,7 +34,7 @@ function ModalContent(props) {
 	const submitQuestion = async (e) => {
 		e.preventDefault()
 		const baseUrl = `https://writeservices.powerreviews.com/qa/question`
-		const params = `?page_id=B8400W&locale=en_US&merchant_id=${merchantId}`
+		const params = `?page_id=${sku}&locale=en_US&merchant_id=${merchantId}`
 
 		const options = {
 			question_type: `product`,
@@ -140,6 +140,8 @@ function ModalContent(props) {
 }
 
 export default function WriteQuestionWidget(props){
+	const { sku } = props
+
 	const [active, setActive] = useState(false)
 	const [qType, setQType] = useState(null)
 	const [success, setSuccess] = useState(false)
@@ -191,6 +193,7 @@ export default function WriteQuestionWidget(props){
 								setSuccess={setSuccess}
 								setError={setError}
 								qType={qType} 
+								sku={sku.toUpperCase()}
 							/>
 						</>
 					)}

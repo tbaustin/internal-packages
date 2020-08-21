@@ -30,11 +30,15 @@ const sortArr = (arr, dir, val) => {
 }
 
 export default function QuestionDisplayWidget(props){
+	const { sku } = props
+	if(!sku || !sku.length) {
+		return <div>Loading...</div>
+	}
 	const [offset, setOffset] = useState(0)
 	const [votes, setVotes] = useState({})
 	const [sortedQuestions, setSortedQuestions] = useState(null)
   
-	const [data, error, pending] = usePromise(loadQuestions, {})
+	const [data, error, pending] = usePromise(loadQuestions(sku.toUpperCase()), {})
 	const { allQuestions: questions, paging } = data
 
 	const pageSize = paging?.page_size
@@ -101,7 +105,7 @@ export default function QuestionDisplayWidget(props){
 		<div css={styles}>
 			<section className="headline">
 				<div className="title">Q&A</div>
-				<WriteQuestionWidget />
+				<WriteQuestionWidget sku={sku} />
 			</section>
 
 			{/* ---- */}
@@ -130,7 +134,7 @@ export default function QuestionDisplayWidget(props){
 								<div className="question"><div className="qIcon">Q</div> <p>{text}</p></div>
 								<div className="answerContent">
 									<div className="questionAuthor mobile">Asked by {nickname} {format(new Date(created_date), `MM/dd/yyyy`)}</div>
-									<WriteAnswerWidget question={question} />
+									<WriteAnswerWidget question={question} sku={sku} />
 									{answers && !!answers.length && (
 										<ul className="answerList">
 											{answers.map((answer, j) => {

@@ -36,15 +36,23 @@ const isEmpty = (val) => {
 
 export default function WriteReviewWidget(props){
 	const { sku } = props
-	const { merchantId, writeApiKey } = powerReviews
+	if(!sku || !sku.length) {
+		return <div>Loading...</div>
+	}
 
+	const { merchantId, writeApiKey } = powerReviews
 	const [active, setActive] = useState(false)
 	const [mediaData, setMedia] = useState({})
 	const [errors, setErrors] = useState(null)
 	const [reviewStatus, setStatus] = useState(null)
 	const [fieldData, setFieldData] = useState({})
 
-	const url = `https://writeservices.powerreviews.com/api/b2b/writereview/review_template?apikey=${writeApiKey}&merchant_id=${merchantId}&page_id=B8400W`
+
+
+	const baseUrl = `https://writeservices.powerreviews.com/api/b2b/writereview/review_template`
+	const params = `?apikey=${writeApiKey}&merchant_id=${merchantId}&page_id=${sku.toUpperCase()}`
+	const url = `${baseUrl}${params}`
+
 	const loadReview = async () => await axios.get(url)
 
 	const [response, error, pending] = usePromise(loadReview, {})

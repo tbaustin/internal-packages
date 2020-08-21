@@ -20,8 +20,7 @@ const dealerQuery = graphql`{
 }`
 
 function DealerWidget(props){
-	// const { proximitySearch } = props
-	const [proximitySearch, setProximitySearch] = useState(false)
+	const { proximitySearch } = props
 	const mapEl = useRef(null)
 	const [leaflet, setLeaflet] = useState({})
 	const [visibleLocations, setVisibleLocations] = useState([])
@@ -156,7 +155,6 @@ function DealerWidget(props){
 			/>
 			<div css={styles.mapContainer}>
 				<div className="locationList">
-					<button style={{display: `block`}} onClick={() => setProximitySearch(!proximitySearch)}>Toggle proximity search</button>
 					{visibleLocations.length} dealers in the window
 				</div>
 				<Map

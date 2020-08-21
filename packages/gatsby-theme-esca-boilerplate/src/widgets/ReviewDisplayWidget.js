@@ -31,7 +31,9 @@ const sortArr = (arr, dir, val) => {
 
 export default function ReviewDisplayWidget(props){
 	const { sku } = props
-
+	if(!sku || !sku.length) {
+		return <div>Loading...</div>
+	}
 	/*
 		* Hooks start
 	*/
@@ -41,7 +43,8 @@ export default function ReviewDisplayWidget(props){
 	const [offset, setOffset] = useState(0)
 	const [sortedReviews, setSortedReviews] = useState(null)
 
-	const [data, error, pending] = usePromise(loadReviews, {})
+	const [data, error, pending] = usePromise(loadReviews(sku.toUpperCase()), {})
+
 	const { allReviews: reviews, paging, results } = data
 
 	const rollup = results?.[0]?.rollup

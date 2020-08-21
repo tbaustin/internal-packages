@@ -9,9 +9,15 @@ import usePromise from '../hooks/usePromise'
 
 export default function ReviewSnippetWidget(props){
 	const { sku } = props
-	const { merchantId, apiKey } = powerReviews
+	if(!sku || !sku.length) {
+		return <div>Loading...</div>
+	}
 
-	const url = `https://readservices-b2c.powerreviews.com/m/${merchantId}/l/en_US/product/B8400W/snippet?apikey=${apiKey}`
+	const { merchantId, apiKey } = powerReviews
+	const baseUrl = `https://readservices-b2c.powerreviews.com/m/${merchantId}/l/en_US/product/${sku.toUpperCase()}/snippet`
+	const params = `?apikey=${apiKey}`
+	const url = `${baseUrl}${params}`
+	
 	const loadReview = async () => await axios.get(url)
 
 	const [response, error, pending] = usePromise(loadReview, {})

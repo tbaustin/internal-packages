@@ -14,7 +14,7 @@ import { colors } from '../styles/variables'
 const { merchantId /*, apiKey*/ } = powerReviews
 
 export default function WriteAnswerWidget(props){
-	const { question } = props
+	const { question, sku } = props
 	const { question_id } = question
 
 	const [active, setActive] = useState(false)
@@ -25,7 +25,7 @@ export default function WriteAnswerWidget(props){
 	const submitAnswer = async (e) => {
 		e.preventDefault()
 		const baseUrl = `https://writeservices.powerreviews.com/qa/answer`
-		const params = `?page_id=B5402W&locale=en_US&question_id=${question_id}&merchant_id=${merchantId}`
+		const params = `?page_id=${sku.toUpperCase()}&locale=en_US&question_id=${question_id}&merchant_id=${merchantId}`
 	
 		const { data } = await axios({
 			method: `POST`,
