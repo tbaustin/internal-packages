@@ -9,6 +9,7 @@
     "dev": "esca dev",
     "build": "esca build",
     "serve": "esca serve",
+    "sanity-graphql": "esca sanity-graphql",
     "ls-link": "esca ls-link"
   },
   "dependencies": {

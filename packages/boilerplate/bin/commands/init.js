@@ -30,6 +30,7 @@ async function initProjectFiles() {
         env: `esca env`,
         netlify: `esca netlify`,
         "ls-link": `esca ls-link`,
+        "sanity-graphql": `esca sanity-graphql`,
         dev: `esca dev`,
         build: `esca build`
       },
@@ -79,6 +80,7 @@ async function initProjectFiles() {
 	sanityName: \`\`,
 	sanityProjectId: \`\`,
 	sanityDataset: \`\`,
+  googleTagManagerId: \`\`,
   activeCampaign: {
 		integrationName: \`\`,
 		integrationLogo: \`\`,
