@@ -16,6 +16,14 @@ export * from './accordion'
 export * from './product-widgets'
 export * from './active-campaign'
 
+export const DealerWidget = {
+	title: `Dealer Map`,
+	name: `DealerWidget`,
+	type: `object`,
+	fields: [
+		{ name: `proximitySearch`, title: `Use Proximity Search`, type: `boolean` },
+	],
+}
 
 export const CustomHTMLWidget = {
 	title: `HTML`,

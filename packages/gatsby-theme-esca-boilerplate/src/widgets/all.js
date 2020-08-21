@@ -21,3 +21,4 @@ export { default as TestVariantSelectorWidget } from './TestVariantSelectorWidge
 export { default as VariantSelectorWidget } from './VariantSelectorWidget'
 export { default as VideoListWidget } from './VideoListWidget'
 export { default as VideoWidget } from './VideoWidget'
+export { default as DealerWidget } from './DealerWidget'

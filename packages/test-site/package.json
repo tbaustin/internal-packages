@@ -7,7 +7,8 @@
   "license": "ISC",
   "scripts": {
     "dev": "esca dev",
-    "build": "esca build"
+    "build": "esca build",
+    "env": "esca env"
   },
   "dependencies": {
     "@escaladesports/boilerplate": "^0.0.13",

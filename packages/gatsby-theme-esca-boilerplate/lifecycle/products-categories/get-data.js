@@ -2,6 +2,7 @@ const EscaAPIClient = require(`@escaladesports/esca-api-client`).default
 const sanityClient = require(`@sanity/client`)
 const prepareProducts = require(`./prepare-products`)
 const buildCategoryAncestry = require(`./category-ancestry`)
+const getReviews = require(`./get-reviews`)
 
 const dirs = require(`@escaladesports/boilerplate/dirs`)
 const siteConfig = require(`${dirs.site}/config`)
@@ -56,9 +57,11 @@ module.exports = async function getData() {
 		byParent: true,
 	})
 
+	const reviews = await getReviews()
 	const categoriesWithAncestry = buildCategoryAncestry(categories)
 
 	const fullProducts = !cmsProducts.length ? [] : await prepareProducts({
+		reviews,
 		cmsProducts,
 		apiProducts,
 		salsifyProperties,
@@ -68,5 +71,6 @@ module.exports = async function getData() {
 	return {
 		categories: categoriesWithAncestry,
 		products: fullProducts,
+		customFields,
 	}
 }
