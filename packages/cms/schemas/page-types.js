@@ -66,6 +66,18 @@ export const breadcrumb = {
 }
 
 
+const templateGtmDescription = `When a page using this template is viewed, a `
+	+ `Tag Manager event will be sent using the event name specified here. Leave `
+	+ `blank to not send an event. Data layer variables will include: 'data' `
+	+ `(entire data source connected to template) and 'listProducts' (an array `
+	+ `of all products used by "Product List" widgets throughout the template).`
+
+const pageGtmDescription = `When this page is viewed, a Tag Manager event will `
+	+ `be sent using the event name specified here. Leave blank to not send an `
+	+ `event. Data layer variables will include 'listProducts' (an array of all `
+	+ `products used by "Product List" widgets throughout the page).`
+
+
 /**
  * Schema fields are slightly different between pages & templates
  * Use function to dynamically generate them
@@ -121,6 +133,17 @@ const getFields = isTemplate => {
 				...widgetChoices,
 			],
 		},
+		{
+			name: `tagManagerEvent`,
+			title: `Google Tag Manager Event Name`,
+			description: isTemplate ? templateGtmDescription : pageGtmDescription,
+			type: `string`,
+			validation: Rule => Rule.custom(text => {
+				const regex = /^[a-zA-Z]*$/
+				const message = `Must contain only lower/uppercase letters (no spaces)`
+				return regex.test(text) || message
+			})
+		}
 	]
 }
 

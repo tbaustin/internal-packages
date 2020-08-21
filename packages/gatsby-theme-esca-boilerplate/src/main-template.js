@@ -3,6 +3,7 @@ import { graphql } from 'gatsby'
 import TemplateEngineProvider from './context/template-engine'
 import CurrentVariantProvider from './context/current-variant'
 import ProductListsProvider from './context/product-lists'
+import useTagManagerEvent from './tag-manager-event'
 import Layout from './layout'
 import SEO from './components/seo'
 import ContentRenderer from './widgets'
@@ -14,6 +15,8 @@ import BreadcrumbsRenderer from './components/breadcrumbs-renderer'
  * that is defined in the CMS
  */
 export default function MainTemplate(props) {
+	useTagManagerEvent(props)
+
 	const { pageContext, data: graphqlData } = props
 	const {
 		content,
