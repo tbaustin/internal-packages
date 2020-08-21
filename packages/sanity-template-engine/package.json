@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/sanity-template-engine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A template engine with user-friendly syntax for Sanity schemas",
   "main": "dist/index.js",
   "scripts": {
