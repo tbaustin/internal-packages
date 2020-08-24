@@ -1,12 +1,15 @@
 import React from 'react'
 import { css } from '@emotion/core'
+
 import { useTemplateEngine } from '../context/template-engine'
 import Container from '../components/container'
 import { colors, breakpoints } from '../styles/variables'
+import ReviewDisplayWidget from './ReviewDisplayWidget'
+import QuestionDisplayWidget from './QuestionDisplayWidget'
 
 
 export default function ProductDetailsWidget(props) {
-  const { description, bullets } = props
+  const { description, bullets, sku } = props
 
   const templateEngine = useTemplateEngine()
   const resolveVal = val => templateEngine.data
@@ -31,6 +34,8 @@ export default function ProductDetailsWidget(props) {
           )
         })}
       </ul>
+      <ReviewDisplayWidget sku={resolveVal(sku)} />
+  		<QuestionDisplayWidget sku={resolveVal(sku)} />
     </Container>
   )
 }

@@ -1,7 +1,7 @@
 {
   "name": "test-site",
   "private": true,
-  "version": "0.0.12",
+  "version": "0.0.13",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -10,10 +10,11 @@
     "build": "esca build",
     "serve": "esca serve",
     "sanity-graphql": "esca sanity-graphql",
-    "ls-link": "esca ls-link"
+    "ls-link": "esca ls-link",
+    "env": "esca env"
   },
   "dependencies": {
-    "@escaladesports/boilerplate": "^0.0.13",
+    "@escaladesports/boilerplate": "^0.0.14",
     "@sanity/cli": "^1.149.9",
     "gatsby": "^2.24.12",
     "gatsby-plugin-compile-es6-packages": "^2.1.0",

@@ -17,13 +17,13 @@ export const customField = {
 		{
 			name: `useAsName`,
 			title: `Use this field as the product name`,
-			type: `boolean`
+			type: `boolean`,
 		},
 		{
 			name: `useAsListImage`,
 			title: `Use this field for product list tile images`,
 			description: `Each product will use its first image in this group`,
-			type: `boolean`
+			type: `boolean`,
 		},
 		{
 			name: `attributeWidget`,
@@ -31,7 +31,18 @@ export const customField = {
 			type: `string`,
 			options: {
 				list: [
-					{ title: `Generic Dropdown`, value: `GenericWidget` }
+					{ title: `Generic Dropdown`, value: `GenericWidget` },
+				],
+			},
+		},
+		{
+			name: `filterWidget`,
+			title: `Filter Widget`,
+			type: `string`,
+			options: {
+				list: [
+					{ title: `List Filter`, value: `FilterList` },
+					{ title: `Swatch Filter`, value: `FilterSwatch` },
 				],
 			},
 		},
@@ -50,8 +61,8 @@ export const customField = {
 		},
 	],
 	initialValue: {
-		useAsName: false
-	}
+		useAsName: false,
+	},
 }
 
 
@@ -65,16 +76,16 @@ export const customFieldImage = {
 			name: `externalUrl`,
 			type: `url`,
 			options: {
-				isHighlighted: true
-			}
+				isHighlighted: true,
+			},
 		},
 		{
 			title: `Displayed`,
 			name: `displayed`,
 			type: `boolean`,
 			options: {
-				isHighlighted: true
-			}
+				isHighlighted: true,
+			},
 		},
 		{
 			title: `Alt Text`,
@@ -82,10 +93,10 @@ export const customFieldImage = {
 			name: `altText`,
 			type: `string`,
 			options: {
-				isHighlighted: true
-			}
-		}
-	]
+				isHighlighted: true,
+			},
+		},
+	],
 }
 
 
@@ -113,10 +124,10 @@ export const customFieldValue = {
 			title: `Images`,
 			type: `array`,
 			of: [
-				{ type: `customFieldImage` }
-			]
-		}
-	]
+				{ type: `customFieldImage` },
+			],
+		},
+	],
 }
 
 

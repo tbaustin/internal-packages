@@ -67,6 +67,7 @@ export const query = graphql`
 					_id
 					sku
 					price
+					rating
 					stock
 					salsify
 					customFieldEntries

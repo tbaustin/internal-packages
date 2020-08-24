@@ -154,7 +154,12 @@ const schemaPatcher = schema => {
           title: `Stock`,
           name: `stock`,
           type: `number`
-        }
+        },
+        {
+					title: `Rating`,
+					name: `rating`,
+					type: `number`,
+				},
       )
 
       type.name === `baseProduct` && type.fields.push(

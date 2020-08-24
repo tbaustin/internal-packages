@@ -154,6 +154,11 @@ export const ProductDetailsWidget = {
 	type: `object`,
 	fields: [
 		{
+			name: `sku`,
+			title: `Product SKU`,
+			type: `string`,
+		},
+		{
 			title: `Description`,
 			name: `description`,
 			type: `text`,
@@ -164,6 +169,22 @@ export const ProductDetailsWidget = {
 			type: `array`,
 			of: [{ type: `string` }],
 		},
+	],
+}
+
+export const FilterObject = {
+	name: `filterObject`,
+	title: `Filter Object`,
+	type: `object`,
+	options: {
+		collapsible: true,
+		collapsed: true,
+	},
+	fields: [
+		{ title: `Enable Filters`, name: `enableFilter`, type: `boolean` },
+		{ title: `Price`, name: `priceFilter`, type: `boolean` },
+		{ title: `Stock`, name: `stockFilter`, type: `boolean` },
+		{ title: `Review Rating`, name: `ratingFilter`, type: `boolean` },
 	],
 }
 
@@ -183,6 +204,12 @@ export const ProductListWidget = {
 			title: `Choose Specific Products`,
 			name: `productListSources`,
 			type: `variableProductList`,
+		},
+		{
+			title: `Filters`,
+			name: `filters`,
+			type: `filterObject`,
+			description: `Will only work when using Display Type of "grid".`, 
 		},
 		{
 			title: `Title`,

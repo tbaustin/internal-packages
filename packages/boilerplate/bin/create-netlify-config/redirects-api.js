@@ -4,9 +4,9 @@ const { escaladeSite, apiStages } = require(`${dirs.site}/config`)
 
 // API endpoints used for product data on site
 const productsApiPaths = [
-  `pricing/load`,
+	`pricing/load`,
 	`inventory/load`,
-  `products/load`
+	`products/load`,
 ]
 
 // API endpoints used for checkout in cart
@@ -18,13 +18,18 @@ const cartApiPaths = [
 	`orders/store`,
 	`pay/paypal`,
 	`pay/anet`,
-	`taxes/calculate`
+	`taxes/calculate`,
 ]
 
+// API endpoints use for dealers on the map
+const dealerApiPaths = [
+	`dealers/proximity`,
+	`dealers/all`,
+]
 
 const getStage = groupName => {
-  const stage = apiStages[groupName] || `prod`
-  return stage.toLowerCase()
+	const stage = apiStages[groupName] || `prod`
+	return stage.toLowerCase()
 }
 
 
@@ -51,7 +56,7 @@ const getApiHeaders = (path, stage) => {
 const makeRedirects = (groupName, paths) => paths.map(path => {
 	const [ entity, action ] = path.split(`/`)
 
-  const stage = getStage(groupName)
+	const stage = getStage(groupName)
 	const stageSuffix = stage === `prod` ? `` : `-${stage}`
 
 	return {
@@ -74,7 +79,8 @@ const verifyRecaptchaRedirect = {
 
 
 module.exports = [
-  ...makeRedirects(`products`, productsApiPaths),
-  ...makeRedirects(`cart`, cartApiPaths),
-  verifyRecaptchaRedirect
+	...makeRedirects(`products`, productsApiPaths),
+	...makeRedirects(`cart`, cartApiPaths),
+	...makeRedirects(`dealers`, dealerApiPaths),
+	verifyRecaptchaRedirect
 ]
