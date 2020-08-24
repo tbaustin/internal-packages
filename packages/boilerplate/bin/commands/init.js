@@ -94,6 +94,11 @@ async function initProjectFiles() {
 	apiStages: {
 		cart: \`test\`,
 		products: \`prod\`
+	},
+  powerReviews: {
+		merchantId: \`\`,
+		apiKey: \`\`,
+		writeApiKey: \`\`,
 	}
 }`
   )
