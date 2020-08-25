@@ -18,10 +18,17 @@ export default function FilterBoolean(props){
 					checked={checked}
 					onChange={e => {
 						setChecked(e.target.checked)
-						setActiveFilters({
-							...activeFilters,
-							[title]: e.target.checked,
-						})
+						if(!e.target.checked) {
+							const activeFiltersCopy = produce(activeFilters, draft => {
+								delete draft[title]
+							})
+							setActiveFilters(activeFiltersCopy)
+						} else {
+							setActiveFilters({
+								...activeFilters,
+								[title]: e.target.checked,
+							})
+						}
 					}}
 				/>
 				{title in activeFilters && (
