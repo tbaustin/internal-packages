@@ -18,7 +18,7 @@ import filterProducts from '../utils/product/filter-products'
 const { colors } = variables
 
 export default function ProductListWidget(props) {
-	const { _key, title, display, filters: initFilters = {} } = props
+	const { _key, title, display, filters: initFilters = {}, priceDisplay } = props
 	const [activeFilters, setActiveFilters] = useState({})
 
 	const enableFilter = initFilters?.enableFilter
@@ -36,6 +36,7 @@ export default function ProductListWidget(props) {
 					<CarouselList
 						products={productList}
 						title={parsedTitle}
+						priceDisplay={priceDisplay}
 					/>
 				)
 			default: 
@@ -43,6 +44,7 @@ export default function ProductListWidget(props) {
 					<GridList 
 						products={productList}
 						activeFilters={activeFilters}
+						priceDisplay={priceDisplay}
 					/>
 				)
 		}
@@ -50,7 +52,7 @@ export default function ProductListWidget(props) {
 
 	if(!enableFilter || display !== `grid`) {
 		return renderList(products)
-	} else if (enableFilter &&  display === `grid`) {
+	} else {
 		const customFields = templateEngine?.schema
 			?.find(type => type.name === `variant`)?.fields
 			?.find(field => field?.name === `customFields`)
@@ -59,6 +61,9 @@ export default function ProductListWidget(props) {
 		const filters = customFields.filter(field => field?.filterWidget)
 		const filterValues = generateFilters(filters, products, templateEngine, initFilters)
 		const filteredProducts = filterProducts(activeFilters, products, templateEngine)
+
+		console.log(`All products length: `, products.length)
+		console.log(`Filtered Products length: `, filteredProducts)
 
 		return (
 			<section css={styles}>

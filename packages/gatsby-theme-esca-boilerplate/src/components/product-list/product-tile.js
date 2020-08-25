@@ -2,8 +2,10 @@ import React from 'react'
 import Img from 'gatsby-image'
 import { useStaticQuery, Link, graphql } from 'gatsby'
 import { formatPrice, getFluidGatsbyImage } from '@escaladesports/utils'
-import { useTemplateEngine } from '../../context/template-engine'
 import { css } from '@emotion/core'
+
+import { useTemplateEngine } from '../../context/template-engine'
+import pricingOptions from '../../utils/product/pricing-options'
 
 import { priceText } from '../../styles'
 
@@ -13,9 +15,11 @@ const imageKeyQuery = graphql`{
   }
 }`
 
-export default function ProductTile({ product }){
-	const { variants, sku } = product
+export default function ProductTile({ product, priceDisplay }){
+	const { variants, sku  } = product
 	const defaultVariant = variants?.[0]
+
+	const price = pricingOptions(variants)?.[priceDisplay]
 
 	const { imageCustomField } = useStaticQuery(imageKeyQuery)
 
@@ -53,7 +57,10 @@ export default function ProductTile({ product }){
 					: <img src="https://via.placeholder.com/400" alt="placeholder" />
 			}
 			<div className="price">
-				{formatPrice(defaultVariant.price)}
+				{Array.isArray(price)
+					? `${formatPrice(price[0])} - ${formatPrice(price[1])}`
+					: formatPrice(price)
+				}
 			</div>
 			<strong>{patchedData.name}</strong>
 		</Wrapper>

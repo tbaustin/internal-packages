@@ -9,7 +9,7 @@ import ProductTile from './product-tile'
 const { colors, screenWidths } = variables
 
 export default function ProductCarouselList(props) {
-	const { products, title } = props
+	const { products, title, priceDisplay } = props
 	const slider = useRef(null)
 
 	const settings = {
@@ -65,7 +65,7 @@ export default function ProductCarouselList(props) {
 					{products && products.map((product, idx) => {
 						const { sku } = product
 						const key = `${sku}-${idx}`
-						return <ProductTile key={key} product={product} />
+						return <ProductTile priceDisplay={priceDisplay} key={key} product={product} />
 					})}
 				</Slider>
 			</div>
