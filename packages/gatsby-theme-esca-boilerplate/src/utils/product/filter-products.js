@@ -64,6 +64,8 @@ export default function(activeFilters, products, templateEngine) {
 					variants, templateEngine, patchedData, key,
 				)
 
+				console.log(`Variant Values: `, variantValues)
+
 				return variantValues.some(v => !!v === activeFilterValues)
 			}
 

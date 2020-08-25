@@ -218,6 +218,19 @@ export const ProductListWidget = {
 			description: `This will override any other title for the list.`,
 		},
 		{
+			title: `Price Display on Product Tile`,
+			name: `priceDisplay`,
+			type: `string`,
+			options: {
+				list: [
+					{ title: `Default Variant Price`, value: `defaultVariant` }, 
+					{ title: `Price Range`, value: `priceRange` },
+					{ title: `Lowest Price`, value: `priceLowest` }, 
+					{ title: `Highest Price` ,value: `priceHighest`},
+				],
+			},
+		},
+		{
 			title: `Display Type`,
 			name: `display`,
 			type: `string`,
