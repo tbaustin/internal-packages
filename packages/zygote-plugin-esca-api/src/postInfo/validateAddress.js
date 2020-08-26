@@ -1,6 +1,10 @@
-const  validateAddress = async (info, callback) => {
-	//Validate address from the API
-	var response = await callback({
+import { ValidationError } from '@escaladesports/esca-api-client'
+import client from '../client'
+
+
+export default async function validateAddress(info) {
+	// Validate address from the API
+	const result = await client.validateAddress({
 		address: {
 			street1: info.shippingAddress1,
 			street2: info.shippingAddress2,
@@ -9,13 +13,11 @@ const  validateAddress = async (info, callback) => {
 			zip: info.shippingZip,
 			phone: info.infoPhone,
 			email: info.infoEmail,
-			country: `US`,
-		},		
-	})	
-	if(!response.valid){
-		throw new Error(response.reason)
-	}
-	return response
-}
+			country: `US`
+		}
+	})
 
-export default validateAddress
+	if (!result.valid) {
+		throw new ValidationError(result.reason)
+	}
+}

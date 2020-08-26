@@ -1,8 +1,9 @@
 import { toDollars, toCents } from '@escaladesports/utils'
+import client from '../client'
 
 
-const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
-	//store the order
+export default async function storeOrder(info, orderLocations, { coupon }) {
+	// store the order
 	let orderRequest = {
 		order: {
 			email: info.infoEmail,
@@ -51,7 +52,7 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 		// for (const [key, value] of Object.entries(coupon.locations)) {
 		// 	orderRequest.order.locations[key].discounts = {
 		// 		[coupon.id]: value.discount,
-		// 	} 
+		// 	}
 		// }
 		const firstLocation = Object.keys(orderRequest.order.locations)[0]
 		orderRequest.order.locations[firstLocation].discounts = {[coupon.id]: coupon.dollarDiscount }
@@ -60,7 +61,7 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 	var {
 		order_id: orderIds,
 		bind_id,
-	} = await callback(orderRequest)
+	} = await client.storeOrder(orderRequest)
 	//Add bind id into the order to keep orders linked on future requests
 	orderRequest.order.bind_id = bind_id
 	//Add order id's into the order object
@@ -69,13 +70,10 @@ const  storeOrder = async (info, orderLocations, { coupon }, callback) => {
 		orderRequest.order.locations[location].order_id = orderId
 	})
 
-	
+
 
 	return {
 		orderRequest,
 		orderIds,
 	}
 }
-
-
-export default storeOrder

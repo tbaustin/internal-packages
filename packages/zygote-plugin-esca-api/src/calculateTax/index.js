@@ -1,28 +1,22 @@
-import EscaAPIClient from '@escaladesports/esca-api-client'
 import { toCents, toDollars } from '@escaladesports/utils'
+import client from '../client'
 
-export const calculateTax = async ({
-	cartState: {
+
+export async function calculateTax({ cartState }) {
+	let {
 		shippingState: {
-			state: {
-				selected,
-				methods,
-			},
+			state: { selected, methods }
 		},
 		metaState: {
 			state: {
 				meta: {
-					orderRequest: {
-						order,
-					},
-				},
-			},
-		},
-	},
-}) => {
-	const client = new EscaAPIClient()
+					orderRequest: { order }
+				}
+			}
+		}
+	} = cartState || {}
 
-	//Create array of shipping options and values for indexing
+	// Create array of shipping options and values for indexing
 	let shippingMethods = []
 	methods.forEach(element => {
 		element.shippingMethods.forEach(method => {
