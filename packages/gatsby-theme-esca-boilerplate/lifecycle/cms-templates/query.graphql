@@ -120,6 +120,7 @@ query {
         }
       }
       _rawContent(resolveReferences: { maxDepth: 5 })
+      tagManagerEvent
     }
   }
 }

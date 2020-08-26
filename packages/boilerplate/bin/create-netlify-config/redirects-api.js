@@ -11,7 +11,8 @@ const productsApiPaths = [
 
 // API endpoints used for checkout in cart
 const cartApiPaths = [
-	`coupon/calculate`,
+  `validate/address`,
+  `coupon/calculate`,
 	`products/shipping`,
 	`shipping/load`,
 	`orders/store`,
@@ -24,7 +25,7 @@ const cartApiPaths = [
 const dealerApiPaths = [
 	`dealers/proximity`,
 	`dealers/all`,
-]	
+]
 
 const getStage = groupName => {
 	const stage = apiStages[groupName] || `prod`
@@ -32,14 +33,20 @@ const getStage = groupName => {
 }
 
 
-const getApiHeaders = stage => {
-	const suffix = stage === `prod` ? `` : `_${stage.toUpperCase()}`
+const getApiHeaders = (path, stage) => {
+  const suffix = stage === `prod` ? `` : `_${stage.toUpperCase()}`
 
-	return {
-		"Content-Type": `application/json`,
-		"X-API-Key": process.env[`X_API_KEY${suffix}`],
-		"ESC-API-Context": escaladeSite,
-	}
+  return {
+    "Content-Type": `application/json`,
+    "X-API-Key": process.env[`X_API_KEY${suffix}`],
+    "ESC-API-Context": escaladeSite,
+    ...path === `orders/store` && {
+      "Recaptcha-Secret": process.env.CART_RECAPTCHA_SECRET
+    },
+    ...path === `taxes/calculate` && {
+      "ESC-Tax-Service": `sovos`
+    }
+  }
 }
 
 
@@ -57,13 +64,23 @@ const makeRedirects = (groupName, paths) => paths.map(path => {
 		to: `https://${entity}${stageSuffix}.escsportsapi.com/${action}`,
 		status: 200,
 		force: true,
-		headers: getApiHeaders(stage),
+		headers: getApiHeaders(path, stage),
 	}
 })
+
+
+const verifyRecaptchaRedirect = {
+  from: `/siteverify`,
+  to: `https://www.google.com/recaptcha/api/siteverify?secret=`
+    + process.env.CART_RECAPTCHA_SECRET,
+  status: 200,
+  force: true
+}
 
 
 module.exports = [
 	...makeRedirects(`products`, productsApiPaths),
 	...makeRedirects(`cart`, cartApiPaths),
 	...makeRedirects(`dealers`, dealerApiPaths),
+	verifyRecaptchaRedirect
 ]

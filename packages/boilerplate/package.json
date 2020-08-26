@@ -28,6 +28,5 @@
     "netlify-lambda": "^2.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
-  },
-  "gitHead": "88b52d0691bec4c2d89bb38bf27e862603cd83c2"
+  }
 }

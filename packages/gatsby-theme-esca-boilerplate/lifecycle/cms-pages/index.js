@@ -26,7 +26,13 @@ exports.createPages = async ({ actions, graphql }) => {
 
 	// Create each page defined in the CMS
 	pages.forEach((page, idx) => {
-		const { title, path, breadcrumbs, _rawContent: content } = page || {}
+		const {
+			title,
+			path,
+			breadcrumbs,
+			_rawContent: content,
+			tagManagerEvent
+		} = page || {}
 
 		/**
 		 * Get product IDs needed for any instances of ProductListWidget that are
@@ -45,7 +51,8 @@ exports.createPages = async ({ actions, graphql }) => {
 				breadcrumbs,
 				content,
 				productLists,
-				allProductIds
+				allProductIds,
+				tagManagerEvent
 			}
 		})
 	})

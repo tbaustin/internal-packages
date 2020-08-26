@@ -29,7 +29,13 @@ exports.createPages = async ({ actions, graphql }) => {
 		})
 
 		// Get the fields & content structure for the template found above
-		const { title, path, breadcrumbs, _rawContent: content } = cmsTemplate || {}
+		const {
+			title,
+			path,
+			breadcrumbs,
+			_rawContent: content,
+			tagManagerEvent
+		} = cmsTemplate || {}
 
 		/**
 		 * Get product IDs needed for any instances of ProductListWidget that are
@@ -56,6 +62,7 @@ exports.createPages = async ({ actions, graphql }) => {
 					title,
 					breadcrumbs,
 					content,
+					tagManagerEvent,
 					dataSource: source,
 					productLists,
 					allProductIds

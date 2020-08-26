@@ -1,10 +1,13 @@
 import apiRequest from './api-request'
 import { LoadProducts } from './products'
-import { ShippingQuotes } from './shipping'
+import { LoadShipping } from './shipping'
 import { CalculateTaxes } from './taxes'
 import { LoadCoupon, CalculateDiscount, ValidateCoupon } from './coupons'
 import { GetOrderId, LoadOrder, StoreOrder } from './orders'
 import { ValidateAddress } from './address'
+
+
+export { default as ValidationError } from './validation-error'
 
 
 
@@ -43,7 +46,8 @@ export default class EscaAPIClient {
 		this.makeUrl = makeUrl.bind(this)
 		this.apiRequest = apiRequest.bind(this)
 		this.loadProducts = LoadProducts.bind(this)
-		this.shippingQuote = ShippingQuotes.bind(this)
+		this.loadShipping = LoadShipping.bind(this)
+		this.shippingQuote = LoadShipping.bind(this) // backwards-compatible alias
 		this.calculateTaxes = CalculateTaxes.bind(this)
 		this.loadCoupon = LoadCoupon.bind(this)
 		this.calculateDiscount = CalculateDiscount.bind(this)
@@ -76,6 +80,14 @@ export default class EscaAPIClient {
 			// Don't use if the key is set but value is falsey
 			if (endpoint) this.endpoints[type] = endpoint
 		}
+	}
+
+
+	setRecaptchaToken = newToken => {
+		if (newToken) {
+			this.recaptchaToken = newToken
+		}
+		return this.recaptchaToken
 	}
 
 

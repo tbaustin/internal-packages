@@ -22,7 +22,7 @@ test(`Generates shipping quote for a Goalrilla item`, async () => {
 	}
 
 
-	const quote = await client.shippingQuote({
+	const quote = await client.loadShipping({
 		"destination":{
 			"first_name": `Test`,
 			"last_name": `Order`,

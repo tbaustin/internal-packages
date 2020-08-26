@@ -1,1 +1,1 @@
-export { default as ShippingQuotes } from "./quote"
+export { default as LoadShipping } from "./load-shipping"

@@ -39,7 +39,7 @@ module.exports = ({ icon }) => ({
 		{
 			resolve: `gatsby-plugin-google-tagmanager`,
 			options: {
-				id: `GTM-WNC7JP8`,
+				id: siteConfig.googleTagManagerId,
 				includeInDevelopment: true,
 			},
 		},
@@ -59,8 +59,7 @@ module.exports = ({ icon }) => ({
 				background_color: `#45A4EC`,
 				theme_color: `#45A4EC`,
 				display: `minimal-ui`,
-				icon: icon || `${dirs.gatsbyTheme}/static/icon.png`,
-				// icon: `src/images/escalade-icon.png`
+				icon: icon || `${dirs.gatsbyTheme}/static/icon.png`
 			},
 		},
 		{

@@ -1,8 +1,10 @@
-import EscaAPIClient from '@escaladesports/esca-api-client'
+import client from '../client'
 
-const preOrder = async ( data )  => {
-	console.log(`PreOrder`, data)
-	var { info, preFetchData: { meta: { orderRequest } } } = data
+
+export async function preOrder(data) {
+	let { info, preFetchData: { meta: { orderRequest } } } = data
+
+	client.setRecaptchaToken(info.recaptchaToken)
 
 	orderRequest.card = {
 		number: info.billingCardNumber,
@@ -13,9 +15,8 @@ const preOrder = async ( data )  => {
 		code: info.billingCardCVC,
 	}
 
-	//if billing address is different, add that to the order object
-	console.log(`Billing Info`, info)
-	if(!info.sameBilling){
+	// If billing address is different, add that to the order object
+	if (!info.sameBilling) {
 		orderRequest.order.billing = {
 			first_name: info.billingFirstName,
 			last_name: info.billingLastName,
@@ -29,22 +30,18 @@ const preOrder = async ( data )  => {
 			phone: info.infoPhone,
 		}
 	}
-	console.log(`PreOrder: `, orderRequest, info)
-	
-	const client = new EscaAPIClient({recaptchaToken: info.recaptchaToken})
-	var {
+
+	const {
 		warnings,
 		order_id,
 		bind_id,
-		paid,
+		paid
 	} = await client.storeOrder(orderRequest)
 
 	return {
 		warnings,
 		order_id,
 		bind_id,
-		paid,
+		paid
 	}
 }
-
-export { preOrder }

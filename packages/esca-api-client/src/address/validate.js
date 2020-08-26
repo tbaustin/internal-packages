@@ -1,7 +1,24 @@
 import ErrorReport from '../error-report'
 
+
+
+function getInvalidReason(validateAddressResponse) {
+	const { reason, errorMessage, failed } = validateAddressResponse || {}
+	const regex = /required|invalid/
+
+	if (regex.test(failed)) return failed
+	if (regex.test(errorMessage)) return errorMessage
+	if (Array.isArray(reason) && reason[0]) return reason[0]
+	if (typeof reason === `string`) return reason
+
+	return ``
+}
+
+
+
 /**
- * The primary function of this service is to gather shipping quotes for a customer order.
+ * Validates a given address
+ * Always returns an object w/ 'valid' (Boolean) and optional 'reason' (string)
  */
 export default async function validateAddress(params) {
 	// To group all error reports related to this request
@@ -10,53 +27,42 @@ export default async function validateAddress(params) {
 	// Extra info for error report if needed later
 	let reportOptions = {
 		tags: { action: `validateAddress` },
-		extra: { params },
+		extra: { params }
 	}
 
 	try {
-		const {  address } = params || {}
+		const { address } = params || {}
 
 		const requestConfig = {
 			method: `post`,
 			url: this.endpoints.addressValidate,
-			data: {
-				address,
-			},
+			data: { address }
 		}
+
 		const response = await this.apiRequest(requestConfig)
-		if(response.errorMessage){
-			throw new Error(response.errorMessage)
-		}
-		return response
+
+		const valid = Boolean(response?.valid)
+		const reason = getInvalidReason(response)
+
+		return { valid, ...reason && { reason } }
 	}
 	catch(err) {
-		console.log(`Error: `, err)
-		// For HTTP error/fail responses
-		if (err.response) {
-			let { status, data } = err.response
-
-			// Report non-404 service errors
-			if (status !== 404) {
-				reportOptions.extra.responseData = data
-				ErrorReport.send(err, reportOptions)
-			}
-
-			// Log just the HTTP response
-			console.error(data)
-		}
-		else {
-			// Report entire error object & log message for non-HTTP errors
-			ErrorReport.send(err, reportOptions)
-			console.error(err.message || err)
-		}
-
 		/**
-		 * Since this is a simple load request, just return empty when there are
-		 * errors to keep usage more consistent/less complicated
+		 * This service is always expected to return a 200 response regardless of
+		 * address validity; any caught error is more likely a lower-level problem,
+		 * so send a report and return a generic invalid address result
+		 *
+		 * Just in case there actually is an HTTP error response (not expected),
+		 * include the response body in the error report for troubleshooting
 		 */
+		if (err?.response) {
+			reportOptions.extra.responseBody = err.response.data
+		}
+		ErrorReport.send(err, reportOptions)
+
 		return {
-			"reason": `Unable to validate address`,
-			"valid": false,
+			valid: false,
+			reason: `Unable to validate address`
 		}
 	}
 }

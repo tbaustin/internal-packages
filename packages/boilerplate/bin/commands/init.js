@@ -30,6 +30,7 @@ async function initProjectFiles() {
         env: `esca env`,
         netlify: `esca netlify`,
         "ls-link": `esca ls-link`,
+        "sanity-graphql": `esca sanity-graphql`,
         dev: `esca dev`,
         build: `esca build`
       },
@@ -79,10 +80,25 @@ async function initProjectFiles() {
 	sanityName: \`\`,
 	sanityProjectId: \`\`,
 	sanityDataset: \`\`,
-	activeCampaignSite: \`\`,
+  googleTagManagerId: \`\`,
+  activeCampaign: {
+		integrationName: \`\`,
+		integrationLogo: \`\`,
+		account: \`\`,
+		sandboxAccount: \`\`,
+		origin: \`\`,
+		devOrigin: \`\`,
+		host: \`\`,
+		devMode: false
+	},
 	apiStages: {
 		cart: \`test\`,
 		products: \`prod\`
+	},
+  powerReviews: {
+		merchantId: \`\`,
+		apiKey: \`\`,
+		writeApiKey: \`\`,
 	}
 }`
   )

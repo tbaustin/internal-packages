@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { css } from '@emotion/core'
 import { useStaticQuery, graphql } from 'gatsby'
-import { getFixedGatsbyImage } from 'gatsby-source-sanity'
+import { getFixedGatsbyImage } from '@escaladesports/utils'
 import { addToCart } from '@escaladesports/zygote-cart'
 import { formatPrice, toCents } from '@escaladesports/utils'
 import { useTemplateEngine } from '../context/template-engine'
@@ -34,24 +34,30 @@ export default function AddToCartWidget(props) {
 	const [quantity, setQuantity] = useState(1)
 
 	const { asset, templateVariable } = image
+	console.log("IMAGE VARIABLE:", image)
 
 	// Try to replace template variable w/ value in case one is provided
 	const templateEngine = useTemplateEngine()
 	const templateValue = templateEngine.resolveProperty(templateVariable)
 	const { asset: templateAsset } = templateValue || {}
+	console.log("TEMPLATE VALUE:", templateValue)
 
-	// Use asset ID derived from template variable or the "hard-coded" one
-	const imageAssetId = templateAsset?._id
-		|| templateAsset?._ref
+	// Use asset ID/URL derived from template variable or the "hard-coded" one
+	const imageId = templateValue?.asset?._id
+		|| templateValue?.asset?._ref
+		|| templateValue?.externalUrl
 		|| asset?._id
 		|| asset?._ref
+	console.log("FOUND IMAGE ID:", imageId)
 
 	const fixedGatsbyImage = getFixedGatsbyImage(
-		imageAssetId,
+		imageId,
 		{ width: 100 },
 		sanityConfig
 	)
+	console.log("FIXED GATSBY IMAGE:", fixedGatsbyImage)
 	const imageUrl = fixedGatsbyImage?.src
+	console.log("IMAGE URL:", imageUrl)
 
 	const resolveValue = val => templateEngine.data
 		? templateEngine.parse(val)
@@ -68,7 +74,9 @@ export default function AddToCartWidget(props) {
 		quantity: parseInt(quantity),
 	})
 
-	if (!resolveValue(stock)) return null
+	const stockValue = Number(resolveValue(stock)) || 0
+	console.log("STOCK VALUE:", stockValue)
+	if (!stockValue) return null
 
 	return (
 		<div css={style}>

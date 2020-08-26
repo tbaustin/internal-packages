@@ -1,6 +1,10 @@
-const  shippingMethods = async (info, products, callback) => {
+import { toCents } from '@escaladesports/utils'
+import client from '../client'
+
+
+const shippingMethods = async (info, products) => {
 	//Get shipping quote from the API
-	var shippingQuote = await callback({
+	var shippingQuote = await client.loadShipping({
 		destination:{
 			first_name: info.infoFirstName,
 			last_name: info.infoLastName,
@@ -39,11 +43,11 @@ const  shippingMethods = async (info, products, callback) => {
 			id: name,
 			description: locationProducts.map(product => product.name).join(),
 			shippingMethods: shippingMethods,
-		})   
+		})
 		//Add default shipping method for the location
 		shipping.selectedShippingMethod[name] = shippingMethods[0].id
 		//Create list of products grouped by location
-		shipping.orderLocations[name] = { 
+		shipping.orderLocations[name] = {
 			products: {},
 			shipping: {
 				options: {
@@ -54,7 +58,7 @@ const  shippingMethods = async (info, products, callback) => {
 				},
 				skus: locationProducts.map(product => product.sku),
 				service,
-			}, 
+			},
 		}
 		locationItems.forEach(item => {
 			shipping.orderLocations[name].products[item] = {}
@@ -66,7 +70,7 @@ const  shippingMethods = async (info, products, callback) => {
 	return shipping
 }
 
-// Get an array of items from the same location and 
+// Get an array of items from the same location and
 // return their names in 1 comma seperated string
 function joinProducts(items, products){
 	return Object.values(products)
@@ -79,12 +83,12 @@ function mapShipping(options, outerIndex){
 		var {
 			label,
 			value,
-			eta, 
+			eta,
 		} = option
 		return {
 			id: `method-${(outerIndex + 1) + count}`,
 			description: label,
-			value: parseInt(value.replace(/\./g, ``), 10),
+			value: toCents(value) || 0,
 			addInfo: ((eta == `-NA-`) || (!eta)) ? `` : `Get it ${eta}!`,
 		}
 	})

@@ -1,7 +1,10 @@
-const  loadProducts = async (skus, products, callback) => {
+import client from '../client'
+
+
+export default async function loadProducts(skus, products) {
 	//Get coupon from the API
 	let returnAsObject = true
-	var response = await callback({
+	var response = await client.loadProducts({
 		fields: [`inventory`,`price`,`shipping`],
 		...skus,
 		returnAsObject,
@@ -24,8 +27,6 @@ const  loadProducts = async (skus, products, callback) => {
 			[name]: val,
 		}
 	})
-	
+
 	return response
 }
-
-export default loadProducts
