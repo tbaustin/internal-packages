@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/react-esca-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@escaladesports/esca-api-client": "^3.0.0",
+    "@escaladesports/esca-api-client": "^3.1.0",
     "react": "^16.13.0"
   }
 }
