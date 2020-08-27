@@ -32,7 +32,9 @@ fragment CategoryFields on Category {
     # }
   }
   template {
-    _ref
+    _id
+    title
+    path
   }
 }
 
@@ -76,6 +78,8 @@ fragment ProductFields on BaseProduct {
   }
   template {
     _id
+    title
+    path
   }
 }
 

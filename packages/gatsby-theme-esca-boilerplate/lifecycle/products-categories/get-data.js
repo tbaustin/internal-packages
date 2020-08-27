@@ -29,8 +29,15 @@ const escaClient = new EscaAPIClient({
 
 
 module.exports = async function getData() {
-	const categories = await client.fetch(`*[_type == "category"]`)
 	const customFields = await client.fetch(`*[_type == "customField"]`)
+	const categories = await client.fetch(`
+		*[_type == "category"] {
+			...,
+			template->{
+				_id, title, path
+			}
+		}
+	`)
 	const cmsProducts = await client.fetch(`
 		*[_type == "baseProduct"] {
 			...,

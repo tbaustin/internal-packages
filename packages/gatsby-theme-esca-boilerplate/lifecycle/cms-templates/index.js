@@ -22,11 +22,8 @@ exports.createPages = async ({ actions, graphql }) => {
 	dataSources.forEach((source, idx) => {
 		// Find the correct template to use for this data source
 		const { template } = source || {}
-		const { _id, _ref } = template || {}
-		const templateId = _id || _ref
-		const cmsTemplate = templates.find(template => {
-			return template._id === templateId
-		})
+		const { _id: currentTemplateId } = template || {}
+		const cmsTemplate = templates.find(t => t._id === currentTemplateId)
 
 		// Get the fields & content structure for the template found above
 		const {

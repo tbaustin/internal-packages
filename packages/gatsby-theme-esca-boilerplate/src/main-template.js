@@ -61,6 +61,7 @@ export const query = graphql`
 				customFieldEntries
 				template {
 					_id
+					title
 					path
 				}
 				variants {

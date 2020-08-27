@@ -33,6 +33,8 @@ fragment ProductFields on BaseProduct {
   }
   template {
     _id
+    title
+    path
   }
 }
 

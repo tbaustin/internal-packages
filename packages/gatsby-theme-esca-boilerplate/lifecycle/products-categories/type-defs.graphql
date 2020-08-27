@@ -74,6 +74,7 @@ type AncestorCategory {
 
 type Category implements Node @infer {
   _id: String
+  _type: String
   ancestry: [AncestorCategory]
   slug: Slug
   name: String
