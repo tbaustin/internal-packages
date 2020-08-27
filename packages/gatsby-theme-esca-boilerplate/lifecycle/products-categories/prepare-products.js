@@ -13,30 +13,27 @@ const prepareVariants = options => {
 		const { customFieldEntries = [], ...other } = variant
 		const { sku } = other
 
-		const variantReviews = reviews.filter(r => {
-			const { details } = r
-
-			if(details && details.product_page_id) {
-				return sku.toLowerCase() === details.product_page_id.toLowerCase()
-			} else {
-				return false
-			}
+		const variantReviews = reviews.filter(review => {
+			const { details } = review || {}
+			const { product_page_id } = details || {}
+			if (!product_page_id) return false
+			return sku.toLowerCase() === product_page_id.toLowerCase()
 		})
 
-		const allRatings = variantReviews.reduce((acc, cur) => {
-			const { metrics: { rating } } = cur
-
-			return acc += rating
+		const sumOfRatings = variantReviews.reduce((sum, review) => {
+			const { metrics } = review || {}
+			const { rating } = metrics || {}
+			return sum + rating || sum
 		}, 0)
 
-		const combinedRating = allRatings === 0 ? 0 : allRatings / variantReviews.length
+		const averageRating = (sumOfRatings / variantReviews.length) || 0
 
 		const salsify = _pick(other, salsifyProperties)
 		const nonSalsify = _omit(other, salsifyProperties)
 
 		return {
 			...nonSalsify,
-			rating: combinedRating,
+			rating: averageRating,
 			customFieldEntries: JSON.stringify(customFieldEntries),
 			salsify: JSON.stringify(salsify),
 		}
