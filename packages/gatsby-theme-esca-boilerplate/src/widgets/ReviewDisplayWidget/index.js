@@ -8,11 +8,11 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardArrowLeft,  MdKeyboar
 import ReactPaginate from 'react-paginate'
 import { powerReviews } from 'config'
 
-import Stars from '../components/stars'
-import WriteReviewWidget from './WriteReviewWidget'
-import { colors, breakpoints, screenWidths } from '../styles/variables'
-import loadReviews from '../utils/reviews/load-reviews'
-import usePromise from '../hooks/usePromise'
+import Stars from '../../components/stars'
+import WriteReviewWidget from '../WriteReviewWidget'
+import { colors, breakpoints, screenWidths } from '../../styles/variables'
+import loadReviews from './load-reviews'
+import usePromise from '../../hooks/usePromise'
 
 const { merchantId, apiKey } = powerReviews
 
@@ -51,7 +51,7 @@ export default function ReviewDisplayWidget(props){
 	const pageSize = paging?.page_size
 	const pageCount = paging?.pages_total
 
-	const { 
+	const {
 		average_rating,
 		review_count,
 		rating_histogram,
@@ -72,7 +72,7 @@ export default function ReviewDisplayWidget(props){
 	}
 
 	/*
-	 * Functions start 
+	 * Functions start
 	*/
 
 	const handleVote = async (vote, ugcId) => {
@@ -100,22 +100,22 @@ export default function ReviewDisplayWidget(props){
 	const handleSort = e => {
 		let newSort = []
 		switch(e.target.value){
-			case `oldest`: 
+			case `oldest`:
 				newSort = sortArr(reviews, `desc`, `details.created_date`)
 				break
-			case `newest`: 
+			case `newest`:
 				newSort = sortArr(reviews, `asc`, `details.created_date`)
 				break
-			case `helpful`: 
+			case `helpful`:
 				newSort = sortArr(reviews, `asc`, `metrics.helpful_score`)
 				break
-			case `ratedAsc`: 
+			case `ratedAsc`:
 				newSort = sortArr(reviews, `asc`, `metrics.rating`)
-				break	
-			case `ratedDesc`: 
+				break
+			case `ratedDesc`:
 				newSort = sortArr(reviews, `desc`, `metrics.rating`)
 				break
-			default: 
+			default:
 				break
 		}
 
@@ -156,7 +156,7 @@ export default function ReviewDisplayWidget(props){
 								of users would recommend this to a friend
 							</p>
 						</div>
-					
+
 						<div className="histogram">
 							<ul className="histoList">
 								{rating_histogram?.map((total, i) => (
@@ -197,8 +197,8 @@ export default function ReviewDisplayWidget(props){
 			<ul className={`reviewList`}>
 				{(sortedReviews || reviews).slice(offset, pageSize + offset).map((review, i) => {
 					const { details, metrics, ugc_id } = review
-					const { 
-						created_date, headline, comments, 
+					const {
+						created_date, headline, comments,
 						nickname, location, properties,
 						bottom_line,
 					} = details
@@ -371,12 +371,12 @@ const styles = css`
 	.histoBar {
 		width: 250px;
 		margin: 0 10px;
-		height: 15px; 
+		height: 15px;
 		background: ${colors.backgroundGrey};
 		border-radius: 11px;
 	}
 	.histoFillBar {
-		height: 15px; 
+		height: 15px;
 		border-radius: 11px;
 		background: ${colors.red};
 	}
@@ -489,7 +489,7 @@ const styles = css`
 	.icon {
 		display: flex;
 		align-items: center;
-		cursor: pointer; 
+		cursor: pointer;
 		svg {
 			height: 24px;
 			width: 24px;

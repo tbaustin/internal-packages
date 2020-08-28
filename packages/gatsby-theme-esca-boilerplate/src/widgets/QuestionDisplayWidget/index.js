@@ -8,12 +8,12 @@ import { format } from 'date-fns'
 import ReactPaginate from 'react-paginate'
 import { powerReviews } from 'config'
 
-import WriteQuestionWidget from './WriteQuestionWidget'
-import WriteAnswerWidget from './WriteAnswerWidget'
-import loadQuestions from '../utils/reviews/load-questions'
-import usePromise from '../hooks/usePromise'
+import WriteQuestionWidget from '../WriteQuestionWidget'
+import WriteAnswerWidget from '../WriteAnswerWidget'
+import loadQuestions from './load-questions'
+import usePromise from '../../hooks/usePromise'
 
-import { colors, breakpoints } from '../styles/variables'
+import { colors, breakpoints } from '../../styles/variables'
 
 const { merchantId } = powerReviews
 
@@ -37,7 +37,7 @@ export default function QuestionDisplayWidget(props){
 	const [offset, setOffset] = useState(0)
 	const [votes, setVotes] = useState({})
 	const [sortedQuestions, setSortedQuestions] = useState(null)
-  
+
 	const [data, error, pending] = usePromise(loadQuestions(sku.toUpperCase()), {})
 	const { allQuestions: questions, paging } = data
 
@@ -56,7 +56,7 @@ export default function QuestionDisplayWidget(props){
 	if(!questions || !questions.length) {
 		return null
 	}
-  
+
 	const handleVote = async (vote, ugcId) => {
 		const voteUrl = `https://writeservices.powerreviews.com/voteugc`
 
@@ -78,22 +78,22 @@ export default function QuestionDisplayWidget(props){
 		let newSort = []
 
 		switch(e.target.value){
-			case `oldest`: 
+			case `oldest`:
 				newSort = sortArr(questions, `desc`, `details.created_date`)
 				break
-			case `newest`: 
+			case `newest`:
 				newSort = sortArr(questions, `asc`, `details.created_date`)
 				break
 			case `mostAnswers`:
 				newSort = sortArr(questions, `asc`, `answer.length`)
 				break
-			default: 
+			default:
 				break
 		}
 
 		if(newSort.length) setSortedQuestions(newSort)
 	}
-  
+
 	const handlePaginate = data => {
 		const { selected } = data
 		setOffset(Math.ceil(selected * pageSize))
@@ -142,7 +142,7 @@ export default function QuestionDisplayWidget(props){
 												const { nickname: aNickname, is_expert, text: aText } = aDetails
 												const { helpful_votes, not_helpful_votes } = metrics
 												const userVote = votes[ugc_id] === `helpful` ? 1 : votes[ugc_id] === `unhelpful` ? -1 : 0
-                    
+
 												return (
 													<li key={j} className="answerItem">
 														<div className="answerAuthor">{is_expert ? `Verified Reply - ` : ``}{aNickname}</div>
@@ -285,7 +285,7 @@ const styles = css`
 	.icon {
 		display: flex;
 		align-items: center;
-		cursor: pointer; 
+		cursor: pointer;
 		svg {
 			height: 24px;
 			width: 24px;

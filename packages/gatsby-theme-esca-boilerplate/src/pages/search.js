@@ -44,8 +44,7 @@ export default function SearchPage(){
 			startSearch(term)
 		}
 	}, [])
-
-	console.log(results[0])
+	
 	return (
 		<Layout title='Search'>
 			<Container width="constrained" smartPadding>

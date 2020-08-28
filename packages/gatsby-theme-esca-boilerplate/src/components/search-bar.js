@@ -9,8 +9,6 @@ const { sizes, breakpoints, colors, shadows } = variables
 
 
 export default function SearchBar({ active, className, bogus }) {
-  // console.log("className:", className)
-  // console.log("bogus prop:", bogus)
   const inputRef = useRef(null)
 
 	useEffect(() => {
@@ -30,7 +28,6 @@ export default function SearchBar({ active, className, bogus }) {
 
   const [ layoutState ] = useLayoutState()
   const styles = getStyles(layoutState)
-  console.log("styles:", styles)
 
   return !active ? null : (
     <form css={styles} className={className} onSubmit={submitSearch}>

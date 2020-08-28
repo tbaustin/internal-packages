@@ -25,19 +25,19 @@ module.exports = function getProductLists(options) {
 				templateVariable: plTempVar,
 				useTemplateDataSource: plUseTempDataSource,
 			} = productListSources || {}
-	
+
 			let productList = manualProductList || []
 
 			if(templateEngine && dataSource){
 				productList = plUseTempDataSource
 					? dataSource
-					: plTempVar 
+					: plTempVar
 						? templateEngine.resolveProperty(
 							plTempVar,
 							dataSource,
 						)
-						: []  
-			} 
+						: []
+			}
 
 			const filtered = allProducts.filter(product => {
 				const { _id } = product
@@ -46,12 +46,11 @@ module.exports = function getProductLists(options) {
 			})
 
 			const skus = filtered.map(p => (p || {}).sku)
-			console.log(`SKUS: `, skus)
 			return limit ? skus.slice(0, limit) : skus
 		}
-		
 
-    
+
+
 		const {
 			category: manualCategory,
 			templateVariable,
@@ -86,7 +85,7 @@ module.exports = function getProductLists(options) {
 				return current === slugValue
 			})
 		})
-    
+
 		const skus = filtered.map(p => (p || {}).sku)
 		return limit ? skus.slice(0, limit) : skus
 	}

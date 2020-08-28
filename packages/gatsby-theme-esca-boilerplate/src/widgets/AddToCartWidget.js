@@ -34,13 +34,11 @@ export default function AddToCartWidget(props) {
 	const [quantity, setQuantity] = useState(1)
 
 	const { asset, templateVariable } = image
-	console.log("IMAGE VARIABLE:", image)
 
 	// Try to replace template variable w/ value in case one is provided
 	const templateEngine = useTemplateEngine()
 	const templateValue = templateEngine.resolveProperty(templateVariable)
 	const { asset: templateAsset } = templateValue || {}
-	console.log("TEMPLATE VALUE:", templateValue)
 
 	// Use asset ID/URL derived from template variable or the "hard-coded" one
 	const imageId = templateValue?.asset?._id
@@ -48,16 +46,13 @@ export default function AddToCartWidget(props) {
 		|| templateValue?.externalUrl
 		|| asset?._id
 		|| asset?._ref
-	console.log("FOUND IMAGE ID:", imageId)
 
 	const fixedGatsbyImage = getFixedGatsbyImage(
 		imageId,
 		{ width: 100 },
 		sanityConfig
 	)
-	console.log("FIXED GATSBY IMAGE:", fixedGatsbyImage)
 	const imageUrl = fixedGatsbyImage?.src
-	console.log("IMAGE URL:", imageUrl)
 
 	const resolveValue = val => templateEngine.data
 		? templateEngine.parse(val)
@@ -75,7 +70,6 @@ export default function AddToCartWidget(props) {
 	})
 
 	const stockValue = Number(resolveValue(stock)) || 0
-	console.log("STOCK VALUE:", stockValue)
 	if (!stockValue) return null
 
 	return (

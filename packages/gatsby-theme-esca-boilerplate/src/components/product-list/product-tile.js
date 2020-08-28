@@ -5,7 +5,7 @@ import { formatPrice, getFluidGatsbyImage } from '@escaladesports/utils'
 import { css } from '@emotion/core'
 
 import { useTemplateEngine } from '../../context/template-engine'
-import pricingOptions from '../../utils/product/pricing-options'
+import pricingOptions from './pricing-options'
 
 import { priceText } from '../../styles'
 
@@ -41,7 +41,7 @@ export default function ProductTile({ product, priceDisplay }){
 	// 	`Custom Fields:Color`,
 	// 	patchedData,
 	// )
-	
+
 	const parsedPath = templateEngine.parse(
     product?.template?.path || `/`,
     patchedData,

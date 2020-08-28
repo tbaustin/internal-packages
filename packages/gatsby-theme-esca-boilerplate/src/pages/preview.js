@@ -25,8 +25,6 @@ function PreviewPage(props){
 		}
 		fetchData()
 	}, [])
-  
-	console.log(data)
 
 	if(!data) return <div>No Data Found</div>
 	const content = Array.isArray(data) ? data[0] : data

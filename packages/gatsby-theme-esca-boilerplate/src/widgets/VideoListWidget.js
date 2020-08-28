@@ -97,7 +97,6 @@ export default function VideoListWidget(props) {
 					if(className !== `placeholder`){
 						setVideo(null)
 					}
-					console.log(e.target.className)
 				}}>
 					<div className="wrapper">
 						<div className="placeholder">

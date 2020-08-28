@@ -2,27 +2,32 @@ import React, { useState } from 'react'
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import { css } from '@emotion/core'
-
-import { useTemplateEngine } from '../context/template-engine'
-import useLivePriceAndStock from '../context/live-price-and-stock'
-import { useProductList } from '../context/product-lists'
-import { variables } from '../styles'
-
-import CarouselList from '../components/product-list/carousel-list'
-import GridList from '../components/product-list/grid-list'
-import FilterWidget from './FilterWidget'
-
-import generateFilters from '../utils/product/generate-filters'
-import filterProducts from '../utils/product/filter-products'
+import { useTemplateEngine } from '../../context/template-engine'
+import useLivePriceAndStock from '../../context/live-price-and-stock'
+import { useProductList } from '../../context/product-lists'
+import { variables } from '../../styles'
+import CarouselList from '../../components/product-list/carousel-list'
+import GridList from '../../components/product-list/grid-list'
+import FilterWidget from '../FilterWidget'
+import generateFilters from './generate-filters'
+import filterProducts from './filter-products'
 
 const { colors } = variables
 
+
 export default function ProductListWidget(props) {
-	const { _key, title, display, filters: initFilters = {}, priceDisplay } = props
+	const {
+		_key,
+		title,
+		display,
+		filters: initFilters = {},
+		priceDisplay
+	} = props
+
 	const [activeFilters, setActiveFilters] = useState({})
 
 	const enableFilter = initFilters?.enableFilter
-	
+
 	// Try to replace template variable w/ value in case one is provided
 	const templateEngine = useTemplateEngine()
 	const parsedTitle = templateEngine.parse(title)
@@ -30,8 +35,8 @@ export default function ProductListWidget(props) {
 	const products = useLivePriceAndStock(useProductList(_key))
 
 	function renderList(productList) {
-		switch(display){
-			case `carousel`: 
+		switch(display) {
+			case `carousel`:
 				return (
 					<CarouselList
 						products={productList}
@@ -39,9 +44,9 @@ export default function ProductListWidget(props) {
 						priceDisplay={priceDisplay}
 					/>
 				)
-			default: 
+			default:
 				return (
-					<GridList 
+					<GridList
 						products={productList}
 						activeFilters={activeFilters}
 						priceDisplay={priceDisplay}
@@ -57,13 +62,10 @@ export default function ProductListWidget(props) {
 			?.find(type => type.name === `variant`)?.fields
 			?.find(field => field?.name === `customFields`)
 			?.fields || []
-	
+
 		const filters = customFields.filter(field => field?.filterWidget)
 		const filterValues = generateFilters(filters, products, templateEngine, initFilters)
 		const filteredProducts = filterProducts(activeFilters, products, templateEngine)
-
-		console.log(`All products length: `, products.length)
-		console.log(`Filtered Products length: `, filteredProducts)
 
 		return (
 			<section css={styles}>
@@ -71,7 +73,7 @@ export default function ProductListWidget(props) {
 					<div className="filters">
 						{filterValues.map((filter, i) => {
 							return (
-								<FilterWidget 
+								<FilterWidget
 									key={i}
 									filter={filter}
 									activeFilters={activeFilters}
