@@ -1388,7 +1388,12 @@
   resolved "https://registry.yarnpkg.com/@escaladesports/us-states-lib/-/us-states-lib-2.0.1.tgz#734b8543c34e7561ca6fcea3eed20d6be4dc6f6e"
   integrity sha512-W3b09oMH/+pzpzQ3rDKppS2sZ/iJZPudS4DC6FexfB/j1P3v4KTkFJg78LP4lsltCQp+olekxb4M2f/yiAkTaw==
 
-"@escaladesports/zygote-cart@^4.0.0", "@escaladesports/zygote-cart@^4.2.0":
+"@escaladesports/us-states-lib@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@escaladesports/us-states-lib/-/us-states-lib-2.0.2.tgz#1db6eea54e5e5668a21549d760cb04f10dc881a2"
+  integrity sha512-/a5507bR21LvP1G/aqOtb9jdxoCixs2Dlp0XaL7cCuD04b9Wke+mtqkFjSTijgouLlxzn5iBKiXHBiU3WrUWjw==
+
+"@escaladesports/zygote-cart@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@escaladesports/zygote-cart/-/zygote-cart-4.2.0.tgz#0d03e721fee73c993de1951f5fa605287de87b4e"
   integrity sha512-yL5HyE5YxpBmW02Phq+3bj8uLk5ZxlnEyPdU2qb2XERFDns2qaHdajXT0kdWpYtrXlLwO5K4L8BvbanMVMGnnw==
@@ -1396,6 +1401,30 @@
     "@escaladesports/us-states-lib" "^2.0.1"
     "@escaladesports/utils" "^2.0.0"
     "@escaladesports/zygote-plugin-esca-api" "^4.1.1"
+    classnames "^2.2.6"
+    emotion "^9.2.8"
+    form-to-object "^5.1.0"
+    is-email "^1.0.0"
+    is-phone "^2.0.0"
+    is-valid-zip "^0.0.3"
+    isomorphic-fetch "^2.2.1"
+    prop-types "^15.6.2"
+    react-async-script-loader "^0.3.0"
+    react-credit-card-primitives "^1.5.1"
+    react-google-recaptcha-v3 "^1.5.2"
+    react-html-email "^3.0.0"
+    react-imask "^5.2.1"
+    react-input-mask "^2.0.3"
+    statable "^1.0.1"
+
+"@escaladesports/zygote-cart@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@escaladesports/zygote-cart/-/zygote-cart-4.2.2.tgz#e50d58d5c8cb339cbcbb189ce31be07eb8f0fc00"
+  integrity sha512-aShLR1N0id335n4wsmi+iFqSwoXAJcN3sMWrBMdeAGiAvje0QvFvpPS6pqoBggxAgNxNFwKxbtkYKNMpAzp/QA==
+  dependencies:
+    "@escaladesports/us-states-lib" "^2.0.2"
+    "@escaladesports/utils" "^2.0.0"
+    "@escaladesports/zygote-plugin-esca-api" "^4.2.0"
     classnames "^2.2.6"
     emotion "^9.2.8"
     form-to-object "^5.1.0"
