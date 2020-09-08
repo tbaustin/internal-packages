@@ -10,7 +10,7 @@ import { inputField } from '../styles'
 import {
 	escaladeSite,
 	sanityProjectId,
-	sanityDataset
+	sanityDataset,
 } from 'config'
 
 
@@ -28,7 +28,7 @@ export default function AddToCartWidget(props) {
 		description,
 		price,
 		stock,
-		allowQuantity
+		allowQuantity,
 	} = props
 
 	const [quantity, setQuantity] = useState(1)
@@ -47,10 +47,13 @@ export default function AddToCartWidget(props) {
 		|| asset?._id
 		|| asset?._ref
 
-	const fixedGatsbyImage = getFixedGatsbyImage(
+
+	console.log(`Image ID: `, imageId) 
+
+	const fixedGatsbyImage = imageId && getFixedGatsbyImage(
 		imageId,
 		{ width: 100 },
-		sanityConfig
+		sanityConfig,
 	)
 	const imageUrl = fixedGatsbyImage?.src
 
