@@ -7,30 +7,33 @@ import { search } from '../search'
 import { colors, breakpoints } from '../styles/variables'
 
 
+
 export default function SearchPage(){
 	const [loading, setLoading] = useState(false)
 	const [results, setResults] = useState([])
 	const [term, setTerm] = useState(``)
 
-	let id = 0
 
-	async function startSearch(term){
-		setTerm(term)
+	const startSearch = async (value) => {
+		setTerm(value)
 
 		// Change URL
-		if (window.history && window.history.replaceState) {
-			let path = encodeURIComponent(term)
-			path = path.replace(/%20/g, `+`)
+		if (window?.history?.replaceState) {
+			let path = encodeURIComponent(value).replace(/%20/g, `+`)
 			window.history.replaceState({}, ``, `/search/${path}`)
 		}
 
-		id++
-		const curId = id
 		setLoading(true)
-		const results = await search(term)
-		if (curId === id) {
-			setLoading(false)
-			setResults(results)
+		const searchResults = await search(value)
+		setLoading(false)
+		setResults(searchResults)
+	}
+
+
+	const handleInput = event => {
+		const { type, key, currentTarget } = event
+		if (key === `Enter` || type === `blur`) {
+			startSearch(currentTarget?.value || ``)
 		}
 	}
 
@@ -44,33 +47,34 @@ export default function SearchPage(){
 			startSearch(term)
 		}
 	}, [])
-	
+
+
 	return (
 		<Layout title='Search'>
 			<Container width="constrained" smartPadding>
 				<h1>Search</h1>
 				<input
+					type="text"
 					css={searchInputStyle}
-					type='text'
-					onChange={e => startSearch(e.target.value)}
+					disabled={loading}
+					onKeyUp={handleInput}
+					onBlur={handleInput}
 				/>
 				{loading && (
-					<h3>Searching for "{term}"...</h3>
+					<h3>Searching for <em>"{term}"</em>...</h3>
 				)}
 				{term && !results.length && !loading && (
-					<h3>No results found for "{term}".</h3>
+					<h3>No results found for <em>"{term}"</em></h3>
 				)}
 				{!!results.length && <>
-					<h3>Results for "{term}":</h3>
+					<h3>Results for <em>"{term}"</em></h3>
 					<ul css={searchListCss}>
 						{results.slice(0, 10).map(({ salsify, path, sku }, index) => {
 							return (
 								<li className={`searchItem`} key={`searchResult${index}`}>
-									{/* <div> */}
-										<Link className={`result`} to={path || `/product/${sku}`}>
-											{salsify?.[`Item Name`] || sku}
-										</Link>
-									{/* </div> */}
+									<Link className={`result`} to={path || `/product/${sku}`}>
+										{salsify?.[`Item Name`] || sku}
+									</Link>
 								</li>
 							)
 						})}
@@ -81,11 +85,15 @@ export default function SearchPage(){
 	)
 }
 
+
+
 const searchInputStyle = css`
 	padding: 0.5rem;
 	font-size: 1.25rem;
 	border-radius: 4px;
 `
+
+
 
 const searchListCss = css`
 	list-style: none;
