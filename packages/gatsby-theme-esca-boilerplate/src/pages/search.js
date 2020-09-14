@@ -27,8 +27,8 @@ const ResultsDisplay = props => {
 			<ul css={searchListCss}>
 				{results.slice(0, 10).map(({ salsify, path, sku }, index) => {
 					return (
-						<li className={`searchItem`} key={`searchResult${index}`}>
-							<Link className={`result`} to={path || `/product/${sku}`}>
+						<li className="search-item" key={`searchResult${index}`}>
+							<Link className="result" to={path || `/product/${sku}`}>
 								{salsify?.[`Item Name`] || sku}
 							</Link>
 						</li>
@@ -97,19 +97,25 @@ export default function SearchPage() {
 		<Layout title='Search'>
 			<Container width="constrained" smartPadding>
 				<h1>Search</h1>
-				<input
-					type="text"
-					placeholder="Enter a new search term here"
-					css={searchInputStyle}
-					disabled={loading}
-					value={term}
-					onChange={handleInputEvent}
-					onKeyUp={handleInputEvent}
-				/>
-				<CallToAction
-					text="submit"
-					onClick={() => startSearch()}
-				/>
+				<div css={inputGroupStyle}>
+					<input
+						type="text"
+						placeholder="Enter a new search term here"
+						className="search-input"
+						css={inputStyle}
+						disabled={loading}
+						value={term}
+						onChange={handleInputEvent}
+						onKeyUp={handleInputEvent}
+					/>
+					<CallToAction
+						css={submitButtonStyle}
+						disabled={loading}
+						className="submit-button"
+						text="submit"
+						onClick={() => startSearch()}
+					/>
+				</div>
 				<ResultsDisplay
 					loading={loading}
 					submittedTerm={submittedTerm}
@@ -122,11 +128,33 @@ export default function SearchPage() {
 
 
 
-const searchInputStyle = css`
-	padding: 0.75rem;
+const inputGroupStyle = css`
+	margin-bottom: 1rem;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+
+	@media(${breakpoints.tablet}) {
+		max-width: 600px;
+	}
+`
+
+const inputElementStyle = css`
+	padding: 0.75rem 1.25rem;
 	font-size: 1.25rem;
-	border-radius: 4px;
+	margin: 0;
+	display: flex;
+	align-items: center;
+`
+
+const inputStyle = css`
+	${inputElementStyle}
 	flex: 1;
+`
+
+const submitButtonStyle = css`
+	${inputElementStyle}
+	margin: 0;
 `
 
 
@@ -136,10 +164,9 @@ const searchListCss = css`
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: space-between;
-	max-width: 1000px;
-	margin: 0 auto;
-	padding: 0 30px;
-	.searchItem {
+	padding: 0;
+
+	.search-item {
 		flex: 1 0 100%;
 		font-size: 20px;
 		text-align: center;
@@ -161,8 +188,8 @@ const searchListCss = css`
 		}
 	}
 	@media(${breakpoints.tablet}){
-		.searchItem {
-			flex: 0 1 calc(50% - 20px);
+		.search-item {
+			flex: 0 1 calc(50% - 0.5rem);
 		}
 	}
 `
