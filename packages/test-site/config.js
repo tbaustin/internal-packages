@@ -2,8 +2,8 @@ module.exports = {
 	escaladeSite: `lifeline`,
 	siteId: `escalade-website-boilerplate`,
 	sanityName: `Boilerplate`,
-	sanityProjectId: `c3g4r239`, // change this
-	sanityDataset: `dev-aaron`,
+	sanityProjectId: `q3p51nje`,
+	sanityDataset: `dev`,
 	googleTagManagerId: `GTM-THRMFMP`,
 	activeCampaign: {
 		integrationName: `Boilerplate Test Site`,
