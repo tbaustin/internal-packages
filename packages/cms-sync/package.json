@@ -5,11 +5,13 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npx babel src --out-dir dist",
+    "start": "babel-node src/test.js",
     "test": "jest"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
+    "@babel/node": "^7.10.5",
     "@escaladesports/babel-preset": "^2.7.0"
   },
   "keywords": [],
