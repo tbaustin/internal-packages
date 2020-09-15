@@ -9,6 +9,13 @@ export const numberOrVariable = Rule => Rule.required().custom(price => {
 })
 
 
+export const aspectRatio = Rule => Rule.custom(value => {
+  const regex = /^[1-9]{1}\d*:[1-9]{1}\d*$/
+  const message = `Please enter a valid aspect ratio. Example: '16:9' or '4:3'`
+  return regex.test(value) || !value || message
+})
+
+
 /**
  * Validation function for the path field
  * Can contain template variable syntax in the template schema
