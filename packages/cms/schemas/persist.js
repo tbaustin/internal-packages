@@ -5,6 +5,7 @@ import { baseProduct, variant } from './product-types'
 import * as pageTypes from './page-types'
 import * as widgetTypes from './widget-types'
 import * as siteSettingsTypes from './site-settings-types'
+import * as otherFieldTypes from './other-field-types'
 import * as customFieldTypes from './custom-field-types'
 import * as variableTypes from './variable-types'
 
@@ -18,6 +19,7 @@ export const schemaTypes = [
 	baseProduct,
 	variant,
 	...Object.values(pageTypes),
+	...Object.values(otherFieldTypes),
 	...Object.values(customFieldTypes),
 	...Object.values(variableTypes),
 	...Object.values(siteSettingsTypes),
