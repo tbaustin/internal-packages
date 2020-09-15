@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/boilerplate",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -16,7 +16,7 @@
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "fs-extra": "^8.1.0",
-    "gatsby-theme-esca-boilerplate": "^1.0.5",
+    "gatsby-theme-esca-boilerplate": "^1.1.0",
     "netlify-lambda": "^2.0.1",
     "ora": "^4.0.4",
     "yargs": "^15.4.1"
