@@ -7,11 +7,10 @@ export const carouselImage = {
 	type: `image`,
 	fields: [
 		{
-			title: `Size`,
-			name: `size`,
-			type: `string`,
+			title: `Size/Ratio Options`,
+			name: `sizeOptions`,
+			type: `heroImageSize`,
 			options: {
-				list: [`short`, `medium`, `tall`],
 				isHighlighted: true,
 			},
 		},
@@ -41,8 +40,14 @@ export const carouselItem = {
 			type: `string`,
 		},
 		{
-			title: `Image`,
-			name: `image`,
+			title: `Image (Mobile)`,
+			name: `mobileImage`,
+			type: `carouselImage`,
+		},
+		{
+			title: `Image (Desktop)`,
+			description: `If no image is selected, the mobile image will be used.`,
+			name: `desktopImage`,
 			type: `carouselImage`,
 		},
 	],

@@ -1,7 +1,8 @@
 
-export const BannerWidget = {
-	title: `Banner`,
-	name: `BannerWidget`,
+
+export const bannerImage = {
+	title: `Banner Image`,
+	name: `bannerImage`,
 	type: `image`,
 	fields: [
 		{
@@ -18,11 +19,10 @@ export const BannerWidget = {
 			},
 		},
 		{
-			title: `Size`,
-			name: `size`,
-			type: `string`,
+			title: `Size/Ratio Options`,
+			name: `sizeOptions`,
+			type: `heroImageSize`,
 			options: {
-				list: [`short`, `medium`, `tall`],
 				isHighlighted: true,
 			},
 		},
@@ -43,4 +43,24 @@ export const BannerWidget = {
 			},
 		},
 	],
+}
+
+
+export const BannerWidget = {
+	title: `Banner`,
+	name: `BannerWidget`,
+	type: `object`,
+	fields: [
+		{
+			title: `Image (Mobile)`,
+			name: `mobileImage`,
+			type: `bannerImage`,
+		},
+		{
+			title: `Image (Desktop)`,
+			description: `If no image is selected, the mobile image will be used.`,
+			name: `desktopImage`,
+			type: `bannerImage`,
+		}
+	]
 }
