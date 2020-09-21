@@ -2,7 +2,7 @@ module.exports = {
 	escaladeSite: `lifeline`,
 	siteId: `escalade-website-boilerplate`,
 	sanityName: `Boilerplate`,
-	sanityProjectId: `f25ydn7y`, // change this
+	sanityProjectId: `f25ydn7y`,
 	sanityDataset: `prod`,
 	googleTagManagerId: `GTM-THRMFMP`,
 	activeCampaign: {
