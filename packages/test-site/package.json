@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@escaladesports/boilerplate": "^1.0.4",
+    "@escaladesports/cms-sync": "^1.1.0",
     "@sanity/cli": "^1.149.9",
     "gatsby": "^2.24.12",
     "gatsby-plugin-compile-es6-packages": "^2.1.0",
