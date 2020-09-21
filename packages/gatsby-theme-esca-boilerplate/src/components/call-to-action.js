@@ -10,12 +10,18 @@ export default function CallToAction(props){
 		link,
 		bgColor,
 		textColor,
-		css: override,
 		margin,
+		disabled,
 		...other
 	} = props
 
+	const disabledStyle = css`
+		opacity: 0.5;
+		pointer-events: none;
+	`
+
 	const styles = css`
+		${disabled ? disabledStyle : ``}
     color: ${textColor || colors.textLight};
     background-color: ${bgColor || colors.brand};
     text-decoration: none;
@@ -29,7 +35,7 @@ export default function CallToAction(props){
 
 	const Tag = link ? Link : `div`
 	const tagProps = {
-		css: [styles, override],
+		css: styles,
 		...link && { to: link }
 	}
 
