@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "esca dev",
-    "build": "esca build",
+    "build": "esca sync && esca build",
     "serve": "esca serve",
     "sync": "esca sync",
     "sanity-graphql": "esca sanity-graphql",
