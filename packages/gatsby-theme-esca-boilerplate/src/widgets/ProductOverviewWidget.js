@@ -72,6 +72,10 @@ const carouselStyle = css`
     width: 50%;
     padding-right: 1.5rem;
   }
+
+  .mainImage {
+    margin-bottom: 20px;
+  }
 `
 
 
