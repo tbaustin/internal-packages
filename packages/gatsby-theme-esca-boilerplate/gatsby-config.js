@@ -17,6 +17,7 @@ module.exports = ({ icon }) => ({
 		siteUrl: `https://escalade-website-boilerplate.netlify.app/`,
 	},
 	plugins: [
+		`gatsby-plugin-remove-trailing-slashes`,
 		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-sitemap`,
 		{
