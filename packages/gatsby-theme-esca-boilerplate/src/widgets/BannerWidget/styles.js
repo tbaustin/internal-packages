@@ -1,5 +1,5 @@
 import { css } from '@emotion/core'
-import { breakpoints } from '../../styles/variables'
+import { breakpoints, colors } from '../../styles/variables'
 
 
 const breakpointStyles = {
@@ -92,6 +92,29 @@ const childElementStyles = css`
       font-size: 1.5rem;
   	}
   }
+`
+
+
+export const htmlStyles = css`
+	z-index: 100;
+	position: relative;
+
+	button {
+		background-color: ${colors.red};
+		border: none;
+		outline: none;
+		color: white;
+		text-transform: uppercase;
+		font-size: 2.5vw;
+		font-weight: bolder;
+		padding: 2.5vw 3.5vw;
+		cursor: pointer;
+
+		@media(${breakpoints.tablet}) {
+			font-size: 16px;
+			padding: 25px 40px;
+		}
+	}
 `
 
 

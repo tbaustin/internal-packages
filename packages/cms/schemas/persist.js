@@ -1,29 +1,29 @@
 import client from 'part:@sanity/base/client'
+import swatch from './swatch'
 import category from './category'
-import swatches from './swatches'
 import { baseProduct, variant } from './product-types'
 import * as pageTypes from './page-types'
 import * as widgetTypes from './widget-types'
-import * as siteSettingsTypes from './site-settings-types'
+import * as heroImageTypes from './hero-image-types'
 import * as otherFieldTypes from './other-field-types'
 import * as customFieldTypes from './custom-field-types'
-import * as variableTypes from './variable-types'
+import * as siteSettingsTypes from './site-settings-types'
 
 /**
  * Here's where all schema types in the CMS are joined together
  * EXCEPT FOR THE ONE BELOW - we don't want any Inception here...
  */
 export const schemaTypes = [
-	swatches,
+	swatch,
 	category,
 	baseProduct,
 	variant,
 	...Object.values(pageTypes),
+	...Object.values(widgetTypes),
+	...Object.values(heroImageTypes),
 	...Object.values(otherFieldTypes),
 	...Object.values(customFieldTypes),
-	...Object.values(variableTypes),
-	...Object.values(siteSettingsTypes),
-	...Object.values(widgetTypes),
+	...Object.values(siteSettingsTypes)
 ]
 
 /**

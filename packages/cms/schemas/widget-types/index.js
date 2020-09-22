@@ -1,7 +1,8 @@
 import HTMLInput from '../../custom-inputs/html-input'
 
 
-export * from './carousel'
+export * from './slider'
+export * from './gallery'
 export * from './container'
 export * from './video'
 export * from './video-list'
