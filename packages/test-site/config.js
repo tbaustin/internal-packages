@@ -4,6 +4,8 @@ module.exports = {
 	sanityName: `Boilerplate`,
 	sanityProjectId: `q3p51nje`,
 	sanityDataset: `dev`,
+	sanityProjectId: `f25ydn7y`,
+	sanityDataset: `prod`,
 	googleTagManagerId: `GTM-THRMFMP`,
 	activeCampaign: {
 		integrationName: `Boilerplate Test Site`,
