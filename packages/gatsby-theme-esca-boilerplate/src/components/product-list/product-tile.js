@@ -20,7 +20,6 @@ const imageKeyQuery = graphql`{
 }`
 
 export default function ProductTile({ product, priceDisplay }){
-	console.log(`Product: `, product)
 	const { variants, sku, customFieldEntries, salsify  } = product
 	const { Brand } = salsify
 
