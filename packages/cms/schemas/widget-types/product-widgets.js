@@ -99,9 +99,9 @@ export const ProductOverviewWidget = {
 	],
 	fields: [
 		{
-			title: `Carousel Images`,
-			name: `carousel`,
-			type: `CarouselWidget`,
+			title: `Image Gallery`,
+			name: `imageGallery`,
+			type: `GalleryWidget`,
 		},
 		...AddToCartWidget.fields,  // 😎
 		{
@@ -209,7 +209,7 @@ export const ProductListWidget = {
 			title: `Filters`,
 			name: `filters`,
 			type: `filterObject`,
-			description: `Will only work when using Display Type of "grid".`, 
+			description: `Will only work when using Display Type of "grid".`,
 		},
 		{
 			title: `Title`,
@@ -223,9 +223,9 @@ export const ProductListWidget = {
 			type: `string`,
 			options: {
 				list: [
-					{ title: `Default Variant Price`, value: `defaultVariant` }, 
+					{ title: `Default Variant Price`, value: `defaultVariant` },
 					{ title: `Price Range`, value: `priceRange` },
-					{ title: `Lowest Price`, value: `priceLowest` }, 
+					{ title: `Lowest Price`, value: `priceLowest` },
 					{ title: `Highest Price` ,value: `priceHighest`},
 				],
 			},

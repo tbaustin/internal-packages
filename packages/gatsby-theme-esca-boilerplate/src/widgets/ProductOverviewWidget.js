@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from '@emotion/core'
 import { useTemplateEngine } from '../context/template-engine'
-import CarouselWidget from './CarouselWidget'
+import GalleryWidget from './GalleryWidget'
 import Container from '../components/container'
 import ContentRenderer from './index'
 import PriceStockWidget from './PriceStockWidget'
@@ -31,7 +31,7 @@ export default function ProductOverviewWidget(props) {
 	return (
 		<Container width="constrained" direction="row" smartPadding>
 			<div css={carouselStyle}>
-				<CarouselWidget {...props.carousel} />
+				<GalleryWidget {...props.imageGallery} />
 			</div>
 			<div css={infoStyle}>
 				<div className="skuDisplay">
@@ -43,8 +43,8 @@ export default function ProductOverviewWidget(props) {
 				</div>
 				<h1>{resolveVal(name)}</h1>
 				<PriceStockWidget {...props} />
-				<ReviewSnippetWidget sku={resolveVal(sku)}/> 
-				<WriteReviewWidget sku={resolveVal(sku)}/> 
+				<ReviewSnippetWidget sku={resolveVal(sku)}/>
+				<WriteReviewWidget sku={resolveVal(sku)}/>
 				<hr />
 				{shippingInfo && (
 					<>
