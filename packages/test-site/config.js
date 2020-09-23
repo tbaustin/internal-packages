@@ -2,8 +2,6 @@ module.exports = {
 	escaladeSite: `lifeline`,
 	siteId: `escalade-website-boilerplate`,
 	sanityName: `Boilerplate`,
-	sanityProjectId: `q3p51nje`,
-	sanityDataset: `dev`,
 	sanityProjectId: `f25ydn7y`,
 	sanityDataset: `prod`,
 	googleTagManagerId: `GTM-THRMFMP`,
