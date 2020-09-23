@@ -8,13 +8,14 @@ const siteConfig = require(configPath)
 
 const isDevMode = process.env.NODE_ENV === `development`
 
+const siteUrl = `https://${siteConfig.siteId}.netlify.app/`
 
 module.exports = ({ icon }) => ({
 	siteMetadata: {
 		title: `Escalade Website Boilerplate`,
 		description: `Test boilerplate website & CMS`,
 		author: `@escaladesports`,
-		siteUrl: `https://escalade-website-boilerplate.netlify.app/`,
+		siteUrl,
 	},
 	plugins: [
 		`gatsby-plugin-remove-trailing-slashes`,
@@ -23,14 +24,14 @@ module.exports = ({ icon }) => ({
 		{
 			resolve: `gatsby-plugin-canonical-urls`,
 			options: {
-				siteUrl: siteConfig.siteUrl,
+				siteUrl,
 			},
 		},
 		{
 			resolve: `gatsby-plugin-robots-txt`,
 			options: {
-				host: siteConfig.siteUrl,
-				sitemap: `${siteConfig.siteUrl}/sitemap.xml`,
+				host: siteUrl,
+				sitemap: `${siteUrl}/sitemap.xml`,
 				policy: [{ userAgent: `*`, allow: `/` }],
 			},
 		},

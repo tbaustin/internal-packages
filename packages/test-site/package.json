@@ -7,7 +7,8 @@
   "license": "ISC",
   "scripts": {
     "dev": "esca dev",
-    "build": "esca sync && esca build",
+    "build": "esca deploy",
+    "deploy": "esca deploy",
     "serve": "esca serve",
     "sync": "esca sync",
     "sanity-graphql": "esca sanity-graphql",
@@ -15,7 +16,6 @@
     "env": "esca env"
   },
   "dependencies": {
-    "@escaladesports/cms-sync": "^1.1.0",
     "@escaladesports/boilerplate": "^1.1.0",
     "@sanity/cli": "^1.149.9",
     "gatsby": "^2.24.12",

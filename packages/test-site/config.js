@@ -5,7 +5,6 @@ module.exports = {
 	sanityProjectId: `f25ydn7y`,
 	sanityDataset: `prod`,
 	googleTagManagerId: `GTM-THRMFMP`,
-	siteUrl: `https://escalade-website-boilerplate.netlify.app`, 
 	activeCampaign: {
 		integrationName: `Boilerplate Test Site`,
 		integrationLogo: `https://escalade-boilerplate-test.netlify.app/icon.png`,
