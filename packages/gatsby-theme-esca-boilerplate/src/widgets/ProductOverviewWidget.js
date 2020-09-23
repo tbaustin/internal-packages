@@ -73,7 +73,7 @@ const carouselStyle = css`
     padding-right: 1.5rem;
   }
 
-  .mainImage {
+  .main-image {
     margin-bottom: 20px;
   }
 `
