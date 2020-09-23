@@ -80,6 +80,7 @@ type Category implements Node @infer {
   name: String
   description: String
   banner: Image
+  images: [Image]
   video: Video
   parent: Reference
   template: ResolvedTemplateReference

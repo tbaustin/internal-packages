@@ -91,7 +91,15 @@ export default {
 		{
 			name: `banner`,
 			title: `Banner Image`,
+			description: `Note: this field will be removed in the future; using `
+				+ `'Images' below is suggested`,
 			type: `image`,
+		},
+		{
+			name: `images`,
+			title: `Images`,
+			type: `array`,
+			of: [{ type: `image` }]
 		},
 		{
 			name: `video`,

@@ -20,6 +20,11 @@ fragment CategoryFields on Category {
       _ref
     }
   }
+  images {
+    asset {
+      _ref
+    }
+  }
   video {
     nonFile {
       url
