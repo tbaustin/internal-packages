@@ -14,13 +14,18 @@ const getSafeHTML = html => {
 }
 
 
+const H1Substitute = props => <span className="h1-substitute" {...props} />
+
+
 const BannerImage = props => {
-	const { className, fluid, header, subHeader, link, html } = props
+	const { className, fluid, heading, useH1, subHeading, link, html } = props
 
 	const WrapperElement = link ? Link : `div`
 	const linkProps = link ? { to: link } : {}
 
 	const customHTML = getSafeHTML(html)
+
+	const Heading1 = useH1 ? `h1` : H1Substitute
 
 	return !fluid ? null : (
 		<WrapperElement className={className} {...linkProps}>
@@ -28,8 +33,8 @@ const BannerImage = props => {
 				{customHTML && (
 					<div css={htmlStyles} dangerouslySetInnerHTML={customHTML} />
 				)}
-				{header && <h1>{header}</h1>}
-				{subHeader && <h3>{subHeader}</h3>}
+				{heading && <Heading1>{heading}</Heading1>}
+				{subHeading && <h3>{subHeading}</h3>}
 			</BackgroundImage>
 		</WrapperElement>
 	)
