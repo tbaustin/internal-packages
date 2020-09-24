@@ -4,6 +4,7 @@ import get from 'lodash/get'
 import produce from 'immer'
 import SanityBlockContent from '@sanity/block-content-to-react'
 import { Link } from 'gatsby'
+import H1Substitute from '../components/h1-substitute'
 import * as allWidgets from './all'
 import { useTemplateEngine } from '../context/template-engine'
 
@@ -48,11 +49,9 @@ const colorMark = props => {
  */
 const genericBlockRenderer = props => {
   // Apply global CSS class to make 'h1Substitute' style appear like <h1>
-  if (props.node?.style === `h1Substitute`) return (
-    <span className="h1-substitute">
-      {props.children}
-    </span>
-  )
+  if (props.node?.style === `h1Substitute`) {
+    return <H1Substitute {...props} />
+  }
 
   // Fall back to default handling for every other style
   return SanityBlockContent.defaultSerializers.types.block(props)
