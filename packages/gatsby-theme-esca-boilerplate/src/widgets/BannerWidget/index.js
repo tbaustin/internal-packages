@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import sanitize from 'sanitize-html'
 import BackgroundImage from 'gatsby-background-image'
+import H1Substitute from '../../components/h1-substitute'
 import useVariableImage from './use-variable-image'
 import getWrapperStyles, { htmlStyles } from './styles'
 
@@ -14,9 +15,6 @@ const getSafeHTML = html => {
 }
 
 
-const H1Substitute = props => <span className="h1-substitute" {...props} />
-
-
 const BannerImage = props => {
 	const { className, fluid, heading, useH1, subHeading, link, html } = props
 
@@ -25,7 +23,7 @@ const BannerImage = props => {
 
 	const customHTML = getSafeHTML(html)
 
-	const Heading1 = useH1 ? `h1` : H1Substitute
+	const Heading = useH1 ? `h1` : H1Substitute
 
 	return !fluid ? null : (
 		<WrapperElement className={className} {...linkProps}>
@@ -33,7 +31,7 @@ const BannerImage = props => {
 				{customHTML && (
 					<div css={htmlStyles} dangerouslySetInnerHTML={customHTML} />
 				)}
-				{heading && <Heading1>{heading}</Heading1>}
+				{heading && <Heading>{heading}</Heading>}
 				{subHeading && <h3>{subHeading}</h3>}
 			</BackgroundImage>
 		</WrapperElement>
