@@ -32,7 +32,8 @@ async function initProjectFiles() {
         "ls-link": `esca ls-link`,
         "sanity-graphql": `esca sanity-graphql`,
         dev: `esca dev`,
-        build: `esca build`
+        build: `esca build`,
+        deploy: `esca deploy`
       },
       dependencies: {
         "@escaladesports/boilerplate": `^${package.version}`,

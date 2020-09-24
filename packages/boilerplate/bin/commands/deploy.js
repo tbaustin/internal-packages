@@ -1,6 +1,7 @@
-const child_process = require(`child_process`)
 const { notify, warn } = require(`./../utils`)
-const dirs = require(`./../../dirs`)
+
+const sync = require(`./sync`)
+const build = require(`./build`)
 
 exports.command = `deploy`
 exports.describe = `Syncs Salsify products to Sanity and builds the site`
@@ -8,19 +9,10 @@ exports.describe = `Syncs Salsify products to Sanity and builds the site`
 
 exports.handler = async () => {
 	try {
-		notify(`Running Sync Process...`)
-		child_process.spawnSync(`esca`, [`sync`], {
-			cwd: dirs.site,
-			stdio: `inherit`,
-		})
-		notify(`Sync completed!`)
-    
-		notify(`Running Build Process...`)
-		child_process.spawnSync(`esca`, [`build`], {
-			cwd: dirs.site,
-			stdio: `inherit`,
-		})
-		notify(`Build completed!`)
+		notify(`Started Site Deploy...`)
+		await sync()
+		await build()
+		notify(`Site Deployed!`)
 	}
 	catch(err) {
 		warn(`Unable to deploy site. See below.\n`)

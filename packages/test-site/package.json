@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "esca dev",
-    "build": "esca deploy",
+    "build": "esca build",
     "deploy": "esca deploy",
     "serve": "esca serve",
     "sync": "esca sync",

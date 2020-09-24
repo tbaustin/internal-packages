@@ -8,7 +8,7 @@ const siteConfig = require(configPath)
 
 const isDevMode = process.env.NODE_ENV === `development`
 
-const siteUrl = `https://${siteConfig.siteId}.netlify.app/`
+const { siteUrl } = siteConfig
 
 module.exports = ({ icon }) => ({
 	siteMetadata: {
