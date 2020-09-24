@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'gatsby-link'
 import { css } from '@emotion/core'
+
+import ProductGridList from '../components/product-list/grid-list'
 import Layout from '../layout'
 import Container from '../components/container'
 import CallToAction from '../components/call-to-action'
@@ -25,15 +27,7 @@ const ResultsDisplay = props => {
 				Results for <em>"{submittedTerm}"</em>
 			</h3>
 			<ul css={searchListCss}>
-				{results.slice(0, 10).map(({ salsify, path, sku }, index) => {
-					return (
-						<li className="search-item" key={`searchResult${index}`}>
-							<Link className="result" to={path || `/product/${sku}`}>
-								{salsify?.[`Item Name`] || sku}
-							</Link>
-						</li>
-					)
-				})}
+				<ProductGridList products={results.slice} priceDisplay={`priceRange`} />
 			</ul>
 		</>
 	)
