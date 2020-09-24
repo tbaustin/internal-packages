@@ -87,7 +87,7 @@ export default function SearchPage() {
 
 		// Set initial search term from URL parameter if found
 		let urlTerm = decodeURIComponent(
-			path.pop().replace(/\+/g, `%20`)
+			path.pop().replace(/\+/g, `%20`),
 		)
 		startSearch(urlTerm)
 	}, [])
