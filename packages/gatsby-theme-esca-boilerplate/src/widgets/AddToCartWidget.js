@@ -47,9 +47,6 @@ export default function AddToCartWidget(props) {
 		|| asset?._id
 		|| asset?._ref
 
-
-	console.log(`Image ID: `, imageId) 
-
 	const fixedGatsbyImage = imageId && getFixedGatsbyImage(
 		imageId,
 		{ width: 100 },

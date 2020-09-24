@@ -1,6 +1,6 @@
 {
   "name": "gatsby-theme-esca-boilerplate",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
@@ -30,12 +30,15 @@
     "gatsby-background-image": "^1.1.1",
     "gatsby-image": "^2.2.39",
     "gatsby-plugin-alias-imports": "^1.0.5",
+    "gatsby-plugin-canonical-urls": "^2.3.11",
     "gatsby-plugin-create-client-paths": "^2.3.3",
     "gatsby-plugin-emotion": "^4.1.25",
     "gatsby-plugin-google-tagmanager": "^2.3.3",
     "gatsby-plugin-manifest": "^2.2.39",
     "gatsby-plugin-offline": "^3.0.32",
     "gatsby-plugin-react-helmet": "^3.1.21",
+    "gatsby-plugin-remove-trailing-slashes": "^2.3.12",
+    "gatsby-plugin-robots-txt": "^1.5.2",
     "gatsby-plugin-sitemap": "^2.4.3",
     "gatsby-source-sanity": "^5.0.6",
     "http-proxy-middleware": "^1.0.1",

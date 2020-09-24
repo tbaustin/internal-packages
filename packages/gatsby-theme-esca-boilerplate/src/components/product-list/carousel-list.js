@@ -50,15 +50,24 @@ export default function ProductCarouselList(props) {
 
 	function next(){
     slider?.current?.slickNext?.()
-	}
+  }
+  
+  function showArrows(){
+    return slider?.current?.props?.children.length > slider?.current?.props?.slidesToShow
+  }
   
 	return (
 		<section css={carouselContainer}>
 			<div className="wrapper">
 				<div className="titleWrapper">
 					<h2>{title}</h2>
-					<div onClick={previous} className="arrow left"></div>
-					<div onClick={next} className="arrow right"></div>
+          {showArrows() && (
+            <div className="arrowWrapper">
+              <div onClick={previous} className="arrow left"></div>
+              <div onClick={next} className="arrow right"></div>
+            </div>
+          )}
+					
 				</div>
 
 				<Slider {...settings} css={slickStyles} ref={slider}>
@@ -100,6 +109,9 @@ const carouselContainer = css`
     font-size: 24px;
     font-weight: bolder;
     margin: 20px auto;
+  }
+  .arrowWrapper {
+    display: inline-flex;
   }
   .arrow {
     width: 20px;
