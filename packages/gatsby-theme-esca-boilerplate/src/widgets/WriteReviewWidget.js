@@ -118,8 +118,8 @@ export default function WriteReviewWidget(props){
 			if(field.required && isEmpty(field.value)){
 				errs.push(`"${field.label || field.prompt}" is required`)
 			} 
-			if (!isEmpty(review.value)) {
-				fieldsWithValue.push(review)
+			if (!isEmpty(field.value)) {
+				fieldsWithValue.push(field)
 			}
 		})
 

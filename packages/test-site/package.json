@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "esca dev",
     "build": "esca build",
+    "deploy": "esca deploy",
     "serve": "esca serve",
+    "sync": "esca sync",
     "sanity-graphql": "esca sanity-graphql",
     "ls-link": "esca ls-link",
     "env": "esca env"
