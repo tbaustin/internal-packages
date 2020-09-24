@@ -69,7 +69,7 @@ export default function ProductTile({ product, priceDisplay }){
 					: <img src="https://via.placeholder.com/400" alt="placeholder" />
 			}
 
-			{!!variants && <div className="hasVariants smallText">More Options Available</div>}
+			{!!variants && variants.length > 1 && <div className="hasVariants smallText">More Options Available</div>}
 
 			<strong>{patchedData.name}</strong>
 
