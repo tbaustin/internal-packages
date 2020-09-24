@@ -1,11 +1,10 @@
 const { notify, warn } = require(`./../utils`)
 
-const sync = require(`./sync`)
-const build = require(`./build`)
+const sync = require(`./sync`).handler
+const build = require(`./build`).handler
 
 exports.command = `deploy`
 exports.describe = `Syncs Salsify products to Sanity and builds the site`
-
 
 exports.handler = async () => {
 	try {
