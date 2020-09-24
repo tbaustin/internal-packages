@@ -82,6 +82,7 @@ async function initProjectFiles() {
 	sanityProjectId: \`\`,
 	sanityDataset: \`\`,
   googleTagManagerId: \`\`,
+  siteUrl: \`\`,
   activeCampaign: {
 		integrationName: \`\`,
 		integrationLogo: \`\`,
