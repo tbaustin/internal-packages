@@ -4,6 +4,7 @@ import get from 'lodash/get'
 import produce from 'immer'
 import SanityBlockContent from '@sanity/block-content-to-react'
 import { Link } from 'gatsby'
+import H1Substitute from '../components/h1-substitute'
 import * as allWidgets from './all'
 import { useTemplateEngine } from '../context/template-engine'
 
@@ -40,6 +41,23 @@ const colorMark = props => {
 }
 
 
+/**
+ * Renderer to handle the regular "block" type
+ *
+ * Needed for things like heading-style text that looks like <h1> but doesn't
+ * actually render an <h1> tag (for SEO purposes)
+ */
+const genericBlockRenderer = props => {
+  // Apply global CSS class to make 'h1Substitute' style appear like <h1>
+  if (props.node?.style === `h1Substitute`) {
+    return <H1Substitute {...props} />
+  }
+
+  // Fall back to default handling for every other style
+  return SanityBlockContent.defaultSerializers.types.block(props)
+}
+
+
 
 const getSerializers = schema => {
   if (!schema?.length) return {}
@@ -57,6 +75,9 @@ const getSerializers = schema => {
     const widget = props => <WidgetComponent {...props.node} />
     return { ...types, [name]: widget }
   }, {})
+
+  // Add in handler for regular "block" type
+  blockTypes.block = genericBlockRenderer
 
   return {
     types: blockTypes,

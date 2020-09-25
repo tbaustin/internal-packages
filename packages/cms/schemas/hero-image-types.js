@@ -55,20 +55,21 @@ export const heroImage = {
   type: `object`,
   fields: [
     {
-      title: `Header`,
-      name: `header`,
-      type: `string`,
-      options: {
-        isHighlighted: true,
-      },
+      title: `Heading`,
+      name: `heading`,
+      type: `string`
     },
     {
-      title: `Sub Header`,
-      name: `subHeader`,
-      type: `string`,
-      options: {
-        isHighlighted: true,
-      },
+      title: `Use <h1> tag for heading`,
+      description: `For SEO purposes; if unchecked, the heading will display as`
+        + ` a <span> tag with the same appearance as <h1>`,
+      name: `useH1`,
+      type: `boolean`
+    },
+    {
+      title: `Sub Heading`,
+      name: `subHeading`,
+      type: `string`
     },
     {
 			title: `Link`,
@@ -104,17 +105,17 @@ export const heroImage = {
 			image: `mobileImage`,
       imageFileName: `mobileImage.asset.originalFilename`,
 			link: `link`,
-      header: `header`,
-      subHeader: `subHeader`
+      heading: `heading`,
+      subHeading: `subHeading`
 		},
     prepare(selection) {
-      const { image, imageFileName, link, header, subHeader } = selection
+      const { image, imageFileName, link, heading, subHeading } = selection
       const { asset, templateVariable } = image || {}
 
-      const title = header || (
+      const title = heading || (
         templateVariable ? `Hero Image (${templateVariable})` : imageFileName
       )
-      const subtitle = subHeader || link
+      const subtitle = subHeading || link
 
       return {
         media: image,

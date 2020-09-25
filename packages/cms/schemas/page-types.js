@@ -1,6 +1,7 @@
 import * as widgetTypes from './widget-types'
 import { FaFile as PageIcon } from 'react-icons/fa'
 import { FaCopy as TemplateIcon} from 'react-icons/fa'
+import blockStyles from './block-styles'
 import { path as pathValidation } from '../validation'
 
 
@@ -129,7 +130,7 @@ const getFields = isTemplate => {
 			title: `Content`,
 			type: `array`,
 			of: [
-				{ type: `block` },
+				{ type: `block`, styles: blockStyles },
 				...widgetChoices,
 			],
 		},
