@@ -18,7 +18,7 @@ module.exports = ({ icon }) => ({
 		siteUrl,
 	},
 	plugins: [
-		`gatsby-plugin-remove-trailing-slashes`,
+		`gatsby-plugin-force-trailing-slashes`,
 		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-sitemap`,
 		{
