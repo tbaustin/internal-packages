@@ -7,10 +7,21 @@ export default function(variants) {
 		return salePrice ? [...acc, +salePrice] : acc
 	}, [])
 
-	const min = Math.min(...prices)
-	const max = Math.max(...prices)
-	const minSale = salePrices.length ? Math.min(...salePrices) : 0
-	const maxSale = salePrices.length ? Math.max(...salePrices) : 0
+	if(!prices || !prices.length) {
+		// if there is no msrp then we don't want to show any price
+		return {
+			defaultVariant: null,
+			priceRange: null,
+			priceLowest: null,
+			priceHighest: null,
+			salePriceRange: null,
+		}
+	}
+
+	const min = Math.min(...prices) 
+	const max = Math.max(...prices) 
+	const minSale = salePrices?.length ? Math.min(...salePrices) : 0
+	const maxSale = salePrices?.length ? Math.max(...salePrices) : 0
 	const defaultPrice = prices?.[0]
 
 	return {

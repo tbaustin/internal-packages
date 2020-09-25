@@ -14,7 +14,6 @@ import { colors, breakpoints } from '../styles/variables'
 const ResultsDisplay = props => {
 	const { loading, results, submittedTerm } = props
 	const hasResults = Boolean(results?.length)
-
 	if (loading) return (
 		<h3>
 			Searching for <em>"{submittedTerm}"</em>...
@@ -27,7 +26,7 @@ const ResultsDisplay = props => {
 				Results for <em>"{submittedTerm}"</em>
 			</h3>
 			<ul css={searchListCss}>
-				<ProductGridList products={results.slice} priceDisplay={`priceRange`} />
+				<ProductGridList products={results.slice(0, 1)} priceDisplay={`priceRange`} />
 			</ul>
 		</>
 	)

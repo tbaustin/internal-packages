@@ -20,9 +20,10 @@ const imageKeyQuery = graphql`{
 }`
 
 export default function ProductTile({ product, priceDisplay }){
-	const { variants, sku, customFieldEntries, salsify  } = product
+	const { variants, sku, customFieldEntries, salsify  } = product 
 	const { Brand } = salsify
 
+	console.log(`Product: `, product)
 	const defaultVariant = variants?.[0]
 
 	const inStock = variants?.some?.(v => !!v.stock)
@@ -35,26 +36,26 @@ export default function ProductTile({ product, priceDisplay }){
 
 	const { imageCustomField } = useStaticQuery(imageKeyQuery)
 
-	const imageField = defaultVariant.customFieldEntries.find(entry => {
+	const imageField = defaultVariant?.customFieldEntries?.find?.(entry => {
 		return entry.fieldName === imageCustomField.name
 	})
 
 	const imageUrl = imageField?.fieldValue?.images?.[0]?.externalUrl
 
-	const image = getFluidGatsbyImage(
+	const image = imageUrl && getFluidGatsbyImage(
 		imageUrl,
 		{ maxWidth: 400 },
 	)
 
 	const templateEngine = useTemplateEngine()
-	const { patchedData } = templateEngine.patchCustomData(product)
+	const { patchedData } = templateEngine?.patchCustomData(product) || {}
 
 	// const valueOnProduct = templateEngine.resolveProperty(
 	// 	`Custom Fields:Color`,
 	// 	patchedData,
 	// )
 
-	const parsedPath = templateEngine.parse(
+	const parsedPath = templateEngine?.parse(
     product?.template?.path || `/`,
     patchedData,
 	)
@@ -71,12 +72,12 @@ export default function ProductTile({ product, priceDisplay }){
 
 			{!!variants && variants.length > 1 && <div className="hasVariants smallText">More Options Available</div>}
 
-			<strong>{patchedData.name}</strong>
+			<strong>{patchedData?.name}</strong>
 
 			{!!Brand && <div className="brand smallText">by {Brand}</div>}
 
 			<div className="pricing">
-				{Array.isArray(price)
+				{price && Array.isArray(price)
 					? (
 						<>
 							<div className="price range" css={css`
