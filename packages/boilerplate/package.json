@@ -1,6 +1,6 @@
 {
   "name": "@escaladesports/boilerplate",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -11,12 +11,12 @@
   "main": "index.js",
   "dependencies": {
     "@escaladesports/cms": "^1.0.0",
-    "@escaladesports/cms-sync": "^1.1.0",
+    "@escaladesports/cms-sync": "^1.1.1",
     "boxen": "^4.2.0",
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "fs-extra": "^8.1.0",
-    "gatsby-theme-esca-boilerplate": "^2.0.0",
+    "gatsby-theme-esca-boilerplate": "^2.0.3",
     "netlify-lambda": "^2.0.1",
     "ora": "^4.0.4",
     "yargs": "^15.4.1"
