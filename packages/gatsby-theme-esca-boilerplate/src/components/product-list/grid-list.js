@@ -30,8 +30,10 @@ const productListStyles = css`
 	.productItem {
 		flex-basis: 100%;
 		margin: 10px;
+		max-width: 350px;
+		min-width: 200px;
 	}
-	@media(min-width: 425px){
+	@media(min-width: 487px){
 		.productItem {
 			flex-basis: calc(50% - 20px);
 		}
@@ -39,9 +41,6 @@ const productListStyles = css`
 	@media(min-width: 768px){
 		.productItem {
 			flex-basis: calc((100% / 3) - 20px);
-			:last-of-type {
-				margin-right: auto;
-			}
 		}
 	}
 `

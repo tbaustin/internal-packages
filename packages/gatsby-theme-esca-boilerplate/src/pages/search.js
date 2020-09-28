@@ -26,7 +26,7 @@ const ResultsDisplay = props => {
 				Results for <em>"{submittedTerm}"</em>
 			</h3>
 			<ul css={searchListCss}>
-				<ProductGridList products={results.slice(0, 1)} priceDisplay={`priceRange`} />
+				<ProductGridList products={results.slice(0, 4)} priceDisplay={`priceRange`} />
 			</ul>
 		</>
 	)
@@ -158,7 +158,7 @@ const searchListCss = css`
 	flex-flow: row wrap;
 	justify-content: space-between;
 	padding: 0;
-
+	width: 100%;
 	.search-item {
 		flex: 1 0 100%;
 		font-size: 20px;
