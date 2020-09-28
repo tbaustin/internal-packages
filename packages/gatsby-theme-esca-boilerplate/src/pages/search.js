@@ -22,9 +22,9 @@ const ResultsDisplay = props => {
 
 	if (hasResults) return (
 		<>
-			<h3>
+			<h1>
 				Results for <em>"{submittedTerm}"</em>
-			</h3>
+			</h1>
 			<ul css={searchListCss}>
 				<ProductGridList products={results.slice(0, 4)} priceDisplay={`priceRange`} />
 			</ul>
