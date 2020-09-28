@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'gatsby-link'
 import { css } from '@emotion/core'
+import { Helmet } from "react-helmet"
 
 import ProductGridList from '../components/product-list/grid-list'
 import Layout from '../layout'
@@ -88,6 +89,13 @@ export default function SearchPage() {
 
 	return (
 		<Layout title='Search'>
+			<Helmet
+				title={submittedTerm}
+				meta={{
+					property: `og:title`,
+					content: submittedTerm,
+				}}
+			/>
 			<Container width="constrained" smartPadding>
 				<h1>Search</h1>
 				<div css={inputGroupStyle}>
