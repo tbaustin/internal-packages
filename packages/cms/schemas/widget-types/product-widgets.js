@@ -103,6 +103,13 @@ export const ProductOverviewWidget = {
 			name: `imageGallery`,
 			type: `GalleryWidget`,
 		},
+		{
+			title: `Use <h1> tag for product name`,
+			description: `For SEO purposes; if unchecked, the product name will `
+				+ `display as a <span> tag with the same appearance as <h1>`,
+			name: `useH1`,
+			type: `boolean`
+		},
 		...AddToCartWidget.fields,  // 😎
 		{
 			title: `Brand Text`,

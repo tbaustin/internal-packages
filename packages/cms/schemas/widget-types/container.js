@@ -1,3 +1,5 @@
+import blockStyles from '../block-styles'
+
 
 export const ContainerWidget = {
 	title: `Content Container`,
@@ -92,7 +94,7 @@ export const ContainerWidget = {
 			name: `content`,
 			type: `array`,
 			of: [
-				{ type: `block` },
+				{ type: `block`, styles: blockStyles },
 				{ type: `ContainerWidget` },
 				{ type: `ColorBoxWidget` },
 				{ type: `BannerWidget` },
