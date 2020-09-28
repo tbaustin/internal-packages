@@ -27,6 +27,7 @@ const productListStyles = css`
 	flex-flow: row wrap;
 	width: 100%;
 	margin: -10px;
+	justify-content: center;
 	.productItem {
 		flex-basis: 100%;
 		margin: 10px;

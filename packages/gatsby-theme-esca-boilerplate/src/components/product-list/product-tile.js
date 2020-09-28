@@ -23,7 +23,6 @@ export default function ProductTile({ product, priceDisplay }){
 	const { variants, sku, customFieldEntries, salsify  } = product 
 	const { Brand } = salsify
 
-	console.log(`Product: `, product)
 	const defaultVariant = variants?.[0]
 
 	const inStock = variants?.some?.(v => !!v.stock)

@@ -23,11 +23,8 @@ const ResultsDisplay = props => {
 
 	if (hasResults) return (
 		<>
-			<h1>
-				Results for <em>"{submittedTerm}"</em>
-			</h1>
 			<ul css={searchListCss}>
-				<ProductGridList products={results.slice(0, 4)} priceDisplay={`priceRange`} />
+				<ProductGridList products={results.slice(0, 36)} priceDisplay={`priceRange`} />
 			</ul>
 		</>
 	)
@@ -86,18 +83,30 @@ export default function SearchPage() {
 		startSearch(urlTerm)
 	}, [])
 
+	// if(!submittedTerm.length) {
+	// 	return <div>loading...</div>
+	// }
 
 	return (
-		<Layout title='Search'>
+		<Layout 
+			title='Search' 
+			breadcrumbs={[
+				{ title: `Home`, path: `/`, category: null },
+				{ title: submittedTerm.length ? submittedTerm : `Search` },
+			]}
+		>
 			<Helmet
 				title={submittedTerm}
-				meta={{
+				meta={[{
 					property: `og:title`,
 					content: submittedTerm,
-				}}
+				}]}
 			/>
 			<Container width="constrained" smartPadding>
-				<h1>Search</h1>
+				<h1>
+					Results for <em>"{submittedTerm}"</em>
+				</h1>
+				<div css={totalResultsCss}>{results.length > 36 ? 36 : results.length} Products</div>
 				<div css={inputGroupStyle}>
 					<input
 						type="text"
@@ -128,6 +137,9 @@ export default function SearchPage() {
 }
 
 
+const totalResultsCss = css`
+	margin-bottom: 20px;
+`
 
 const inputGroupStyle = css`
 	margin-bottom: 1rem;
