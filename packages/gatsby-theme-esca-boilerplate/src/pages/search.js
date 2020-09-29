@@ -3,6 +3,8 @@ import Link from 'gatsby-link'
 import { css } from '@emotion/core'
 import { Helmet } from "react-helmet"
 
+import TemplateEngineProvider from '../context/template-engine'
+import CurrentVariantProvider from '../context/current-variant'
 import ProductGridList from '../components/product-list/grid-list'
 import Layout from '../layout'
 import Container from '../components/container'
@@ -88,51 +90,55 @@ export default function SearchPage() {
 	// }
 
 	return (
-		<Layout 
-			title='Search' 
-			breadcrumbs={[
-				{ title: `Home`, path: `/`, category: null },
-				{ title: submittedTerm.length ? submittedTerm : `Search` },
-			]}
-		>
-			<Helmet
-				title={submittedTerm}
-				meta={[{
-					property: `og:title`,
-					content: submittedTerm,
-				}]}
-			/>
-			<Container width="constrained" smartPadding>
-				<h1>
+		<CurrentVariantProvider>
+			<TemplateEngineProvider>
+				<Layout 
+					title='Search' 
+					breadcrumbs={[
+						{ title: `Home`, path: `/`, category: null },
+						{ title: submittedTerm.length ? submittedTerm : `Search` },
+					]}
+				>
+					<Helmet
+						title={submittedTerm}
+						meta={[{
+							property: `og:title`,
+							content: submittedTerm,
+						}]}
+					/>
+					<Container width="constrained" smartPadding>
+						<h1>
 					Results for <em>"{submittedTerm}"</em>
-				</h1>
-				<div css={totalResultsCss}>{results.length > 36 ? 36 : results.length} Products</div>
-				<div css={inputGroupStyle}>
-					<input
-						type="text"
-						placeholder="Enter a new search term here"
-						className="search-input"
-						css={inputStyle}
-						disabled={loading}
-						value={term}
-						onChange={handleInputEvent}
-						onKeyUp={handleInputEvent}
-					/>
-					<CallToAction
-						css={submitButtonStyle}
-						disabled={loading}
-						className="submit-button"
-						text="submit"
-						onClick={() => startSearch()}
-					/>
-				</div>
-				<ResultsDisplay
-					loading={loading}
-					submittedTerm={submittedTerm}
-					results={results}
-				/>
-			</Container>
-		</Layout>
+						</h1>
+						<div css={totalResultsCss}>{results.length > 36 ? 36 : results.length} Products</div>
+						<div css={inputGroupStyle}>
+							<input
+								type="text"
+								placeholder="Enter a new search term here"
+								className="search-input"
+								css={inputStyle}
+								disabled={loading}
+								value={term}
+								onChange={handleInputEvent}
+								onKeyUp={handleInputEvent}
+							/>
+							<CallToAction
+								css={submitButtonStyle}
+								disabled={loading}
+								className="submit-button"
+								text="submit"
+								onClick={() => startSearch()}
+							/>
+						</div>
+						<ResultsDisplay
+							loading={loading}
+							submittedTerm={submittedTerm}
+							results={results}
+						/>
+					</Container>
+				</Layout>
+			</TemplateEngineProvider>
+		</CurrentVariantProvider>
 	)
 }
 

@@ -89,11 +89,14 @@ export default function ProductGridList(props){
 	)
 }
 
+const productTileWidth = `350px`
+
 const sortCss = css`
-	margin: 20px 0px;
+	max-width: calc(${productTileWidth} * 3);
+	margin: 20px auto;
 	width: 100%;
+	justify-content: flex-end;
 	display: flex;
-	justify-content: center;
 	.productListSort {
 		padding: 5px;
 	}
@@ -108,7 +111,7 @@ const productListStyles = css`
 	.productItem {
 		flex-basis: 100%;
 		margin: 10px;
-		max-width: 350px;
+		max-width: ${productTileWidth};
 		min-width: 200px;
 	}
 	@media(min-width: 487px){
