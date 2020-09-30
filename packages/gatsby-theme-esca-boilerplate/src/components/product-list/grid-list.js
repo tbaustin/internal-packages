@@ -1,26 +1,30 @@
 import React from 'react'
 import { css } from '@emotion/core'
-
-import Container from '../container'
 import ProductTile from './product-tile'
+
 
 export default function ProductGridList(props){
 	const { products, priceDisplay } = props
 
 	return (
-		<Container direction="row" width="constrained" align="flex-start" smartPadding="0 auto">
-			<div css={productListStyles}>
-				{!products.length
-					? <h3>No Products found</h3>
-					: products.map((product, idx) => {
-						const { sku } = product
-						const key = `${sku}-${idx}`
-						return <ProductTile priceDisplay={priceDisplay} key={key} product={product} />
-					})}
-			</div>
-		</Container>
+		<div css={productListStyles}>
+			{!products.length
+				? <h3>No Products found</h3>
+				: products.map((product, idx) => {
+					const { sku } = product
+					const key = `${sku}-${idx}`
+					return (
+						<ProductTile
+							key={key}
+							priceDisplay={priceDisplay}
+							product={product}
+						/>
+					)
+				})}
+		</div>
 	)
 }
+
 
 const productListStyles = css`
 	display: flex;

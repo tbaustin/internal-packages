@@ -12,7 +12,7 @@ import FilterWidget from '../FilterWidget'
 import generateFilters from './generate-filters'
 import filterProducts from './filter-products'
 
-const { colors } = variables
+const { colors, breakpoints, screenWidths } = variables
 
 
 export default function ProductListWidget(props) {
@@ -85,14 +85,27 @@ export default function ProductListWidget(props) {
 }
 
 const styles = css`
+	width: 100%;
 	display: flex;
   flex-flow: row wrap;
-	width: 100%;
+	justify-content: center;
+	
 	.filters {
-		flex-basis: 200px;
+		width: 100%;
+		max-width: ${screenWidths.tablet};
+		padding: 1rem;
+
+		@media(${breakpoints.laptop}) {
+			width: 16rem;
+		}
 	}
 	.productList {
-		flex: 1;
+		width: 100%;
+
+		@media(${breakpoints.laptop}) {
+			flex: 1;
+			width: unset;
+		}
 	}
 	.activeFilters {
 		margin-bottom: 20px;
