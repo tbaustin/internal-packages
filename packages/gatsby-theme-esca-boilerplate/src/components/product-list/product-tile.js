@@ -19,19 +19,17 @@ const imageKeyQuery = graphql`{
   }
 }`
 
-export default function ProductTile({ product, priceDisplay }){
-	const { variants, sku, customFieldEntries, salsify  } = product
-	const { Brand } = salsify
-
+export default function ProductTile({ 
+	product, 
+	priceDisplay, 
+	brand, 
+	strikeThroughPrice, 
+}){
+	const { variants, sku  } = product
+	
 	const defaultVariant = variants?.[0]
 
 	const inStock = variants?.some?.(v => !!v.stock)
-
-	const priceConfig = pricingOptions(variants)
-	const price = priceConfig?.[priceDisplay]
-
-	const salePriceRange = priceConfig?.salePriceRange
-	const salePrice = customFieldEntries?.find?.(f =>  f.fieldName === `Sale Price`)?.fieldValue?.number
 
 	const { imageCustomField } = useStaticQuery(imageKeyQuery)
 
@@ -47,7 +45,21 @@ export default function ProductTile({ product, priceDisplay }){
 	)
 
 	const templateEngine = useTemplateEngine()
+
 	const { patchedData } = templateEngine.patchCustomData(product)
+
+	const resolveVal = val => templateEngine.data
+		? templateEngine.parse(val, patchedData)
+		: val
+
+	const priceConfig = pricingOptions(patchedData?.variants, templateEngine, strikeThroughPrice)
+
+	const brandText = resolveVal(brand)
+	const strikePrice = resolveVal(strikeThroughPrice)
+
+	const price = priceConfig?.[priceDisplay]
+
+	const strikePriceRange = priceConfig?.salePriceRange
 
 	// const valueOnProduct = templateEngine.resolveProperty(
 	// 	`Custom Fields:Color`,
@@ -73,20 +85,20 @@ export default function ProductTile({ product, priceDisplay }){
 
 			<strong>{patchedData.name}</strong>
 
-			{!!Brand && <div className="brand smallText">by {Brand}</div>}
+			{!!brandText && <div className="brand smallText">by {brandText}</div>}
 
 			<div className="pricing">
 				{Array.isArray(price)
 					? (
 						<>
 							<div className="price range" css={css`
-								margin-bottom: ${salePriceRange ? `10px` : `0px`};
+								margin-bottom: ${strikePriceRange ? `10px` : `0px`};
 							`}>
 								{formatPrice(price[0])} - {formatPrice(price[1])}
 							</div>
-							{salePriceRange && (
-								<div className="salePrice range">
-									{formatPrice(salePriceRange[0])} - {formatPrice(salePriceRange[1])}
+							{strikePriceRange && (
+								<div className="strikePrice range">
+									{formatPrice(strikePriceRange[0])} - {formatPrice(strikePriceRange[1])}
 								</div>
 							)}
 						</>
@@ -94,7 +106,7 @@ export default function ProductTile({ product, priceDisplay }){
 					: (
 						<>
 							<div className="price">{formatPrice(price)}</div>
-							{salePrice && (<div className="salePrice">{formatPrice(salePrice)}</div>)}
+							{strikePrice && (<div className="strikePrice">{formatPrice(strikePrice)}</div>)}
 						</>
 					)
 				}
@@ -171,7 +183,7 @@ const productTileStyles = css`
 	.range {
 		flex-basis: 100%;
 	}
-	.salePrice {
+	.strikePrice {
 		color: ${colors.textDark};
 		font-size: 1em;
 		text-decoration: line-through;

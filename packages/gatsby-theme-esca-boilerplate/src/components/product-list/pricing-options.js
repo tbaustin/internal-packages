@@ -1,9 +1,10 @@
-export default function(variants) {
+export default function(variants, templateEngine, customVal) {
 	const prices = variants?.map?.(v => v?.price)
 	const salePrices = variants?.reduce?.((acc, cur) => {
-		const { customFieldEntries } = cur
-		const salePrice = customFieldEntries?.find?.(f =>  f.fieldName === `Sale Price`)?.fieldValue?.number
-		
+		const salePrice = templateEngine.parse(
+			customVal,
+			cur,
+		)
 		return salePrice ? [...acc, +salePrice] : acc
 	}, [])
 
