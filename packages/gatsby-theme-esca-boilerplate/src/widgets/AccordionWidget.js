@@ -10,7 +10,6 @@ import 'react-accessible-accordion/dist/fancy-example.css'
 import { css } from '@emotion/core'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import SanityBlock from './index'
-import Container from '../components/container'
 import { colors } from '../styles/variables'
 
 
@@ -22,43 +21,41 @@ export default function AccordionModule(props){
 	const [active, setActive] = useState({})
 
 	return(
-		<Container width="constrained" smartPadding>
-			<Accordion
-				allowZeroExpanded={true}
-				allowMultipleExpanded={true}
-				css={accordionStyles}
-				onChange={(uuid) => {
-					if(!uuid.length) setActive({})
+		<Accordion
+			allowZeroExpanded={true}
+			allowMultipleExpanded={true}
+			css={accordionStyles}
+			onChange={(uuid) => {
+				if(!uuid.length) setActive({})
 
-					uuid.forEach(id => {
-						setActive({
-							[id]: true,
-						})
+				uuid.forEach(id => {
+					setActive({
+						[id]: true,
 					})
-				}}>
-				{rows.map((row, index) => {
-					return (
-						<AccordionItem key={index} uuid={index}>
-							<AccordionItemHeading>
-								<AccordionItemButton>
-									<span>{row.label}</span>
-									<span className={`plusIcon`}>
-										{
-											active[index]
-												? <IoIosArrowUp />
-												: <IoIosArrowDown />
-										}
-									</span>
-								</AccordionItemButton>
-							</AccordionItemHeading>
-							<AccordionItemPanel>
-								<SanityBlock blocks={row.content} />
-							</AccordionItemPanel>
-						</AccordionItem>
-					)
-				})}
-			</Accordion>
-		</Container>
+				})
+			}}>
+			{rows.map((row, index) => {
+				return (
+					<AccordionItem key={index} uuid={index}>
+						<AccordionItemHeading>
+							<AccordionItemButton>
+								<span>{row.label}</span>
+								<span className={`plusIcon`}>
+									{
+										active[index]
+											? <IoIosArrowUp />
+											: <IoIosArrowDown />
+									}
+								</span>
+							</AccordionItemButton>
+						</AccordionItemHeading>
+						<AccordionItemPanel>
+							<SanityBlock blocks={row.content} />
+						</AccordionItemPanel>
+					</AccordionItem>
+				)
+			})}
+		</Accordion>
 	)
 }
 
