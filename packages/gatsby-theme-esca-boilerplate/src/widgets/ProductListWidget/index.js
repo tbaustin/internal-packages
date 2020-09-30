@@ -34,61 +34,54 @@ export default function ProductListWidget(props) {
 
 	const products = useLivePriceAndStock(useProductList(_key))
 
-	function renderList(productList) {
-		switch(display) {
-			case `carousel`:
-				return (
-					<CarouselList
-						products={productList}
-						title={parsedTitle}
-						priceDisplay={priceDisplay}
-					/>
-				)
-			default:
-				return (
-					<GridList
-						products={productList}
-						activeFilters={activeFilters}
-						priceDisplay={priceDisplay}
-					/>
-				)
-		}
+	const ListComponent = display === `grid` ? GridList : CarouselList
+
+	const listComponentProps = {
+		title: parsedTitle,
+		activeFilters: activeFilters,
+		priceDisplay: priceDisplay
 	}
 
-	if(!enableFilter || display !== `grid`) {
-		return renderList(products)
-	} else {
-		const customFields = templateEngine?.schema
-			?.find(type => type.name === `variant`)?.fields
-			?.find(field => field?.name === `customFields`)
-			?.fields || []
+	if (!enableFilter || display !== `grid`) return (
+		<ListComponent
+			products={products}
+			{...listComponentProps}
+		/>
+	)
 
-		const filters = customFields.filter(field => field?.filterWidget)
-		const filterValues = generateFilters(filters, products, templateEngine, initFilters)
-		const filteredProducts = filterProducts(activeFilters, products, templateEngine)
+	const customFields = templateEngine?.schema
+		?.find(type => type.name === `variant`)?.fields
+		?.find(field => field?.name === `customFields`)
+		?.fields || []
 
-		return (
-			<section css={styles}>
-				{!!filterValues.length && (
-					<div className="filters">
-						{filterValues.map((filter, i) => {
-							return (
-								<FilterWidget
-									key={i}
-									filter={filter}
-									activeFilters={activeFilters}
-									setActiveFilters={setActiveFilters}
-								/>
-							)
-						})}
-					</div>
-				)}
-				<div className="productList">
-					{renderList(filteredProducts)}
+	const filters = customFields.filter(field => field?.filterWidget)
+	const filterValues = generateFilters(filters, products, templateEngine, initFilters)
+	const filteredProducts = filterProducts(activeFilters, products, templateEngine)
+
+	return (
+		<section css={styles}>
+			{!!filterValues.length && (
+				<div className="filters">
+					{filterValues.map((filter, i) => {
+						return (
+							<FilterWidget
+								key={i}
+								filter={filter}
+								activeFilters={activeFilters}
+								setActiveFilters={setActiveFilters}
+							/>
+						)
+					})}
 				</div>
-			</section>
-		)
-	}
+			)}
+			<div className="productList">
+				<ListComponent
+					products={filteredProducts}
+					{...listComponentProps}
+				/>
+			</div>
+		</section>
+	)
 }
 
 const styles = css`
