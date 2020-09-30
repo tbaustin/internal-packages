@@ -6,9 +6,9 @@ export default function (filters, products, templateEngine, initFilters) {
 	if(priceFilter) {
 		staticFilters.push({
 			title: `Price`,
-			filterWidget: `FilterRange`,
+			filterWidget: `FilterPrice`,
 		})
-	} 
+	}
 	if(ratingFilter) {
 		staticFilters.push({
 			title: `Rating`,
@@ -27,12 +27,12 @@ export default function (filters, products, templateEngine, initFilters) {
 	*/
 	const dynamicFilters = filters.reduce((acc, cur) => {
 		const { title } = cur
-		
+
 		const filterValues = []
 
 		products.forEach(product => {
 			const { patchedData } = templateEngine.patchCustomData(product)
-			
+
 			const { variants } = product
 
 			variants.forEach((_, i) => {
