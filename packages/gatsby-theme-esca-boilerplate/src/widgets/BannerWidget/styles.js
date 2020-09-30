@@ -59,7 +59,7 @@ const childElementStyles = css`
     text-align: center;
   }
 
-  h1 {
+  h1, .h1-substitute {
     font-size: 7vw;
   	line-height: 1;
   	color: #fff;
