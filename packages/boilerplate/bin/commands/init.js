@@ -163,6 +163,7 @@ exports.handler = async () => {
       Next steps:
       \t- Add a name in package.json
       \t- Fill out config.js with necessary info
+      \t- Add netlify webhook for this site to .github/workflows/main.yml at "#HOOK HERE"
       \t- Run 'nvm use'
       \t- Run 'yarn'
       \t- Run 'yarn env'
