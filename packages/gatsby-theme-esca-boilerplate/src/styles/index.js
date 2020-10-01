@@ -67,7 +67,7 @@ export const priceText = css`
   font-weight: bolder;
 `
 
-export const salePriceText = css`
+export const strikePriceText = css`
   color: ${variables.colors.textDark};
   font-size: 1em;
   text-decoration: line-through;

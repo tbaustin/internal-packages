@@ -20,7 +20,7 @@ const sortArr = (arr, dir, val) => {
 }
 
 export default function ProductGridList(props){
-	const { products, priceDisplay } = props
+	const { products, priceDisplay, ...rest } = props
 
 	const templateEngine = useTemplateEngine()
 	
@@ -82,7 +82,12 @@ export default function ProductGridList(props){
 					: (sortedProducts || products).map((product, idx) => {
 						const { sku } = product
 						const key = `${sku}-${idx}`
-						return <ProductTile priceDisplay={priceDisplay} key={key} product={product} />
+						return <ProductTile 
+							{...rest}
+							priceDisplay={priceDisplay} 
+							key={key} 
+							product={product}
+						/>
 					})}
 			</div>
 		</Container>
