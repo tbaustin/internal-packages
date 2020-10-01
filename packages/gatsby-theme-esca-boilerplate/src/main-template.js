@@ -65,6 +65,7 @@ export const query = graphql`
 				}
 				variants {
 					_id
+					_type
 					sku
 					price
 					rating

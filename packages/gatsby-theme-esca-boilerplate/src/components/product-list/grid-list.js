@@ -5,7 +5,7 @@ import Container from '../container'
 import ProductTile from './product-tile'
 
 export default function ProductGridList(props){
-	const { products, priceDisplay } = props
+	const { products, priceDisplay, ...rest } = props
 
 	return (
 		<Container direction="row" width="constrained" align="flex-start" smartPadding="0 auto">
@@ -15,7 +15,12 @@ export default function ProductGridList(props){
 					: products.map((product, idx) => {
 						const { sku } = product
 						const key = `${sku}-${idx}`
-						return <ProductTile priceDisplay={priceDisplay} key={key} product={product} />
+						return <ProductTile 
+							{...rest}
+							priceDisplay={priceDisplay} 
+							key={key} 
+							product={product}
+						/>
 					})}
 			</div>
 		</Container>
