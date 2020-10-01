@@ -127,6 +127,23 @@ async function initProjectFiles() {
 
   write(`netlify-functions/.gitignore`, `dist`)
 
+  write(`.github/workflows/main.yml`,
+  `
+  name: Trigger Netlify Build
+  on: 
+    schedule:
+      # Run at 5:00 PM UTC daily
+      - cron: '0 5 * * *'
+  jobs:
+    build:
+      name: Request Netlify Webhook
+      runs-on: ubuntu-latest
+      steps:
+        - name: Curl request
+          run: curl -X POST -d {} #HOOK HERE
+  `
+    )
+
   return Promise.all(tasks)
 }
 
