@@ -165,6 +165,7 @@ const getFields = isTemplate => {
       title: 'Custom Schema.org JSON to add to a page.',
       type: 'text',
       validation: Rule => Rule.custom(text => {
+        if (!text) return true
         try {
           JSON.parse(text)
         } catch (e) {
