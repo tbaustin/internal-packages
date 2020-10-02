@@ -50,14 +50,17 @@ export default function ProductListWidget(props) {
 		templateEngine
 	)
 
+	const filtersSectionProps = {
+		products,
+		initFilters,
+		activeFilters,
+		setActiveFilters
+	}
+
 	return (
 		<section css={styles}>
-			<FiltersSection
-				products={products}
-				initFilters={initFilters}
-				activeFilters={activeFilters}
-				setActiveFilters={setActiveFilters}
-			/>
+			<FiltersSection {...filtersSectionProps} />
+			<FiltersSection mobile {...filtersSectionProps} />
 			<div className="productList">
 				<ListComponent
 					products={filteredProducts}

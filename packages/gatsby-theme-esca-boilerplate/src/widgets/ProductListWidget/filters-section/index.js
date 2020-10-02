@@ -2,17 +2,23 @@ import React from 'react'
 import Accordion, { AccordionItem } from '../../../components/accordion'
 import FilterWidget from '../../FilterWidget'
 import useFilterValues from './use-filter-values'
-import styles from './styles'
+import getStyles from './styles'
 
 
 export default function FiltersSection(props) {
-  const { products, initFilters, activeFilters, setActiveFilters } = props
+  const {
+    mobile,
+    products,
+    initFilters,
+    activeFilters,
+    setActiveFilters
+  } = props
 
   const filterValues = useFilterValues({ products, initFilters })
   if (!filterValues?.length) return null
 
   return (
-    <div css={styles}>
+    <div css={getStyles(mobile)}>
       <Accordion condensed>
         {filterValues.map((filter, i) => {
           const headingText = filter?.title || ``
