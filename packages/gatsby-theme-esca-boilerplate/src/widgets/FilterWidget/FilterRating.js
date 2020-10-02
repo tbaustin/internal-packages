@@ -9,13 +9,12 @@ const ratings = [4,3,2,1]
 
 export default function FilterRating(props){
 	const { title, activeFilters, setActiveFilters } = props
-	
+
 	return (
 		<div css={styles}>
-			<div className="title">{title}</div>
 			<div className="ratings">
 				{ratings.map((rating, i) => (
-					<div 
+					<div
 						key={i}
 						className="rating"
 						onClick={() => {
@@ -23,12 +22,12 @@ export default function FilterRating(props){
 								...activeFilters,
 								[title]: rating,
 							})
-						}}  
+						}}
 					>
 						<Stars rating={rating}/> & Up
 						{activeFilters[title] === rating && (
-							<div 
-								className="remove" 
+							<div
+								className="remove"
 								onClick={(e) => {
 									e.stopPropagation()
 

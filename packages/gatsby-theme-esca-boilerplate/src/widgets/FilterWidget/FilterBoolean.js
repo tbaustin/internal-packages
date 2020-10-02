@@ -11,10 +11,9 @@ export default function FilterBoolean(props){
 
 	return (
 		<div css={styles}>
-			<div className="title">{title}</div>
 			<div className="toggle">
-				<input 
-					type="checkbox" 
+				<input
+					type="checkbox"
 					checked={checked}
 					onChange={e => {
 						setChecked(e.target.checked)
@@ -32,8 +31,8 @@ export default function FilterBoolean(props){
 					}}
 				/>
 				{title in activeFilters && (
-					<div 
-						className="remove" 
+					<div
+						className="remove"
 						onClick={() => {
 							setChecked(false)
 							const activeFiltersCopy = produce(activeFilters, draft => {
@@ -46,7 +45,7 @@ export default function FilterBoolean(props){
 					</div>
 				)}
 			</div>
-			
+
 		</div>
 	)
 }

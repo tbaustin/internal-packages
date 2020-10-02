@@ -5,9 +5,9 @@ export default function FilterList(props){
 	const { title, values, setActiveFilters, activeFilters } = props
 
 	function removeFilter(val) {
-		const index = activeFilters[title]?.indexOf?.(val) 
+		const index = activeFilters[title]?.indexOf?.(val)
 
-		if(index !== -1){      
+		if(index !== -1){
 			setActiveFilters({
 				...activeFilters,
 				[title]: [
@@ -17,13 +17,13 @@ export default function FilterList(props){
 			})
 		}
 	}
-  
+
 	function addFilter(val) {
 		const exists = activeFilters?.[title]?.find?.(f => f === val)
 
 		if(!exists){
 			setActiveFilters({
-				...activeFilters, 
+				...activeFilters,
 				[title]: [
 					...activeFilters[title] || [], val,
 				],
@@ -33,7 +33,6 @@ export default function FilterList(props){
 
 	return (
 		<div css={styles} className="filter">
-			<div className="title">{title}</div>
 			<div className="values">
 				<ul className="list">
 					{values.map((val, i) => {
@@ -43,7 +42,7 @@ export default function FilterList(props){
 							<li className="listItem" key={i}>
 								<div className="text" onClick={() => addFilter(val)}>
 									{val}
-								</div> 
+								</div>
 								{isActive && <div onClick={() => removeFilter(val)}>X</div>}
 							</li>
 						)

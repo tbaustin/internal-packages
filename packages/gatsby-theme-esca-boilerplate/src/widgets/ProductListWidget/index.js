@@ -6,6 +6,7 @@ import { useTemplateEngine } from '../../context/template-engine'
 import useLivePriceAndStock from '../../context/live-price-and-stock'
 import { useProductList } from '../../context/product-lists'
 import { variables } from '../../styles'
+import Accordion, { AccordionItem } from '../../components/accordion'
 import CarouselList from '../../components/product-list/carousel-list'
 import GridList from '../../components/product-list/grid-list'
 import FilterWidget from '../FilterWidget'
@@ -62,16 +63,27 @@ export default function ProductListWidget(props) {
 		<section css={styles}>
 			{!!filterValues.length && (
 				<div className="filters">
-					{filterValues.map((filter, i) => {
-						return (
-							<FilterWidget
-								key={i}
-								filter={filter}
-								activeFilters={activeFilters}
-								setActiveFilters={setActiveFilters}
-							/>
-						)
-					})}
+					<Accordion condensed>
+						{filterValues.map((filter, i) => {
+							const headingText = filter?.title || ``
+							const headingElement = (
+								<span className="filterHeading">
+									{headingText}
+								</span>
+							)
+							const key = `filters-${headingText}-${i}`
+
+							return (
+								<AccordionItem key={key} id={key} heading={headingElement}>
+									<FilterWidget
+										filter={filter}
+										activeFilters={activeFilters}
+										setActiveFilters={setActiveFilters}
+									/>
+								</AccordionItem>
+							)
+						})}
+					</Accordion>
 				</div>
 			)}
 			<div className="productList">
@@ -89,7 +101,7 @@ const styles = css`
 	display: flex;
   flex-flow: row wrap;
 	justify-content: center;
-	
+
 	.filters {
 		width: 100%;
 		max-width: ${screenWidths.tablet};
@@ -97,6 +109,11 @@ const styles = css`
 
 		@media(${breakpoints.laptop}) {
 			width: 16rem;
+		}
+
+		.filterHeading {
+			color: ${colors.textDark};
+			font-weight: bold;
 		}
 	}
 	.productList {
@@ -115,7 +132,7 @@ const styles = css`
 	.activeList {
 		margin-bottom: 20px;
 	}
-	.activeFiltersTitle, .title {
+	.activeFiltersTitle {
 		font-size: 24px;
     margin-bottom: 10px;
 	}

@@ -30,7 +30,6 @@ export default function FilterRange(props){
 
 	return (
 		<div css={styles}>
-			<div className="title">{title}</div>
 			<div className="inputs">
 				<div className="min">
 					<input
