@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "module": "src/index.js",
   "scripts": {
     "build": "npx babel src --out-dir dist",
     "test": "jest"

@@ -35,13 +35,11 @@ export default function ProductOverviewWidget(props) {
 			</div>
 			<div css={infoStyle}>
 				<div className="skuDisplay">
-					<span>
-						{resolveVal(brandText) || `Lifeline`}
-            &nbsp;/&nbsp;
-					</span>
-					<span>{resolveVal(sku)}</span>
+					<span itemProp="brand">{resolveVal(brandText) || `Lifeline`}</span>
+          &nbsp;/&nbsp;
+					<span itemProp="sku">{resolveVal(sku)}</span>
 				</div>
-				<h1>{resolveVal(name)}</h1>
+				<h1 itemProp="name">{resolveVal(name)}</h1>
 				<PriceStockWidget {...props} />
 				<ReviewSnippetWidget sku={resolveVal(sku)}/>
 				<WriteReviewWidget sku={resolveVal(sku)}/>

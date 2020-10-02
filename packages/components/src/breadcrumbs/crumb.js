@@ -51,13 +51,19 @@ export default function Crumb(props) {
 
 	// Use link-related props depending on type of tag being rendered
 	const destKey = Tag === `a` ? `href` : `to`
-	const destProp = { [destKey]: destination}
+  const destProp = { [destKey]: destination}
+  const isLink = (Tag === `a` || typeof Tag === 'object')
+  
+  const schemaProps = {
+    itemProp : isLink ? 'item' : 'name'
+  }
 
 	// Merge all final props together
 	const allProps = {
 		...!isPlainText && destProp, // Link destination (if link being rendered)
 		...innerProps,							 // Custom props chosen at parent level
-		...restProps,								 // Custom props set for this specific crumb
+    ...restProps,								 // Custom props set for this specific crumb
+    ...schemaProps,
 	}
 
 	const displayText = typeof crumbProp === `string`
@@ -66,7 +72,9 @@ export default function Crumb(props) {
 
 	return (
 		<Tag {...allProps}>
-			{displayText}
+      {isLink ? (
+        <span itemProp="name">{displayText}</span>
+      ) : displayText}
 		</Tag>
 	)
 }

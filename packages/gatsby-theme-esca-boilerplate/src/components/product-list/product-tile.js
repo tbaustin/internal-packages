@@ -47,22 +47,33 @@ export default function ProductTile({ product, priceDisplay }){
     patchedData,
 	)
 	const Wrapper = parsedPath ? Link : `div`
-	const toProp = parsedPath ? { to: parsedPath } : {}
+  const toProp = parsedPath ? { to: parsedPath } : {}
 
 	return (
-		<Wrapper css={productTileStyles} className={`productItem`} {...toProp}>
+		<Wrapper css={productTileStyles} className={`productItem`} {...toProp} itemScope itemType="https://schema.org/Product">
+      {sku && <meta itemProp="sku" content={sku} />}
 			{
 				image
-					? <Img fluid={image} />
-					: <img src="https://via.placeholder.com/400" alt="placeholder" />
+					? <Img fluid={image} itemProp="image" />
+					: <img src="https://via.placeholder.com/400" alt="placeholder" itemProp="image" />
 			}
-			<div className="price">
-				{Array.isArray(price)
-					? `${formatPrice(price[0])} - ${formatPrice(price[1])}`
-					: formatPrice(price)
-				}
-			</div>
-			<strong>{patchedData.name}</strong>
+      {Array.isArray(price) ? (
+        <div className="price" itemProp="offers" itemScope itemType="https://schema.org/AggregateOffer">
+          {parsedPath && <meta itemProp="url" content={parsedPath} />}
+          <meta itemProp="lowPrice" content={price[0]} />
+          <meta itemProp="highPrice" content={price[1]} />
+          <meta itemProp="priceCurrency" content={'USD'} />
+          {formatPrice(price[0])} - {formatPrice(price[1])}
+        </div>
+      ) : (
+        <div className="price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+          {parsedPath && <meta itemProp="url" content={parsedPath} />}
+          <meta itemProp="price" content={price} />
+          <meta itemProp="priceCurrency" content={'USD'} />
+          {formatPrice(price)}
+        </div>
+      )}
+			<strong itemProp="name">{patchedData.name}</strong>
 		</Wrapper>
 	)
 }

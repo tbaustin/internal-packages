@@ -143,7 +143,36 @@ const getFields = isTemplate => {
 				const message = `Must contain only lower/uppercase letters (no spaces)`
 				return regex.test(text) || message
 			})
-		}
+    },
+    {
+      name: `schemaOrgPageType`,
+      title: `Schema.org Page Scope Type`,
+      description: `Defines the Schema type that the page will be scoped to. Applies to 'page-container'. Format should be a URL e.g. https://schema.org/Product`,
+      type: `string`,
+      validation: Rule => Rule.custom(text => {
+        const regex = /https:\/\/schema.org\/[a-zA-Z]+/
+        const message = `Must be a schema.org URL.`
+        return regex.test(text) || message
+      })
+    },
+    {
+      name: `schemaOrgEnabled`,
+      title: `Enable Schema.org attributes for this template.`,
+      type: `boolean`
+    },
+    {
+      name: 'schemaOrgCustomPageSchema',
+      title: 'Custom Schema.org JSON to add to a page.',
+      type: 'text',
+      validation: Rule => Rule.custom(text => {
+        try {
+          JSON.parse(text)
+        } catch (e) {
+          return false
+        }
+        return true
+      })
+    }
 	]
 }
 

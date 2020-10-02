@@ -8,16 +8,21 @@ import Cart from '../components/cart'
 import getStyles from './styles'
 
 
-const Structure = ({ children }) => {
+const Structure = (props) => {
   const [ layoutState ] = useLayoutState()
   const styles = getStyles(layoutState)
+  const {children, itemScope, itemType} = props
+  const schemaOrgProps = itemType ? {
+    itemScope,
+    itemType
+  } : null
 
 	return (
 		<>
 			<Global styles={globalOverride} />
 			<main css={styles}>
 				<Header />
-        <div className="page-container">
+        <div className="page-container" {...schemaOrgProps}>
           {children}
         </div>
 				<Footer />
@@ -33,7 +38,7 @@ export default function Layout(props) {
 
   return (
     <LayoutStateProvider {...other}>
-      <Structure>
+      <Structure {...other}>
         {children}
       </Structure>
     </LayoutStateProvider>
