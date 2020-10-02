@@ -123,3 +123,16 @@ export const DummyServerlessWidget = {
 		},
 	],
 }
+
+export const SchemaOrgCustomJSONWidget = {
+  title: `Custom Schema.org JSON`,
+  name: `SchemaOrgCustomJSONWidget`,
+  type: `object`,
+  fields: [
+    {
+      title: `JSON Text`,
+      name: `jsonText`,
+      type: `text`
+    }
+  ]
+}
