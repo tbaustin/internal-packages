@@ -8,25 +8,40 @@ const siteConfig = require(configPath)
 
 const isDevMode = process.env.NODE_ENV === `development`
 
+const { siteUrl } = siteConfig
 
 module.exports = ({ icon }) => ({
 	siteMetadata: {
 		title: `Escalade Website Boilerplate`,
 		description: `Test boilerplate website & CMS`,
 		author: `@escaladesports`,
-		siteUrl: `https://escalade-website-boilerplate.netlify.app/`,
+		siteUrl,
 	},
 	plugins: [
 		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-sitemap`,
 		{
+			resolve: `gatsby-plugin-canonical-urls`,
+			options: {
+				siteUrl,
+			},
+		},
+		{
+			resolve: `gatsby-plugin-robots-txt`,
+			options: {
+				host: siteUrl,
+				sitemap: `${siteUrl}/sitemap.xml`,
+				policy: [{ userAgent: `*`, allow: `/` }],
+			},
+		},
+		{
 			resolve: `gatsby-plugin-alias-imports`,
 			options: {
 				alias: {
 					config: configPath,
-					boilerplate: `${dirs.gatsbyTheme}/src`
-				}
-			}
+					boilerplate: `${dirs.gatsbyTheme}/src`,
+				},
+			},
 		},
 		{
 			resolve: `gatsby-plugin-create-client-paths`,
@@ -59,7 +74,7 @@ module.exports = ({ icon }) => ({
 				background_color: `#45A4EC`,
 				theme_color: `#45A4EC`,
 				display: `minimal-ui`,
-				icon: icon || `${dirs.gatsbyTheme}/static/icon.png`
+				icon: icon || `${dirs.gatsbyTheme}/static/icon.png`,
 			},
 		},
 		{
@@ -72,5 +87,5 @@ module.exports = ({ icon }) => ({
 			},
 		},
 	],
-	developMiddleware
+	developMiddleware,
 })

@@ -3,6 +3,7 @@ import { css } from '@emotion/core'
 import { useTemplateEngine } from '../context/template-engine'
 import GalleryWidget from './GalleryWidget'
 import Container from '../components/container'
+import H1Substitute from '../components/h1-substitute'
 import ContentRenderer from './index'
 import PriceStockWidget from './PriceStockWidget'
 import VariantSelectorWidget from './VariantSelectorWidget'
@@ -16,6 +17,7 @@ export default function ProductOverviewWidget(props) {
 	const {
 		sku,
 		name,
+		useH1,
 		brandText,
 		shippingInfo,
 		variantSelectionMethod,
@@ -28,6 +30,8 @@ export default function ProductOverviewWidget(props) {
 		? templateEngine.parse(val)
 		: val
 
+	const Heading = useH1 ? `h1` : H1Substitute
+
 	return (
 		<Container width="constrained" direction="row" smartPadding>
 			<div css={carouselStyle}>
@@ -39,7 +43,7 @@ export default function ProductOverviewWidget(props) {
           &nbsp;/&nbsp;
 					<span itemProp="sku">{resolveVal(sku)}</span>
 				</div>
-				<h1 itemProp="name">{resolveVal(name)}</h1>
+				<Heading itemProp="name">{resolveVal(name)}</Heading>
 				<PriceStockWidget {...props} />
 				<ReviewSnippetWidget sku={resolveVal(sku)}/>
 				<WriteReviewWidget sku={resolveVal(sku)}/>
@@ -85,7 +89,7 @@ const infoStyle = css`
     padding: 1.5rem;
   }
 
-  h1 {
+  h1, .h1-substitute {
     font-size: 2.25rem;
     margin: 0;
   }

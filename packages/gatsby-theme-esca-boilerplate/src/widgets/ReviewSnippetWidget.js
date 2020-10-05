@@ -35,7 +35,7 @@ export default function ReviewSnippetWidget(props){
 	const rating = data?.results?.[0]?.rollup?.average_rating || 0
 
 	return (
-		<div css={styles}>
+		<div css={styles} className="reviewSnippetWidget">
 			<span className={`rating`}>
 				{rating ? rating : `No Reviews`}
 			</span>

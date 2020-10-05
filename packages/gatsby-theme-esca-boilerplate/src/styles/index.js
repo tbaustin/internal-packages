@@ -63,8 +63,14 @@ export const inputField = css`
 
 export const priceText = css`
   color: ${variables.colors.red};
-  font-size: 2rem;
+  font-size: 1.2rem;
   font-weight: bolder;
+`
+
+export const strikePriceText = css`
+  color: ${variables.colors.textDark};
+  font-size: 1em;
+  text-decoration: line-through;
 `
 
 export const globalOverride = css`
@@ -85,5 +91,16 @@ export const globalOverride = css`
 
   *, *:before, *:after {
     box-sizing: inherit;
+  }
+
+  /* See src/widgets/index.js */
+  .h1-substitute {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
   }
 `

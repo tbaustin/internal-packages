@@ -24,12 +24,12 @@ export default async function cmsSync(args) {
 
 	// use as name field for product slugs
 	const useAsNameField = customFieldRes?.result
-  ?.find?.(({ useAsName }) => !!useAsName)
-  ?.salsifyName
+		?.find?.(({ useAsName }) => !!useAsName)
+		?.salsifyName
 
 	// all image types from salsify
 	const imageTypes = customFieldRes?.result
-  ?.filter?.(({ salsifyName, useAsName }) => !!salsifyName && !useAsName)
+		?.filter?.(({ salsifyName, useAsName }) => !!salsifyName && !useAsName)
 
 	const salsify = [
 		...(restProps?.salsify || []),
@@ -97,64 +97,66 @@ export default async function cmsSync(args) {
     * It will also keep existing order and values 
   */
 
-		cmsVariants.forEach(cmsVar => {
-			const { _id, sku } = cmsVar
-			console.log(`Using existing variant: ${_id}...`)
-			let mutation = {}
-			const apiVariant = variants?.[_id]
-			let patches = {}
+		if(cmsVariants) {
+			cmsVariants.forEach(cmsVar => {
+				const { _id, sku } = cmsVar
+				console.log(`Using existing variant: ${_id}...`)
+				let mutation = {}
+				const apiVariant = variants?.[_id]
+				let patches = {}
 
-			if(apiVariant){
+				if(apiVariant){
 				// HANDLE EXISTING IMAGES HERE FOR VARIANTS!!
-				imageTypes.forEach(imgType => {
-					const { salsifyName, name } = imgType
-					const apiImages = apiVariant?.[salsifyName] || [] // images from the api
-					const cmsImages = cmsVar?.customFieldEntries // images from existing cms
-          ?.find?.(({ fieldName }) => fieldName === name)
-          ?.fieldValue?.images || []
-					// only need to get images that will be deleted (unsetting)
-					// and also images that are new or be adding to the end of the array
+					imageTypes.forEach(imgType => {
+						const { salsifyName, name } = imgType
+						const apiImages = apiVariant?.[salsifyName] || [] // images from the api
+						const cmsImages = cmsVar?.customFieldEntries // images from existing cms
+							?.find?.(({ fieldName }) => fieldName === name)
+							?.fieldValue?.images || []
+						// only need to get images that will be deleted (unsetting)
+						// and also images that are new or be adding to the end of the array
 
-					patches = { 
-						...patches, 
-						...createImageMutations({ apiImages, cmsImages, name, sku }),
-					}
-				})
-				// the variant needs to be updated on the product in the cms
+						patches = { 
+							...patches, 
+							...createImageMutations({ apiImages, cmsImages, name, sku }),
+						}
+					})
+					// the variant needs to be updated on the product in the cms
 
-				// use the custom field to get variant name
-				const variantName = apiVariant?.[useAsNameField]
-				const slugValue = name === variantName ? slugify(`${name}-${_id}`) : slugify(variantName)
+					// use the custom field to get variant name
+					const variantName = apiVariant?.[useAsNameField]
+					const slugValue = name === variantName ? slugify(`${name}-${_id}`) : slugify(variantName)
 
-				if(slugValue && (cmsVar?.slug?.current !== slugValue)) {
+					if(slugValue && !cmsVar?.slug?.current) {
 					// if the parent and variant have the same name then append the variant sku to the 
 					// parent name
-					patches.set = { 
-						...(patches?.set || {}),
-						slug: {current: slugValue },
+						patches.set = { 
+							...(patches?.set || {}),
+							slug: {current: slugValue },
+						}
 					}
-				}
 
-				if(Object.keys(patches).length){
-					mutation.patch = {
-						id: _id,
-						...patches,
+					if(Object.keys(patches).length){
+						mutation.patch = {
+							id: _id,
+							...patches,
+						}
 					}
-				}
 
-			} else {
+				} else {
 				// the variant needs to be removed from product in the cms
-				console.log(`Removing variant: ${_id} from product: ${productId}`)
-				mutation.patch = {
-					id: sanityId(productId),
-					unset: [/* groq */`variants[ _ref == "${_id}"]`], 
+					console.log(`Removing variant: ${_id} from product: ${productId}`)
+					mutation.patch = {
+						id: sanityId(productId),
+						unset: [/* groq */`variants[ _ref == "${_id}"]`], 
+					}
 				}
-			}
 
-			if(Object.keys(mutation).length){
-				mutations.push(mutation)
-			}
-		})
+				if(Object.keys(mutation).length){
+					mutations.push(mutation)
+				}
+			})
+		}
 
 		/*
     * This will look to see if there are NEW
@@ -218,7 +220,7 @@ export default async function cmsSync(args) {
 			console.log(`Using existing base product ${productId}...`)
 			let mutation = {}
 
-			if(name && (slugify(name) !== existingBaseProduct?.slug?.current)){
+			if(name && !existingBaseProduct?.slug?.current){
 				mutation.set = { slug: {current: slugify(name)} }
 			}
     
@@ -227,8 +229,8 @@ export default async function cmsSync(args) {
 				const { salsifyName, name } = imgType
 				const apiImages = baseProduct?.[salsifyName] || [] // images from the api
 				const cmsImages = existingBaseProduct?.customFieldEntries // images from existing cms
-        ?.find?.(({ fieldName }) => fieldName === name)
-        ?.fieldValue?.images || []
+					?.find?.(({ fieldName }) => fieldName === name)
+					?.fieldValue?.images || []
 
 				// only need to get images that will be deleted (unsetting)
 				// and also images that are new or be adding to the end of the array
