@@ -160,20 +160,6 @@ const getFields = isTemplate => {
       name: `schemaOrgEnabled`,
       title: `Enable Schema.org attributes for this template.`,
       type: `boolean`
-    },
-    {
-      name: 'schemaOrgCustomPageSchema',
-      title: 'Custom Schema.org JSON to add to a page.',
-      type: 'text',
-      validation: Rule => Rule.custom(text => {
-        if (!text) return true
-        try {
-          JSON.parse(text)
-        } catch (e) {
-          return false
-        }
-        return true
-      })
     }
 	]
 }

@@ -29,8 +29,6 @@ export default function MainTemplate(props) {
 	} = pageContext || {}
 
   const allProducts = graphqlData?.allBaseProduct?.nodes || []
-
-  console.log('schemaOrgEnabled', schemaOrgEnabled)
   
   const schemaOrgProps = schemaOrgEnabled ? {
     itemScope: true,

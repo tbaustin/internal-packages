@@ -101,7 +101,7 @@ module.exports = function getProductLists(options) {
 		if (block._type === `ProductListWidget`) {
 			productLists[block._key] = getFilteredProducts(block)
 		}
-		if (block.content && block.content.length) {
+		if (block.content && block.content.length && Array.isArray(block.content)) {
 			block.content.forEach(getListForBlock)
 		}
 	}
