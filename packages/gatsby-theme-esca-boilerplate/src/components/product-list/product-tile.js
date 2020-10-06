@@ -56,7 +56,7 @@ export default function ProductTile({
 	const brandText = resolveVal(brand)
 	const strikePrice = resolveVal(strikeThroughPrice)
 
-	const price = priceConfig?.[priceDisplay]
+	const price = priceConfig?.[`defaultVariant`]
 
 	const strikePriceRange = priceConfig?.strikePriceRange
 

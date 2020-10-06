@@ -12,30 +12,20 @@ const sortArr = (arr, dir, val) => {
 		const aVal = get(a, val)
 		const bVal = get(b, val)
 
-		if(dir === `desc`) {
-			// this was mainly to combat values that were null/undefind
+		// if both vals are numbers we need to use the 
+		// "numeric" option to sort numbers, otherwise just 
+		// compare as alphanumeric even if one is a number 
 
-			// for the null comparisons (val == null) - (val == null)
-			// false - false = 0 
-			// true - false = 1
-			// false - true = -1
-			// true - true = 0
-
-			// for the positive comparison +(val > val)
-			// +(false) = 0
-			// +(true) = 1
-
-			// for the negative comparison -(val < val)
-			// -(false) = 0
-			// -(true) = -1
-
-			// questions on what 0, 1, -1 do go to: 
-			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-
-
-			return (bVal==null)-(aVal==null) || +(bVal>aVal) || -(bVal<aVal)
+		// if the value does not exist push it to the back
+		if(dir === `asc`) {
+			return bVal 
+				? `${aVal}`.localeCompare(`${bVal}`, undefined, { numeric: +aVal && +bVal ? true : false })
+				: -1
+		
 		} else {
-			return (aVal==null)-(bVal==null) || +(aVal>bVal) || -(aVal<bVal)
+			return aVal 
+				? `${bVal}`.localeCompare(`${aVal}`, undefined, { numeric: +aVal && +bVal ? true : false })
+				: 1
 		}
 	})
 }
