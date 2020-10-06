@@ -24,16 +24,15 @@ export default function MainTemplate(props) {
 		breadcrumbs,
 		dataSource,
     productLists,
-    schemaOrgPageType,
-    schemaOrgEnabled
+    schemaOrgPageType
 	} = pageContext || {}
 
   const allProducts = graphqlData?.allBaseProduct?.nodes || []
   
-  const schemaOrgProps = schemaOrgEnabled ? {
+  const schemaOrgProps = {
     itemScope: true,
     itemType: schemaOrgPageType,
-  } : {}
+  }
 
 	return (
 		<CurrentVariantProvider>
@@ -85,7 +84,6 @@ export const query = graphql`
 		}
     sanityTemplate {
       schemaOrgPageType
-      schemaOrgEnabled
     }
 	}
 `

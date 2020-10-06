@@ -32,8 +32,7 @@ exports.createPages = async ({ actions, graphql }) => {
 			breadcrumbs,
 			_rawContent: content,
       tagManagerEvent,
-      schemaOrgPageType,
-      schemaOrgEnabled
+      schemaOrgPageType
 		} = page || {}
 
 		/**
@@ -55,8 +54,7 @@ exports.createPages = async ({ actions, graphql }) => {
 				productLists,
 				allProductIds,
         tagManagerEvent,
-        schemaOrgPageType,
-        schemaOrgEnabled
+        schemaOrgPageType
 			}
 		})
 	})

@@ -32,8 +32,7 @@ exports.createPages = async ({ actions, graphql }) => {
 			breadcrumbs,
 			_rawContent: content,
       tagManagerEvent,
-      schemaOrgPageType,
-      schemaOrgEnabled
+      schemaOrgPageType
 		} = cmsTemplate || {}
 
 		/**
@@ -63,7 +62,6 @@ exports.createPages = async ({ actions, graphql }) => {
 					content,
           tagManagerEvent,
           schemaOrgPageType,
-          schemaOrgEnabled,
 					dataSource: source,
 					productLists,
 					allProductIds

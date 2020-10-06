@@ -156,11 +156,6 @@ const getFields = isTemplate => {
         const message = `Must be a schema.org URL.`
         return regex.test(text) || message
       })
-    },
-    {
-      name: `schemaOrgEnabled`,
-      title: `Enable Schema.org attributes for this template.`,
-      type: `boolean`
     }
 	]
 }

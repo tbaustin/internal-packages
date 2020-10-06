@@ -65,7 +65,6 @@ query {
       _rawContent(resolveReferences: { maxDepth: 5 })
       tagManagerEvent
       schemaOrgPageType
-      schemaOrgEnabled
     }
   }
 
