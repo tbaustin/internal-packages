@@ -27,8 +27,6 @@ export default withDocument(
 			loadFields()
 		}, [])
 
-		console.log(`props: `, props)
-
 		return (
 			<>
 				<CustomFieldsForm
