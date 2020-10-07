@@ -52,7 +52,7 @@ export default function Breadcrumbs(props) {
 		: endSeparatorProp
 
 	return (
-		<ul css={defaultStyles} {...restProps}>
+		<ul css={defaultStyles} {...restProps} itemScope itemType="https://schema.org/BreadcrumbList">
 			{crumbs.map((crumb, i) => {
 				/**
 				 * Allow props for <li> elements to be set individually (in crumb
@@ -74,7 +74,7 @@ export default function Breadcrumbs(props) {
 				const end = i === (crumbs.length - 1)
 
 				return (
-					<li key={`crumb-${i}`} {...liProps}>
+					<li key={`crumb-${i}`} {...liProps} itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
 						{begin && beginSeparator}
 						{isElement ? crumb : (
 							<Crumb
@@ -83,6 +83,7 @@ export default function Breadcrumbs(props) {
 								innerProps={crumbProps}
 							/>
 						)}
+            {<meta itemProp="position" content={i + 1} />}
 						{!end && separator}
 						{end && endSeparator}
 					</li>
