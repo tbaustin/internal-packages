@@ -70,19 +70,21 @@ export default function ProductTile({
     patchedData,
 	)
 	const Wrapper = parsedPath ? Link : `div`
-	const toProp = parsedPath ? { to: parsedPath } : {}
+  const toProp = parsedPath ? { to: parsedPath } : {}
 
 	return (
-		<Wrapper css={productTileStyles} className={`productItem`} {...toProp}>
+		<Wrapper css={productTileStyles} className={`productItem`} {...toProp} itemScope itemType="https://schema.org/Product">
+      {sku && <meta itemProp="sku" content={sku} />}
 			{
 				image
-					? <Img fluid={image} />
-					: <img src="https://via.placeholder.com/400" alt="placeholder" />
+					? <Img fluid={image} itemProp="image" />
+					: <img src="https://via.placeholder.com/400" alt="placeholder" itemProp="image" />
 			}
 
 			{!!variants && variants.length > 1 && <div className="hasVariants smallText">More Options Available</div>}
 
-			<strong>{patchedData?.name}</strong>
+
+			<strong itemProp="name">{patchedData?.name}</strong>
 
 			{!!brandText && <div className="brand smallText">by {brandText}</div>}
 
@@ -92,7 +94,11 @@ export default function ProductTile({
 						<>
 							<div className="price range" css={css`
 								margin-bottom: ${strikePriceRange ? `10px` : `0px`};
-							`}>
+							`} itemProp="offers" itemScope itemType="https://schema.org/AggregateOffer">
+                {parsedPath && <meta itemProp="url" content={parsedPath} />}
+                <meta itemProp="lowPrice" content={price[0]} />
+                <meta itemProp="highPrice" content={price[1]} />
+                <meta itemProp="priceCurrency" content={'USD'} />
 								{formatPrice(price[0])} - {formatPrice(price[1])}
 							</div>
 							{strikePriceRange && (
@@ -104,7 +110,12 @@ export default function ProductTile({
 					)
 					: (
 						<>
-							<div className="price">{formatPrice(price)}</div>
+							<div className="price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                {parsedPath && <meta itemProp="url" content={parsedPath} />}
+                <meta itemProp="price" content={price} />
+                <meta itemProp="priceCurrency" content={'USD'} />
+                {formatPrice(price)}
+              </div>
 							{strikePrice && (<div className="strikePrice">{formatPrice(strikePrice)}</div>)}
 						</>
 					)

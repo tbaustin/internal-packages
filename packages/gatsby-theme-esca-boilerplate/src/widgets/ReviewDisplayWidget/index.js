@@ -131,6 +131,10 @@ export default function ReviewDisplayWidget(props){
 
 			{rollup && (
 				<section className={`snapshot`}>
+          <div itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
+            <meta itemProp="ratingValue" content={average_rating} />
+            <meta itemProp="ratingCount" content={review_count} />
+          </div>
 					<h2 className={`headline`}>Review Snapshot</h2>
 					<div className="wrapper">
 						<div className="rating">
@@ -207,21 +211,25 @@ export default function ReviewDisplayWidget(props){
 					const userVote = votes[ugc_id] === `helpful` ? 1 : votes[ugc_id] === `unhelpful` ? -1 : 0
 
 					return (
-						<li key={i} className={`reviewItem`}>
+						<li key={i} className={`reviewItem`} itemProp="review" itemScope itemType="https://schema.org/Review">
 							<div className="reviewItemHeader">
+                <div itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                  <meta itemProp="ratingValue" content={rating} />
+                  <meta itemProp="bestRating" content="5" />
+                </div>
 								<Stars rating={rating} />
 								<h3>{headline}</h3>
 							</div>
 							<div className="reviewItemBody">
-								<p className="comments">
+								<p className="comments" itemProp="reviewBody">
 									{comments}
 								</p>
 								<div className="details">
 									<div className="submissionDate">
-										<span className={`bold`}>Submitted</span> {format(new Date(created_date), `MM/dd/yyyy`)}
+										<span className={`bold`}>Submitted</span> <span itemProp="datePublished">{format(new Date(created_date), `MM/dd/yyyy`)}</span>
 									</div>
 									<div className="nickname">
-										<span className={`bold`}>By</span> {nickname}
+										<span className={`bold`}>By</span> <span itemProp="author">{nickname}</span>
 									</div>
 									<div className="location">
 										<span className={`bold`}>From</span> {location}

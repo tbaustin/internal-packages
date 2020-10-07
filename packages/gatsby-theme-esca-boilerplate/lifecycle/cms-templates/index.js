@@ -31,7 +31,8 @@ exports.createPages = async ({ actions, graphql }) => {
 			path,
 			breadcrumbs,
 			_rawContent: content,
-			tagManagerEvent
+      tagManagerEvent,
+      schemaOrgPageType
 		} = cmsTemplate || {}
 
 		/**
@@ -46,7 +47,7 @@ exports.createPages = async ({ actions, graphql }) => {
 			dataSource: source,
 			allProducts,
 			content
-		})
+    })
 
 		if (path) {
 			// Replace template variables in path w/ actual values
@@ -59,7 +60,8 @@ exports.createPages = async ({ actions, graphql }) => {
 					title,
 					breadcrumbs,
 					content,
-					tagManagerEvent,
+          tagManagerEvent,
+          schemaOrgPageType,
 					dataSource: source,
 					productLists,
 					allProductIds
