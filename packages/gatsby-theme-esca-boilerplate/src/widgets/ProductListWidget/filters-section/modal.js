@@ -18,10 +18,16 @@ export default function FiltersModal(props) {
   return (
     <>
       <div css={toolbarStyles}>
-        <div className="launcher" onClick={open}>
-          <FilterIcon />
-          Filter
-        </div>
+        <CallToAction
+          className="launcher"
+          onClick={open}
+          text={(
+            <>
+              <FilterIcon />
+              Filter
+            </>
+          )}
+        />
       </div>
       <Modal active={active} noPadding>
         <div css={cardStyles} ref={cardRef}>
@@ -45,18 +51,17 @@ export default function FiltersModal(props) {
 const toolbarStyles = css`
   width: 100%;
   margin-bottom: 2rem;
-
-  &, .launcher {
-    display: flex;
-    align-items: center;
-  }
+  display: flex;
+  align-items: center;
 
   .launcher {
-    color: ${colors.brand};
-    cursor: pointer;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    font-weight: normal;
+    text-transform: unset;
 
     svg {
-      margin-right: 0.25em;
+      margin-right: 0.5rem;
     }
   }
 `
