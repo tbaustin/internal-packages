@@ -65,8 +65,12 @@ exports.handler = async () => {
   /**
    * Build & start dev server for Gatsby
    */
-  child_process.spawn(`gatsby`, [`develop`], {
-    cwd: dirs.site,
-    stdio: `inherit`
-  })
+  child_process.spawn(
+    `gatsby`,
+    [`develop`, `-H`, `0.0.0.0`],
+    {
+      cwd: dirs.site,
+      stdio: `inherit`
+    }
+  )
 }
