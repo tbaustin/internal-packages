@@ -66,13 +66,14 @@ export default function BreadcrumbsRenderer(props) {
 			continue
 		}
 
+
 		let { title, path } = crumb
 
-		let text = templateEngine.data
+		let text = templateEngine?.data
 			? templateEngine.parse(title)
 			: title
 
-		let href = templateEngine.data
+		let href = templateEngine?.data
 			? templateEngine.parse(path)
 			: path
 

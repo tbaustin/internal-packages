@@ -33,20 +33,19 @@ export default function ProductTile({
 
 	const { imageCustomField } = useStaticQuery(imageKeyQuery)
 
-	const imageField = defaultVariant.customFieldEntries.find(entry => {
+	const imageField = defaultVariant?.customFieldEntries?.find?.(entry => {
 		return entry.fieldName === imageCustomField.name
 	})
 
 	const imageUrl = imageField?.fieldValue?.images?.[0]?.externalUrl
 
-	const image = getFluidGatsbyImage(
+	const image = imageUrl && getFluidGatsbyImage(
 		imageUrl,
 		{ maxWidth: 400 },
 	)
 
 	const templateEngine = useTemplateEngine()
-
-	const { patchedData } = templateEngine.patchCustomData(product)
+	const { patchedData } = templateEngine?.patchCustomData(product) || {}
 
 	const resolveVal = val => templateEngine.data
 		? templateEngine.parse(val, patchedData)
@@ -57,16 +56,16 @@ export default function ProductTile({
 	const brandText = resolveVal(brand)
 	const strikePrice = resolveVal(strikeThroughPrice)
 
-	const price = priceConfig?.[priceDisplay]
+	const price = priceConfig?.[`defaultVariant`]
 
-	const strikePriceRange = priceConfig?.salePriceRange
+	const strikePriceRange = priceConfig?.strikePriceRange
 
 	// const valueOnProduct = templateEngine.resolveProperty(
 	// 	`Custom Fields:Color`,
 	// 	patchedData,
 	// )
 
-	const parsedPath = templateEngine.parse(
+	const parsedPath = templateEngine?.parse(
     product?.template?.path || `/`,
     patchedData,
 	)
@@ -84,12 +83,13 @@ export default function ProductTile({
 
 			{!!variants && variants.length > 1 && <div className="hasVariants smallText">More Options Available</div>}
 
-			<strong itemProp="name">{patchedData.name}</strong>
+
+			<strong itemProp="name">{patchedData?.name}</strong>
 
 			{!!brandText && <div className="brand smallText">by {brandText}</div>}
 
 			<div className="pricing">
-				{Array.isArray(price)
+				{price && Array.isArray(price)
 					? (
 						<>
 							<div className="price range" css={css`

@@ -27,14 +27,15 @@ exports.createPages = async function({ graphql }){
 				id: _id,
 				index: {
 					path: parsedPath,
-					salsify: cur.salsify,
-					customFieldEntries: cur.customFieldEntries,
-					price: cur.price,
 					sku: cur.sku,
-					type: cur._type,
 					categories: cur.categories && cur.categories.reduce((acc, { ancestry }) => {
 						const catSearchTerms = ancestry ? ancestry.map(({ name }) => name) : []
 						return [...acc, ...catSearchTerms]
+					}, []),
+					variants: variants && variants.reduce((acc, v) => {
+						const { sku, slug } = v
+
+						return [...acc, sku || ``, slug ? slug.current : ``]
 					}, []),
 					slug: cur.slug ? cur.slug.current : cur.sku,
 				},
@@ -46,28 +47,28 @@ exports.createPages = async function({ graphql }){
 
 			acc.push(datum)
 
-			if(variants) {
-				variants.forEach(v => {
-					const vDatum = {
-						id: v._id,
-						index: {
-							path: parsedPath,
-							salsify: v.salsify,
-							customFieldEntries: v.customFieldEntries,
-							price: v.price,
-							sku: v.sku,
-							type: v._type,
-							slug: cur.slug ? cur.slug.current : cur.sku,
-						},
-						store: {
-							path: parsedPath,
-							...(v || {}),
-						},
-					}
+			// if(variants) {
+			// 	variants.forEach(v => {
+			// 		const vDatum = {
+			// 			id: v._id,
+			// 			index: {
+			// 				path: parsedPath,
+			// 				salsify: v.salsify,
+			// 				customFieldEntries: v.customFieldEntries,
+			// 				price: v.price,
+			// 				sku: v.sku,
+			// 				type: v._type,
+			// 				slug: cur.slug ? cur.slug.current : cur.sku,
+			// 			},
+			// 			store: {
+			// 				path: parsedPath,
+			// 				...(v || {}),
+			// 			},
+			// 		}
 
-					acc.push(vDatum)
-				})
-			}
+			// 		acc.push(vDatum)
+			// 	})
+			// }
 		}
 
 		return acc
@@ -90,6 +91,8 @@ exports.createPages = async function({ graphql }){
 			itemStore[id] = store
 		})
 	})
+
+	console.log(`Item Store: `, itemStore)
 
 	await outputJson(`./public/search-index.json`, {
 		index,

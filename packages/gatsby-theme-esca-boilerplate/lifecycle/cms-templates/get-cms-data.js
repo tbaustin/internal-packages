@@ -20,7 +20,7 @@ module.exports = async function getCMSData(graphql) {
 		sanityPersistedSchema,
 		allCategory,
 		allBaseProduct,
-		allSanityTemplate
+		allSanityTemplate,
 	} = data || {}
 
 	const { nodes: categories } = allCategory || {}
