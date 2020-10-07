@@ -1,5 +1,5 @@
 import { css } from '@emotion/core'
-import { colors, breakpoints, screenWidths } from '../../../styles/variables'
+import { colors, breakpoints } from '../../../styles/variables'
 
 
 export default function getStyles(isMobile) {
@@ -8,8 +8,6 @@ export default function getStyles(isMobile) {
 
   return css`
     width: 100%;
-    max-width: ${screenWidths.tablet};
-    padding: 1rem;
     display: ${mobileDisplay};
 
     @media(${breakpoints.laptop}) {

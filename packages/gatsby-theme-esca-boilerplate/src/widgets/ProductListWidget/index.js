@@ -71,6 +71,7 @@ export default function ProductListWidget(props) {
 	)
 }
 
+
 const styles = css`
 	width: 100%;
 	display: flex;
