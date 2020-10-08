@@ -3,63 +3,79 @@ import Helmet from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 import { useTemplateEngine } from '../context/template-engine'
 
-
-
 const query = graphql`
   query {
+    sanitySiteSettings {
+      seo {
+        title
+        description
+        author
+      }
+      headerLogo {
+        asset {
+          url
+        }
+      }
+    }
     site {
       siteMetadata {
         title
         description
         author
+        siteUrl
       }
     }
   }
 `
 
-
 const getFullMeta = config => {
-	const { title, description, site, meta } = config
-	const metaDescription = description || site.siteMetadata.description
+  const { site, title, description, meta, author, image } = config
 
-	const otherMeta = [
-		{
-			name: `description`,
-			content: metaDescription,
-		},
-		{
-			property: `og:title`,
-			content: title,
-		},
-		{
-			property: `og:description`,
-			content: metaDescription,
-		},
-		{
-			property: `og:type`,
-			content: `website`,
-		},
-		{
-			name: `twitter:card`,
-			content: `summary`,
-		},
-		{
-			name: `twitter:creator`,
-			content: site.siteMetadata.author,
-		},
-		{
-			name: `twitter:title`,
-			content: title,
-		},
-		{
-			name: `twitter:description`,
-			content: metaDescription,
-		},
-	]
+  const otherMeta = [
+    {
+      name: `description`,
+      content: description,
+    },
+    {
+      property: `og:title`,
+      content: title,
+    },
+    {
+      property: `og:description`,
+      content: description,
+    },
+    {
+      property: 'og:url',
+      content: site.siteMetadata.siteUrl
+    },
+    {
+      property: `og:type`,
+      content: `website`,
+    },
+    {
+      property: `og:image`,
+      content: image,
+    },
+    {
+      name: `twitter:card`,
+      content: `summary`,
+    },
+    {
+      name: `twitter:creator`,
+      content: author,
+    },
+    {
+      name: `twitter:title`,
+      content: title,
+    },
+    {
+      name: `twitter:description`,
+      content: description,
+    }
+  ]
 
-	return otherMeta.concat(meta || [])
+  return otherMeta.concat(meta || [])
 }
-
 
 export default function SEO(props) {
   const { lang, title: titleProp } = props
@@ -70,15 +86,18 @@ export default function SEO(props) {
     ? templateEngine.parse(titleProp)
     : titleProp
 
-	const { site } = useStaticQuery(query)
-	const fullMeta = getFullMeta({ site, ...props, title })
+  const { sanitySiteSettings, site } = useStaticQuery(query)
+  const description = sanitySiteSettings.seo.description || site.siteMetadata.description
+  const author = sanitySiteSettings.seo.author || site.siteMetadata.author
+  const image = sanitySiteSettings.headerLogo.asset.url
+  const fullMeta = getFullMeta({ site, ...props, title, description, author, image })
 
-	return (
-		<Helmet
-			htmlAttributes={{ lang }}
-			title={title}
-			titleTemplate={`%s | ${site.siteMetadata.title}`}
-			meta={fullMeta}
-		/>
-	)
+  return (
+    <Helmet
+      htmlAttributes={{ lang }}
+      title={title}
+      titleTemplate={`%s | ${sanitySiteSettings.seo.title || site.siteMetadata.title}`}
+      meta={fullMeta}
+    />
+  )
 }

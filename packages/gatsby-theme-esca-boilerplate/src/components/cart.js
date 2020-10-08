@@ -9,7 +9,9 @@ import { activeCampaign as acConfig } from 'config'
 const query = graphql`
 	query CartQuery {
 		siteSettings: sanitySiteSettings {
-			title
+			seo {
+        title
+      }
 		}
 	}
 `
@@ -23,7 +25,7 @@ const reCaptchaProps = !reCaptchaKey ? {} : {
 
 export default function Cart() {
 	const { siteSettings } = useStaticQuery(query)
-	const cartHeaderText = siteSettings?.title || `Escalade Sports`
+	const cartHeaderText = siteSettings?.seo?.title || `Escalade Sports`
 
 	// Initialize ActiveCampaign functionality on 1st render
 	useEffect(() => {
