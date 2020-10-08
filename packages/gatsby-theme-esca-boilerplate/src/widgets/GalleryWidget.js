@@ -48,7 +48,7 @@ export default function GalleryWidget(props) {
 
 	return (
 		<div css={containerStyles}>
-			{mainImage && <Image className="main-image" fluid={mainImage} />}
+			{mainImage && <Image className="main-image" fluid={mainImage} itemProp="image" />}
 			<Slick {...slickSettings}>
 				{images?.map?.((image, i) => {
           const key = `${cmsWidgetKey}-${i}`
@@ -69,7 +69,7 @@ export default function GalleryWidget(props) {
 
 					return (
 						<div key={key} className={className} onClick={handleClick}>
-							{fluid && <Image fluid={fluid} />}
+							{fluid && <Image fluid={fluid} itemProp="image" />}
 						</div>
 					)
 				})}

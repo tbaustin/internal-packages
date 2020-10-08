@@ -23,16 +23,22 @@ export default function MainTemplate(props) {
 		title,
 		breadcrumbs,
 		dataSource,
-		productLists,
+    productLists,
+    schemaOrgPageType
 	} = pageContext || {}
 
-	const allProducts = graphqlData?.allBaseProduct?.nodes || []
+  const allProducts = graphqlData?.allBaseProduct?.nodes || []
+  
+  const schemaOrgProps = {
+    itemScope: true,
+    itemType: schemaOrgPageType,
+  }
 
 	return (
 		<CurrentVariantProvider>
 			<TemplateEngineProvider data={dataSource}>
 				<ProductListsProvider lists={productLists} products={allProducts}>
-					<Layout breadcrumbs={breadcrumbs}>
+					<Layout breadcrumbs={breadcrumbs} {...schemaOrgProps}>
 						<SEO title={title} />
 						<ContentRenderer
 							className="page-content"
@@ -66,6 +72,7 @@ export const query = graphql`
 				}
 				variants {
 					_id
+					_type
 					sku
 					price
 					rating
@@ -75,5 +82,8 @@ export const query = graphql`
 				}
 			}
 		}
+    sanityTemplate {
+      schemaOrgPageType
+    }
 	}
 `

@@ -19,7 +19,7 @@ export default function ProductListWidget(props) {
 		title,
 		display,
 		filters: initFilters = {},
-		priceDisplay
+		priceDisplay,
 	} = props
 
 	const [activeFilters, setActiveFilters] = useState({})

@@ -127,6 +127,23 @@ async function initProjectFiles() {
 
   write(`netlify-functions/.gitignore`, `dist`)
 
+  write(`.github/workflows/main.yml`,
+  `
+  name: Trigger Netlify Build
+  on: 
+    schedule:
+      # Run at 5:00 PM UTC daily
+      - cron: '0 5 * * *'
+  jobs:
+    build:
+      name: Request Netlify Webhook
+      runs-on: ubuntu-latest
+      steps:
+        - name: Curl request
+          run: curl -X POST -d {} #HOOK HERE
+  `
+    )
+
   return Promise.all(tasks)
 }
 
@@ -146,6 +163,7 @@ exports.handler = async () => {
       Next steps:
       \t- Add a name in package.json
       \t- Fill out config.js with necessary info
+      \t- Add netlify webhook for this site to .github/workflows/main.yml at "#HOOK HERE"
       \t- Run 'nvm use'
       \t- Run 'yarn'
       \t- Run 'yarn env'

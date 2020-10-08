@@ -21,7 +21,7 @@ export default function ProductDetailsWidget(props) {
   return (
     <Container width="constrained" smartPadding css={styles}>
       <h2>Product Details</h2>
-      <div className="productDescription">
+      <div className="productDescription" itemProp="description">
         {resolveVal(description)}
       </div>
       <ul>

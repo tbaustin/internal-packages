@@ -7,18 +7,18 @@ import { modalContent as style } from './styles'
 
 
 export default function Viewer(props) {
-  const { isActive, onClose, activeItem } = props
+	const { isActive, onClose, activeItem } = props
 
-  const imageSrc = buildSalsifyImageUrl(
+	const imageSrc = buildSalsifyImageUrl(
 		activeItem.externalUrl,
-		{ width: 1200 }
+		{ width: 1200 },
 	)
 
-  return !isActive ? null : (
-    <Modal onClose={onClose} onClickOutside={onClose}>
-      <div css={style}>
-        <img src={imageSrc} />
-      </div>
-    </Modal>
-  )
+	return !isActive ? null : (
+		<Modal onClose={onClose} onClickOutside={onClose}>
+			<div css={style}>
+				<img src={imageSrc} />
+			</div>
+		</Modal>
+	)
 }

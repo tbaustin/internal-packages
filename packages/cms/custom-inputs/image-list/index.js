@@ -41,7 +41,7 @@ export default forwardRef(function ImageList(props, ref) {
 	// Refs for the list item elements
 	const [itemRefs, setItemRefs] = useReducer(
 		(state, action) => ({ ...state, ...action }),
-		{}
+		{},
 	)
 
 	// Element corresponding to image being edited/viewed
@@ -93,17 +93,17 @@ export default forwardRef(function ImageList(props, ref) {
 
 
 	// Render each row with the thumbnail, alt text field & "Displayed" switch
-  const renderItem = (item, i) => {
-    const { _key, externalUrl, altText, displayed } = item
+	const renderItem = (item, i) => {
+		const { _key, externalUrl, altText, displayed } = item
 
 		const itemRef = useRef()
 		if (!itemRefs[i]) setItemRefs({ [i]: itemRef })
 
 		const thumbUrl = buildSalsifyImageUrl(externalUrl, { width: 50 })
 
-    return (
-      <div css={style}>
-        <img
+		return (
+			<div css={style}>
+				<img
 					src={thumbUrl}
 					onClick={() => openDialog(`image`, i)}
 				/>
@@ -112,14 +112,14 @@ export default forwardRef(function ImageList(props, ref) {
 					altText={altText}
 					onClick={() => openDialog(`altText`, i)}
 				/>
-        <Switch
-          onChange={e => handleToggle(e, i)}
-          label="Displayed"
-          checked={!!displayed}
-        />
-      </div>
-    )
-  }
+				<Switch
+					onChange={e => handleToggle(e, i)}
+					label="Displayed"
+					checked={!!displayed}
+				/>
+			</div>
+		)
+	}
 
 	return (
 		<>
@@ -135,15 +135,15 @@ export default forwardRef(function ImageList(props, ref) {
 				onSave={handleChangeAltText}
 				onClose={closeDialog}
 			/>
-      <SortableList
+			<SortableList
 				ref={ref}
-        options={options}
-        type={type}
-        value={value}
+				options={options}
+				type={type}
+				value={value}
 				createPatchEvent={createPatchEvent}
-        onChange={onChange}
-        renderItem={renderItem}
-      />
+				onChange={onChange}
+				renderItem={renderItem}
+			/>
 		</>
 	)
 })

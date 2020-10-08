@@ -63,8 +63,14 @@ export const inputField = css`
 
 export const priceText = css`
   color: ${variables.colors.red};
-  font-size: 2rem;
+  font-size: 1.2rem;
   font-weight: bolder;
+`
+
+export const strikePriceText = css`
+  color: ${variables.colors.textDark};
+  font-size: 1em;
+  text-decoration: line-through;
 `
 
 export const globalOverride = css`

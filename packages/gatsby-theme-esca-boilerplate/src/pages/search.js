@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'gatsby-link'
 import { css } from '@emotion/core'
+import { Helmet } from "react-helmet"
+
+import TemplateEngineProvider from '../context/template-engine'
+import CurrentVariantProvider from '../context/current-variant'
+import ProductGridList from '../components/product-list/grid-list'
 import Layout from '../layout'
 import Container from '../components/container'
 import CallToAction from '../components/call-to-action'
@@ -12,7 +17,6 @@ import { colors, breakpoints } from '../styles/variables'
 const ResultsDisplay = props => {
 	const { loading, results, submittedTerm } = props
 	const hasResults = Boolean(results?.length)
-
 	if (loading) return (
 		<h3>
 			Searching for <em>"{submittedTerm}"</em>...
@@ -21,19 +25,8 @@ const ResultsDisplay = props => {
 
 	if (hasResults) return (
 		<>
-			<h3>
-				Results for <em>"{submittedTerm}"</em>
-			</h3>
 			<ul css={searchListCss}>
-				{results.slice(0, 10).map(({ salsify, path, sku }, index) => {
-					return (
-						<li className="search-item" key={`searchResult${index}`}>
-							<Link className="result" to={path || `/product/${sku}`}>
-								{salsify?.[`Item Name`] || sku}
-							</Link>
-						</li>
-					)
-				})}
+				<ProductGridList products={results.slice(0, 36)} priceDisplay={`priceRange`} />
 			</ul>
 		</>
 	)
@@ -87,46 +80,72 @@ export default function SearchPage() {
 
 		// Set initial search term from URL parameter if found
 		let urlTerm = decodeURIComponent(
-			path.pop().replace(/\+/g, `%20`)
+			path.pop().replace(/\+/g, `%20`),
 		)
 		startSearch(urlTerm)
 	}, [])
 
+	// if(!submittedTerm.length) {
+	// 	return <div>loading...</div>
+	// }
 
 	return (
-		<Layout title='Search'>
-			<Container width="constrained" smartPadding>
-				<h1>Search</h1>
-				<div css={inputGroupStyle}>
-					<input
-						type="text"
-						placeholder="Enter a new search term here"
-						className="search-input"
-						css={inputStyle}
-						disabled={loading}
-						value={term}
-						onChange={handleInputEvent}
-						onKeyUp={handleInputEvent}
+		<CurrentVariantProvider>
+			<TemplateEngineProvider>
+				<Layout 
+					title='Search' 
+					breadcrumbs={[
+						{ title: `Home`, path: `/`, category: null },
+						{ title: submittedTerm.length ? submittedTerm : `Search` },
+					]}
+				>
+					<Helmet
+						title={submittedTerm}
+						meta={[{
+							property: `og:title`,
+							content: submittedTerm,
+						}]}
 					/>
-					<CallToAction
-						css={submitButtonStyle}
-						disabled={loading}
-						className="submit-button"
-						text="submit"
-						onClick={() => startSearch()}
-					/>
-				</div>
-				<ResultsDisplay
-					loading={loading}
-					submittedTerm={submittedTerm}
-					results={results}
-				/>
-			</Container>
-		</Layout>
+					<Container width="constrained" smartPadding>
+						<h1>
+					Results for <em>"{submittedTerm}"</em>
+						</h1>
+						<div css={totalResultsCss}>{results.length > 36 ? 36 : results.length} Products</div>
+						<div css={inputGroupStyle}>
+							<input
+								type="text"
+								placeholder="Enter a new search term here"
+								className="search-input"
+								css={inputStyle}
+								disabled={loading}
+								value={term}
+								onChange={handleInputEvent}
+								onKeyUp={handleInputEvent}
+							/>
+							<CallToAction
+								css={submitButtonStyle}
+								disabled={loading}
+								className="submit-button"
+								text="submit"
+								onClick={() => startSearch()}
+							/>
+						</div>
+						<ResultsDisplay
+							loading={loading}
+							submittedTerm={submittedTerm}
+							results={results}
+						/>
+					</Container>
+				</Layout>
+			</TemplateEngineProvider>
+		</CurrentVariantProvider>
 	)
 }
 
 
+const totalResultsCss = css`
+	margin-bottom: 20px;
+`
 
 const inputGroupStyle = css`
 	margin-bottom: 1rem;
@@ -165,7 +184,7 @@ const searchListCss = css`
 	flex-flow: row wrap;
 	justify-content: space-between;
 	padding: 0;
-
+	width: 100%;
 	.search-item {
 		flex: 1 0 100%;
 		font-size: 20px;

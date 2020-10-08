@@ -20,15 +20,18 @@ export default function PriceStockWidget(props) {
 		templateEngine.data
 			? templateEngine.parse(stockProp?.toString?.() || ``)
 			: stockProp
-	)
+  )
 
 	return (
-		<div css={style}>
+		<div css={style} itemProp="offers" itemScope itemType="https://schema.org/Offer">
+      <meta itemProp="priceCurrency" content={`USD`} />
+      <meta itemProp="price" content={price.substring(1) || ``} />
 			<div css={priceText}>
 				{price || ``}
 			</div>
 			<div className="stockDisplay">
-				{stock ? `In Stock` : `Out of Stock`}
+        <meta itemProp="availability" content={stock ? "InStock" : "OutOfStock"} />
+        <span>{stock ? `In Stock` : `Out of Stock`}</span>
 			</div>
 		</div>
 	)

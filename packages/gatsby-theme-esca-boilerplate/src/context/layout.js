@@ -29,38 +29,38 @@ export const useLayoutState = () => useContext(LayoutContext)
 
 
 export default function Provider(props) {
-  const { children, breadcrumbs } = props
-  const { siteSettings } = useStaticQuery(query)
+	const { children, breadcrumbs } = props
+	const { siteSettings } = useStaticQuery(query)
 
-  const hasAlert = !!siteSettings?._rawAlertBarContent
-  const hasCrumbs = !!breadcrumbs?.length
+	const hasAlert = !!siteSettings?._rawAlertBarContent
+	const hasCrumbs = !!breadcrumbs?.length
 
-  // The "pieces" that make up the header's overall height
-  const pieces = [sizes.navHeight]
-  hasCrumbs && pieces.push(sizes.breadcrumbsHeight)
+	// The "pieces" that make up the header's overall height
+	const pieces = [sizes.navHeight]
+	hasCrumbs && pieces.push(sizes.breadcrumbsHeight)
 
-  // Only factor alert bar into height on desktop
-  const piecesMobile = [...pieces]
-  hasAlert && pieces.push(sizes.alertBarHeight)
+	// Only factor alert bar into height on desktop
+	const piecesMobile = [...pieces]
+	hasAlert && pieces.push(sizes.alertBarHeight)
 
-  // Calculate total height for mobile & desktop
-  const headerHeight = `calc(${pieces.join(` + `)})`
-  const headerHeightMobile = `calc(${piecesMobile.join(` + `)})`
+	// Calculate total height for mobile & desktop
+	const headerHeight = `calc(${pieces.join(` + `)})`
+	const headerHeightMobile = `calc(${piecesMobile.join(` + `)})`
 
-  const reducer = (state, newState) => ({ ...state, ...newState })
-  const initialState = {
-    headerHeight,
-    headerHeightMobile,
-    siteSettings,
-    breadcrumbs
-  }
+	const reducer = (state, newState) => ({ ...state, ...newState })
+	const initialState = {
+		headerHeight,
+		headerHeightMobile,
+		siteSettings,
+		breadcrumbs,
+	}
 
-  const [layoutState, setLayoutState] = useReducer(reducer, initialState)
-  const contextValue = [layoutState, setLayoutState]
+	const [layoutState, setLayoutState] = useReducer(reducer, initialState)
+	const contextValue = [layoutState, setLayoutState]
 
-  return (
-    <LayoutContext.Provider value={contextValue}>
-      {children}
-    </LayoutContext.Provider>
-  )
+	return (
+		<LayoutContext.Provider value={contextValue}>
+			{children}
+		</LayoutContext.Provider>
+	)
 }
