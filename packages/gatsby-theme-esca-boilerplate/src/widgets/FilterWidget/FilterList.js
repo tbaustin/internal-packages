@@ -1,5 +1,8 @@
 import React from 'react'
 import { css } from '@emotion/core'
+import { MdClose } from 'react-icons/md'
+import { colors, breakpoints } from '../../styles/variables'
+
 
 export default function FilterList(props){
 	const { title, values, setActiveFilters, activeFilters } = props
@@ -11,7 +14,7 @@ export default function FilterList(props){
 			setActiveFilters({
 				...activeFilters,
 				[title]: [
-					...activeFilters[title].slice(0, index), 
+					...activeFilters[title].slice(0, index),
 					...activeFilters[title].slice(index + 1),
 				],
 			})
@@ -37,13 +40,15 @@ export default function FilterList(props){
 				<ul className="list">
 					{values.map((val, i) => {
 						const isActive = !!activeFilters?.[title]?.find?.(f => f === val)
+						let textClassName = `text`
+						if (isActive) textClassName += ` active`
 
 						return (
-							<li className="listItem" key={i}>
-								<div className="text" onClick={() => addFilter(val)}>
+							<li key={i}>
+								<div className={textClassName} onClick={() => addFilter(val)}>
 									{val}
 								</div>
-								{isActive && <div onClick={() => removeFilter(val)}>X</div>}
+								{isActive && <MdClose onClick={() => removeFilter(val)} />}
 							</li>
 						)
 					})}
@@ -59,11 +64,36 @@ const styles = css`
     padding: 0;
     margin: 0;
   }
-  .listItem {
-    cursor: pointer;
+
+  li {
+		height: 3rem;
     display: flex;
+		align-items: center;
+		justify-content: space-between;
+		cursor: pointer;
+
     .text {
-      margin-right: 10px;
+      flex: 1;
+
+			&.active {
+				color: ${colors.brand};
+			}
     }
+
+		svg {
+			width: 1.5em;
+			height: 1.5em;
+			margin-right: 1rem;
+		}
+
+		@media(${breakpoints.laptop}) {
+			height: 2rem;
+
+			svg {
+				width: 1em;
+				height: 1em;
+				margin-right: 0;
+			}
+		}
   }
 `

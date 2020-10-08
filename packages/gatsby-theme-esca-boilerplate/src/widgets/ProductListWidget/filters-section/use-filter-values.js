@@ -22,8 +22,8 @@ const generateFilters = (filters, products, templateEngine, initFilters) => {
 	}
 	if(stockFilter) {
 		staticFilters.push({
-			title: `Stock`,
-			filterWidget: `FilterBoolean`,
+			title: `Availability`,
+			filterWidget: `FilterStock`
 		})
 	}
 

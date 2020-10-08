@@ -38,8 +38,6 @@ export default function getStyles(isMobile) {
 
   	.filter {
   		margin-bottom: 20px;
-  		padding-bottom: 10px;
-  		border-bottom: 1px solid ${colors.lightGrey};
   	}
   `
 }
