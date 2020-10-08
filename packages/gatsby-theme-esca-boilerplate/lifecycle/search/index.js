@@ -92,8 +92,6 @@ exports.createPages = async function({ graphql }){
 		})
 	})
 
-	console.log(`Item Store: `, itemStore)
-
 	await outputJson(`./public/search-index.json`, {
 		index,
 		store: itemStore,

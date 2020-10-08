@@ -100,7 +100,6 @@ export default async function cmsSync(args) {
 		if(cmsVariants) {
 			cmsVariants.forEach(cmsVar => {
 				const { _id, sku } = cmsVar
-				console.log(`Using existing variant: ${_id}...`)
 				let mutation = {}
 				const apiVariant = variants?.[_id]
 				let patches = {}
@@ -145,7 +144,6 @@ export default async function cmsSync(args) {
 
 				} else {
 				// the variant needs to be removed from product in the cms
-					console.log(`Removing variant: ${_id} from product: ${productId}`)
 					mutation.patch = {
 						id: sanityId(productId),
 						unset: [/* groq */`variants[ _ref == "${_id}"]`], 
@@ -217,7 +215,6 @@ export default async function cmsSync(args) {
   
 
 		if(existingBaseProduct){
-			console.log(`Using existing base product ${productId}...`)
 			let mutation = {}
 
 			if(name && !existingBaseProduct?.slug?.current){
@@ -307,7 +304,6 @@ export default async function cmsSync(args) {
 			})
 		}
 
-		console.log(`${totalPercent ? ((count / totalPercent) * 100).toFixed(2) : `100`}% of mutations created`)
 		count++
 
 	}
