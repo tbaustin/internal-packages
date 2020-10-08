@@ -7,7 +7,7 @@ import storeOrder from './storeOrder'
 import validateAddress from './validateAddress'
 
 
-export async function postInfo({ response, info, preFetchData }) {
+export async function postInfo({ response, info, preFetchData, cartState: { productsState } }) {
 	console.log(`PostInfo`)
 
 	// Get messages, and moifications from response, or set default values
@@ -29,7 +29,7 @@ export async function postInfo({ response, info, preFetchData }) {
 		] = await Promise.all([
 			quantityMod(products),
 			shippingMethods(info, products),
-			coupons(info, products)
+			coupons(info, products, productsState)
 		])
 		if(couponResponse.message)
 			messages.info.push(couponResponse.message)

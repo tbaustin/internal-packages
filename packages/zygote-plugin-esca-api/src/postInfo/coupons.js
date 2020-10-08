@@ -2,8 +2,12 @@ import { toCents } from '@escaladesports/utils'
 import client from '../client'
 
 
-export default async function coupons(info, products) {
+export default async function coupons(info, products, productsState) {
+	console.log(`Coupons Function`, info, products)
+
 	if (!info.coupon) return {}
+
+	let modifications = []
 
 	// Get coupon from the API
 	let response = await client.calculateDiscount({
@@ -30,7 +34,31 @@ export default async function coupons(info, products) {
 
 	// console.log(`Coupon Response: `, response)
 
-	if (response.valid) {
+	if (response.valid && !response.errors) {
+		if(response.item){
+			const { sku, name, qty, price } = response.item
+			let itemRes = await fetch(`/api/products/load`, { method: `post`, body: JSON.stringify({
+				skus: [ sku ],
+				salsify: [`Web Images`],
+			})})
+			itemRes = await itemRes.json()
+			const foundProduct = itemRes.products[sku]
+			console.log(`PRODUCT FOR COUPON: `, foundProduct)
+
+			const item = {
+				...response.item,
+				name: name,
+				id: sku,
+				quantity: +qty,
+				image: foundProduct[`Web Images`] && foundProduct[`Web Images`][0],
+				price: price,
+				shippable: true,
+			}
+			console.log(`ITEM FROM COUPON: `, item)
+			
+			const { products: prevProducts } = productsState.state
+			productsState.setState({ products: [ ...prevProducts, item ]})
+		}
 		return {
 			coupon: {
 				id: info.coupon,
@@ -44,6 +72,6 @@ export default async function coupons(info, products) {
 	}
 
 	return {
-		message: response.errorMessage,
+		message: response.errorMessage
 	}
 }
