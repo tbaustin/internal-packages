@@ -87,16 +87,32 @@ export default function SEO(props) {
     : titleProp
 
   const { sanitySiteSettings, site } = useStaticQuery(query)
-  const description = sanitySiteSettings.seo.description || site.siteMetadata.description
-  const author = sanitySiteSettings.seo.author || site.siteMetadata.author
-  const image = sanitySiteSettings.headerLogo.asset.url
-  const fullMeta = getFullMeta({ site, ...props, title, description, author, image })
+
+  const description = sanitySiteSettings?.seo?.description
+    || site?.siteMetadata?.description
+
+  const author = sanitySiteSettings?.seo?.author
+    || site?.siteMetadata?.author
+
+  const image = sanitySiteSettings?.headerLogo?.asset?.url
+
+  const fullMeta = getFullMeta({
+    site,
+    ...props,
+    title,
+    description,
+    author,
+    image
+  })
+
+  const siteTitle = sanitySiteSettings?.seo?.title
+    || site?.siteMetadata?.title
 
   return (
     <Helmet
       htmlAttributes={{ lang }}
       title={title}
-      titleTemplate={`%s | ${sanitySiteSettings.seo.title || site.siteMetadata.title}`}
+      titleTemplate={`%s | ${siteTitle}`}
       meta={fullMeta}
     />
   )
