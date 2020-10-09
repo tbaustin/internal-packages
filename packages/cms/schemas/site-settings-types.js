@@ -75,7 +75,7 @@ export const seo = {
     { name: `title`, title: `Site Title`, type: `string` },
     { name: `description`, title: `Site Description`, type: `string` },
     { name: `author`, title: `Twitter Author`, type: `string` },
-    { name: `footerCopyrightText`, title: `Footer Copyright Year`, type: `string` }
+    { name: `footerCopyrightText`, title: `Footer Copyright Text`, type: `string` }
   ]
 }
 
