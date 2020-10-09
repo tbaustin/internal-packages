@@ -1,40 +1,42 @@
 import React from 'react'
-import FiltersModal from './modal'
+import Lightbox from './lightbox'
 import FiltersAccordion from './accordion'
 import useFilterValues from './use-filter-values'
+import { useFilterAndSort } from '../filter-and-sort-context'
 import getStyles from './styles'
 
 
 export default function FiltersSection(props) {
-  const {
-    mobile,
-    products,
-    initFilters,
-    activeFilters,
-    setActiveFilters
-  } = props
+  const { mobile, filterSettings } = props
 
-  const filterValues = useFilterValues({ products, initFilters })
+  const { products, filters, actions } = useFilterAndSort()
+
+  const filterValues = useFilterValues({
+    initFilters: filterSettings,
+    products
+  })
+  
   if (!filterValues?.length) return null
-
-  const accordion = (
-    <FiltersAccordion
-      mobile={mobile}
-      filterValues={filterValues}
-      activeFilters={activeFilters}
-      setActiveFilters={setActiveFilters}
-    />
-  )
-
-  const accordionWithModal = (
-    <FiltersModal>
-      {accordion}
-    </FiltersModal>
-  )
 
   return (
     <div css={getStyles(mobile)}>
-      {mobile ? accordionWithModal : accordion}
+      <FiltersAccordion
+        mobile={mobile}
+        filterValues={filterValues}
+        activeFilters={filters}
+        setActiveFilters={actions.filterProducts}
+      />
     </div>
+  )
+}
+
+
+export function LightboxFiltersSection(props) {
+  const { active, onClose, ...other } = props
+
+  return (
+    <Lightbox active={active} onClose={onClose}>
+      <FiltersSection mobile {...other} />
+    </Lightbox>
   )
 }

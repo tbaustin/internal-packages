@@ -1,73 +1,59 @@
-import React, { useState } from 'react'
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+import React from 'react'
 import { css } from '@emotion/core'
 import { useTemplateEngine } from '../../context/template-engine'
 import useLivePriceAndStock from '../../context/live-price-and-stock'
 import { useProductList } from '../../context/product-lists'
 import { breakpoints } from '../../styles/variables'
-import CarouselList from '../../components/product-list/carousel-list'
-import GridList from '../../components/product-list/grid-list'
 import FiltersSection from './filters-section'
-import filterProducts from './filter-products'
+import FilterAndSortProvider from './filter-and-sort-context'
+import ProductList from './product-list'
+import Toolbar from './toolbar'
 
 
 
 export default function ProductListWidget(props) {
 	const {
 		_key,
+		filters: filterSettings,
 		title,
 		display,
-		filters: initFilters = {},
-		priceDisplay,
+		priceDisplay
 	} = props
 
-	const [activeFilters, setActiveFilters] = useState({})
-
-	// Try to replace template variable w/ value in case one is provided
 	const templateEngine = useTemplateEngine()
-	const parsedTitle = templateEngine.parse(title)
 
-	const products = useLivePriceAndStock(useProductList(_key))
+	const rawProducts = useLivePriceAndStock(useProductList(_key))
 
-	const ListComponent = display === `grid` ? GridList : CarouselList
-	const listComponentProps = {
-		title: parsedTitle,
-		activeFilters: activeFilters,
-		priceDisplay: priceDisplay
-	}
+	const patchedProducts =  rawProducts
+	  .filter(prod => prod?.variants?.every?.(v => v?.price))
+	  .map(prod => {
+	    const { patchedData } = templateEngine.patchCustomData(prod) || {}
+	    return patchedData || prod
+	  })
 
-	if (!initFilters?.enableFilter || display !== `grid`) return (
-		<ListComponent
-			products={products}
-			{...listComponentProps}
+	if (!filterSettings?.enableFilter || display !== `grid`) return (
+		<ProductList
+			products={patchedProducts}
+			title={title}
+			display={display}
+			priceDisplay={priceDisplay}
 		/>
 	)
 
-	const filteredProducts = filterProducts(
-		activeFilters,
-		products,
-		templateEngine
-	)
-
-	const filtersSectionProps = {
-		products,
-		initFilters,
-		activeFilters,
-		setActiveFilters
-	}
-
 	return (
-		<section css={styles}>
-			<FiltersSection {...filtersSectionProps} />
-			<FiltersSection mobile {...filtersSectionProps} />
-			<div className="productList">
-				<ListComponent
-					products={filteredProducts}
-					{...listComponentProps}
-				/>
-			</div>
-		</section>
+		<FilterAndSortProvider products={patchedProducts}>
+			<section css={styles}>
+				<Toolbar filterSettings={filterSettings} />
+	      <FiltersSection filterSettings={filterSettings} />
+				<div className="productList">
+					<ProductList
+						title={title}
+						display={display}
+						priceDisplay={priceDisplay}
+					/>
+				</div>
+			</section>
+		</FilterAndSortProvider>
 	)
 }
 
