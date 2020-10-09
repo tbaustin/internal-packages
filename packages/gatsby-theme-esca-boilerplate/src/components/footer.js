@@ -31,6 +31,9 @@ export default function Footer() {
             }
           }
         }
+        seo {
+          footerCopyrightText
+        }
 			}
 	  }
   `)
@@ -54,7 +57,8 @@ export default function Footer() {
 
 	const links = siteSettings?._rawNavigation?.footer
 	const blocks = siteSettings?._rawFooterContent
-	const socialLinks = siteSettings?.socialLinks
+  const socialLinks = siteSettings?.socialLinks
+  const copyrightText = siteSettings?.seo?.footerCopyrightText || `© 2020 ESCALADE SPORTS, ALL RIGHTS RESERVED.`
 
 	const renderSocial = (platform) => {
 		return (
@@ -119,7 +123,7 @@ export default function Footer() {
 				{renderSocial(`mobile`)}
 			</div>
 			<div className="copyRight">
-        © 2017 ESCALADE SPORTS, ALL RIGHTS RESERVED.
+        {copyrightText}
 			</div>
 		</footer>
 	)
