@@ -10,7 +10,7 @@ import {
 
 
 export default function AccordionItem(props) {
-  const { id, heading, children, active } = props
+  const { id, heading, children } = props
 
   return (
     <Item uuid={id}>
