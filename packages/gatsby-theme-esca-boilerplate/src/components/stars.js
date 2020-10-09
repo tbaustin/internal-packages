@@ -3,16 +3,20 @@ import { MdStarBorder, MdStarHalf, MdStar} from 'react-icons/md'
 
 export default function Stars(props) {
 	const { rating } = props
+	
+	const numFilled = Math.floor(rating)
+	const numEmpty = Math.floor(5 - rating)
+	const hasPartial = numFilled + numEmpty !== 5
 
-	const filledStars = Math.floor(rating)
-	const partialStar = rating % 1 > .4
-	const emptyStars = partialStar ? Math.floor(5 - rating) : Math.ceil(5 - rating)
-  
 	return (
-		<div className={`starContainer`}>
-			{[...Array(filledStars)].map((_, i) => <MdStar className={`star`} key={i}/>)}
-			{partialStar && <MdStarHalf className={`star`} />}
-			{[...Array(emptyStars)].map((_, i) => <MdStarBorder className={`star`} key={i}/>)}
+		<div className="starContainer">
+			{Array(numFilled).fill().map((_, i) => (
+				<MdStar key={`filled-star-${i}`} className="star" />
+			))}
+			{hasPartial && <MdStarHalf className="star" />}
+			{Array(numEmpty).fill().map((_, i) => (
+				<MdStarBorder key={`empty-star-${i}`} className="star" />
+			))}
 		</div>
 	)
 }
