@@ -1,12 +1,14 @@
 import React, { useRef } from 'react'
 import { css } from '@emotion/core'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import Slider from 'react-slick'
-
 import { variables } from '../../styles'
-
 import ProductTile from './product-tile'
 
+
 const { colors, screenWidths } = variables
+
 
 export default function ProductCarouselList(props) {
 	const { products, title, priceDisplay } = props
@@ -43,7 +45,7 @@ export default function ProductCarouselList(props) {
 			},
 		],
 	}
-  
+
 	function previous(){
     slider?.current?.slickPrev?.()
 	}
@@ -51,11 +53,11 @@ export default function ProductCarouselList(props) {
 	function next(){
     slider?.current?.slickNext?.()
   }
-  
+
   function showArrows(){
     return slider?.current?.props?.children.length > slider?.current?.props?.slidesToShow
   }
-  
+
 	return (
 		<section css={carouselContainer}>
 			<div className="wrapper">
@@ -67,7 +69,7 @@ export default function ProductCarouselList(props) {
               <div onClick={next} className="arrow right"></div>
             </div>
           )}
-					
+
 				</div>
 
 				<Slider {...settings} css={slickStyles} ref={slider}>

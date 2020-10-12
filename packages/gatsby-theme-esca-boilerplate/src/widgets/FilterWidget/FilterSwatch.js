@@ -33,25 +33,25 @@ export default function FilterSwatch(props){
 	const swatches = swatchQuery?.allSanitySwatch?.nodes
 
 	function removeFilter(val) {
-		const index = activeFilters[title]?.indexOf?.(val) 
+		const index = activeFilters[title]?.indexOf?.(val)
 
-		if(index !== -1){      
+		if(index !== -1){
 			setActiveFilters({
 				...activeFilters,
 				[title]: [
-					...activeFilters[title].slice(0, index), 
+					...activeFilters[title].slice(0, index),
 					...activeFilters[title].slice(index + 1),
 				],
 			})
 		}
 	}
-  
+
 	function addFilter(val) {
 		const exists = activeFilters?.[title]?.find?.(f => f === val)
 
 		if(!exists){
 			setActiveFilters({
-				...activeFilters, 
+				...activeFilters,
 				[title]: [
 					...activeFilters[title] || [], val,
 				],
@@ -64,7 +64,7 @@ export default function FilterSwatch(props){
 	function renderValue(swatch, val) {
 		if(swatch?.color) {
 			return (
-				<div 
+				<div
 					css={css`background: ${swatch?.color?.hex}; height: 100%; width: 100%;`}
 				/>
 			)
@@ -81,22 +81,21 @@ export default function FilterSwatch(props){
 			return val
 		}
 	}
-  
+
 	return (
 		<div css={styles} className="filter">
-			<div className="title">{title}</div>
 			<div className="values">
 				<ul className="list">
 					{values.map((val, i) => {
 						const isActive = !!activeFilters?.[title]?.find?.(f => f === val)
 						const swatch = swatches.find(s => s?.value?.toLowerCase() === val?.toLowerCase())
-						
+
 						return (
 							<li className="listItem" key={i}>
 								<div className={`swatch tooltip ${isActive && `active`}`} onClick={() => addFilter(val)}>
 									{renderValue(swatch, val)}
 									<span className="tooltiptext">{val}</span>
-								</div> 
+								</div>
 							</li>
 						)
 					})}
@@ -146,7 +145,7 @@ const styles = css`
       text-align: center;
       padding: 5px;
       white-space: nowrap;
-      border-radius: 6px;  
+      border-radius: 6px;
       position: absolute;
       z-index: 1;
 			left: 0;

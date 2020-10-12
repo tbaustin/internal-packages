@@ -2,21 +2,45 @@ import React, { useState, useEffect } from 'react'
 import Link from 'gatsby-link'
 import { css } from '@emotion/core'
 import { Helmet } from "react-helmet"
-
 import TemplateEngineProvider from '../context/template-engine'
+import ProductListsProvider from '../context/product-lists'
 import CurrentVariantProvider from '../context/current-variant'
-import ProductGridList from '../components/product-list/grid-list'
+import ProductListWidget from '../widgets/ProductListWidget'
 import Layout from '../layout'
 import Container from '../components/container'
 import CallToAction from '../components/call-to-action'
 import { search } from '../search'
-import { colors, breakpoints } from '../styles/variables'
+import { breakpoints } from '../styles/variables'
 
 
 
 const ResultsDisplay = props => {
 	const { loading, results, submittedTerm } = props
 	const hasResults = Boolean(results?.length)
+
+	const products = results.slice(0, 36)
+
+	// Replicate props that ProductListWidget would receive from CMS
+	const widgetConfig = {
+		_key: `productSearchResults`,
+		filters: {
+			enableFilter: true,
+			priceFilter: true,
+			stockFilter: true,
+			ratingFilter: true
+		},
+		display: `grid`,
+		priceDisplay: `priceRange`
+	}
+
+	/**
+	 * Replicate the SKU lists object that would normally be passed to the main
+	 * template at build time
+	 */
+	const providerLists = {
+		productSearchResults: products.map(p => p?.sku).filter(Boolean)
+	}
+
 	if (loading) return (
 		<h3>
 			Searching for <em>"{submittedTerm}"</em>...
@@ -24,11 +48,9 @@ const ResultsDisplay = props => {
 	)
 
 	if (hasResults) return (
-		<>
-			<ul css={searchListCss}>
-				<ProductGridList products={results.slice(0, 36)} priceDisplay={`priceRange`} />
-			</ul>
-		</>
+		<ProductListsProvider lists={providerLists} products={products}>
+			<ProductListWidget {...widgetConfig} />
+		</ProductListsProvider>
 	)
 
 	if (submittedTerm) return (
@@ -85,15 +107,12 @@ export default function SearchPage() {
 		startSearch(urlTerm)
 	}, [])
 
-	// if(!submittedTerm.length) {
-	// 	return <div>loading...</div>
-	// }
 
 	return (
 		<CurrentVariantProvider>
 			<TemplateEngineProvider>
-				<Layout 
-					title='Search' 
+				<Layout
+					title='Search'
 					breadcrumbs={[
 						{ title: `Home`, path: `/`, category: null },
 						{ title: submittedTerm.length ? submittedTerm : `Search` },
@@ -174,41 +193,4 @@ const inputStyle = css`
 const submitButtonStyle = css`
 	${inputElementStyle}
 	margin: 0;
-`
-
-
-
-const searchListCss = css`
-	list-style: none;
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
-	padding: 0;
-	width: 100%;
-	.search-item {
-		flex: 1 0 100%;
-		font-size: 20px;
-		text-align: center;
-		margin-bottom: 20px;
-		border: 2px solid ${colors.textDark};
-		cursor: pointer;
-
-		a {
-			display: block;
-			padding: 20px;
-			color: ${colors.textDark};
-			text-decoration: none;
-		}
-		:hover {
-			border-color: ${colors.red};
-			a {
-				color: ${colors.red};
-			}
-		}
-	}
-	@media(${breakpoints.tablet}){
-		.search-item {
-			flex: 0 1 calc(50% - 0.5rem);
-		}
-	}
 `

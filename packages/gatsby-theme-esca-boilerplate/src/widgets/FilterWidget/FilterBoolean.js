@@ -1,62 +1,75 @@
 import React, { useState } from 'react'
 import { css } from '@emotion/core'
 import produce from 'immer'
+import { MdClose } from 'react-icons/md'
+import { colors, breakpoints } from '../../styles/variables'
 
-import { colors } from '../../styles/variables'
 
 export default function FilterBoolean(props){
-	const { title, activeFilters, setActiveFilters } = props
+	const { title, label, activeFilters, setActiveFilters } = props
 
 	const [checked, setChecked] = useState(false)
 
+	const handleCheck = e => {
+		setChecked(e.target.checked)
+		if(!e.target.checked) {
+			const activeFiltersCopy = produce(activeFilters, draft => {
+				delete draft[title]
+			})
+			setActiveFilters(activeFiltersCopy)
+		} else {
+			setActiveFilters({
+				...activeFilters,
+				[title]: e.target.checked,
+			})
+		}
+	}
+
 	return (
 		<div css={styles}>
-			<div className="title">{title}</div>
 			<div className="toggle">
-				<input 
-					type="checkbox" 
+				<input
+					type="checkbox"
 					checked={checked}
-					onChange={e => {
-						setChecked(e.target.checked)
-						if(!e.target.checked) {
-							const activeFiltersCopy = produce(activeFilters, draft => {
-								delete draft[title]
-							})
-							setActiveFilters(activeFiltersCopy)
-						} else {
-							setActiveFilters({
-								...activeFilters,
-								[title]: e.target.checked,
-							})
-						}
+					onChange={handleCheck}
+				/>
+				{label || ``}
+			</div>
+			{title in activeFilters && (
+				<MdClose
+					className="remove"
+					onClick={() => {
+						setChecked(false)
+						const activeFiltersCopy = produce(activeFilters, draft => {
+							delete draft[title]
+						})
+						setActiveFilters(activeFiltersCopy)
 					}}
 				/>
-				{title in activeFilters && (
-					<div 
-						className="remove" 
-						onClick={() => {
-							setChecked(false)
-							const activeFiltersCopy = produce(activeFilters, draft => {
-								delete draft[title]
-							})
-							setActiveFilters(activeFiltersCopy)
-						}}
-					>
-					X
-					</div>
-				)}
-			</div>
-			
+			)}
 		</div>
 	)
 }
 
 const styles = css`
 	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+
 	.remove {
 		cursor: pointer;
+		width: 1.5em;
+		height: 1.5em;
+		margin-right: 1rem;
+
+		@media(${breakpoints.laptop}) {
+			width: 1em;
+			height: 1em;
+			margin-right: 0;
+		}
 	}
 	.toggle {
+		flex: 1;
 		display: flex;
 		align-items: center;
 		input {
