@@ -40,8 +40,13 @@ export default function ProductListWidget(props) {
 		/>
 	)
 
+	const providerProps = {
+		products: patchedProducts,
+		filterSettings
+	}
+
 	return (
-		<FilterAndSortProvider products={patchedProducts}>
+		<FilterAndSortProvider {...providerProps}>
 			<section css={styles}>
 				<Toolbar filterSettings={filterSettings} />
 	      <FiltersSection filterSettings={filterSettings} />

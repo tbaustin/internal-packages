@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { css } from '@emotion/core'
 import produce from 'immer'
 import { MdClose } from 'react-icons/md'
@@ -9,6 +9,11 @@ export default function FilterBoolean(props){
 	const { title, label, activeFilters, setActiveFilters } = props
 
 	const [checked, setChecked] = useState(false)
+
+	// Set checked on initial render if the filter is already toggled on
+	useEffect(() => {
+		if (activeFilters?.[title]) setChecked(true)
+	}, [])
 
 	const handleCheck = e => {
 		setChecked(e.target.checked)

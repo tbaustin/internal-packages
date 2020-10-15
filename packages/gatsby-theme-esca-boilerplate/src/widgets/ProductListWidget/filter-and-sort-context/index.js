@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useTemplateEngine } from '../../../context/template-engine'
 import applyFilters from './apply-filters'
 import applySort from './apply-sort'
@@ -10,13 +10,18 @@ export const useFilterAndSort = () => useContext(FilterAndSortContext)
 
 
 export default function Provider(props) {
-  const { products } = props
+  const { products, filterSettings } = props
 
 	const [sortCriteria, setSortCriteria] = useState([])
   const [filters, setFilters] = useState({})
 
   const sortProducts = (...args) => setSortCriteria(args)
 	const filterProducts = newFilters => setFilters(newFilters)
+
+  // Set stock filter to true by default (if enabled)
+  useEffect(() => {
+    if (filterSettings?.stockFilter) setFilters({ Stock: true })
+  }, [])
 
 	const templateEngine = useTemplateEngine()
 
