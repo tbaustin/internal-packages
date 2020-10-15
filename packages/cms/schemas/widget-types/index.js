@@ -78,16 +78,6 @@ export const SeoWidget = {
 	name: `SeoWidget`,
 	type: `object`,
 	fields: [
-		{
-			title: `Use Template Variable`,
-			description: `
-        For templates only: if the data source (e.g. category or product) has
-        a feature tile field, you can type the name of that field here instead of
-        selecting/uploading an image above. Do not include curly braces.
-      `,
-			name: `templateVariable`,
-			type: `string`,
-		},
 		{ type: `seoObj`, name: `seoObj`, title: `Seo Fields` },
 	],
 }
