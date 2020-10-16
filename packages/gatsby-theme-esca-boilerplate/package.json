@@ -1,6 +1,6 @@
 {
   "name": "gatsby-theme-esca-boilerplate",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
