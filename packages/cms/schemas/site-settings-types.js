@@ -119,10 +119,18 @@ export const siteSettings = {
       },
     },
     {
+      title: `Footer Logo`,
+      name: `footerLogo`,
+      type: `image`,
+      options: {
+        accept: [`.svg`, `.png`]
+      },
+    },
+    {
       title: `Footer Content`,
       name: `footerContent`,
       type: `array`,
-      of: [{ type: `block` }, { type: `image` }],
+      of: [{ type: `block` }],
     },
     {
       title: `Navigation`,
