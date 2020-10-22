@@ -137,9 +137,15 @@ const baseProductEditor = async (cmsProduct, apiProduct) => {
   const name = apiProduct?.[PRODUCT_NAME_KEY]
   const title = `Edit Base Product: ${name || cmsProduct.sku}`
 
+  /**
+   * Opening a document pane programmatically when the document is in draft
+   * state crashes the desk tool if the "drafts." part of the ID is included...
+   */
+  const documentId = cmsProduct._id.replace(`drafts.`, ``)
+
   return S.document()
     .title(title)
-    .documentId(cmsProduct._id)
+    .documentId(documentId)
 }
 
 
