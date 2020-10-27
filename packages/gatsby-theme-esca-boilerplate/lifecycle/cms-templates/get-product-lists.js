@@ -19,7 +19,7 @@ module.exports = function getProductLists(options) {
      * Use either the manually-chosen product list or one inferred from template
      * variable settings
      */
-		if(productListSources) {
+		if (productListSources) {
 			const {
 				productList: manualProductList,
 				templateVariable: plTempVar,
@@ -28,14 +28,11 @@ module.exports = function getProductLists(options) {
 
 			let productList = manualProductList || []
 
-			if(templateEngine && dataSource){
+			if (templateEngine && dataSource) {
 				productList = plUseTempDataSource
 					? dataSource
 					: plTempVar
-						? templateEngine.resolveProperty(
-							plTempVar,
-							dataSource,
-						)
+						? templateEngine.resolveProperty(plTempVar, dataSource)
 						: []
 			}
 
@@ -45,8 +42,8 @@ module.exports = function getProductLists(options) {
 				return (productList || []).find(productItem => productItem._id === _id)
 			})
 
-			const skus = filtered.map(p => (p || {}).sku)
-			return limit ? skus.slice(0, limit) : skus
+			const skus = filtered.map(p => (p || {}).sku).slice(0, limit || Infinity)
+			if (skus.length) return skus
 		}
 
 
@@ -65,10 +62,7 @@ module.exports = function getProductLists(options) {
 		if (templateEngine && dataSource) {
 			category = useTemplateDataSource
 				? dataSource
-				: templateEngine.resolveProperty(
-					templateVariable,
-					dataSource,
-				)
+				: templateEngine.resolveProperty(templateVariable, dataSource)
 		}
 
 		// Use the slug as identifier for filtering
@@ -86,8 +80,7 @@ module.exports = function getProductLists(options) {
 			})
 		})
 
-		const skus = filtered.map(p => (p || {}).sku)
-		return limit ? skus.slice(0, limit) : skus
+		return filtered.map(p => (p || {}).sku).slice(0, limit || Infinity)
 	}
 
 	// Start the hashmap of product lists
