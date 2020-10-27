@@ -7,7 +7,7 @@ import TextInput from 'part:@sanity/components/textfields/default'
 import { altTextDisplay as style } from './styles'
 
 
-export const AltTextDisplay = forwardRef((props, ref) => {
+export const AltTextDisplay = forwardRef(function AltTextDisplay(props, ref) {
 	const { altText, onClick } = props
 	const tooltip = `Alt Text – click to edit`
 	const displayText = altText || `(no alt text – click to edit)`
