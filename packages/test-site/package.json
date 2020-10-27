@@ -1,7 +1,7 @@
 {
   "name": "test-site",
   "private": true,
-  "version": "6.0.2",
+  "version": "7.0.0",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -16,7 +16,7 @@
     "env": "esca env"
   },
   "dependencies": {
-    "@escaladesports/boilerplate": "^6.0.2",
+    "@escaladesports/boilerplate": "^7.0.0",
     "@sanity/cli": "^1.149.9",
     "gatsby": "^2.24.12",
     "gatsby-plugin-compile-es6-packages": "^2.1.0",
