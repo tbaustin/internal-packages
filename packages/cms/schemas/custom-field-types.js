@@ -12,22 +12,33 @@ export const customField = {
 		{
 			name: `salsifyName`,
 			title: `Salsify Property Name (must match exactly)`,
+			description: `If specified, the value of the matching property in `
+				+ `Salsify will sync to this field. It will no longer be editable via `
+				+ `the CMS, with the exception of changing order and some other `
+				+ `settings when Field Type below is "Image List."`,
 			type: `string`,
 		},
 		{
 			name: `useAsName`,
-			title: `Use this field as the product name`,
+			title: `Use for product names`,
+			description: `If checked, this field's value will be used for product `
+				+ `names displayed throughout the CMS and in Product Lists throughout `
+				+ `the site.`,
 			type: `boolean`,
 		},
 		{
 			name: `useAsListImage`,
-			title: `Use this field for product list tile images`,
-			description: `Each product will use its first image in this group`,
+			title: `Use for product list images`,
+			description: `If checked, each tile in every Product List will show the `
+				+ `first image in the product's value for this field. Field Type below `
+				+ `must be "Image List."`,
 			type: `boolean`,
 		},
 		{
 			name: `attributeWidget`,
-			title: `Attribute Widget`,
+			title: `Product Overview Filter`,
+			description: `Allows customers to filter by this field in a Product `
+				+ `Overview to choose a specific variant`,
 			type: `string`,
 			options: {
 				list: [
@@ -37,7 +48,9 @@ export const customField = {
 		},
 		{
 			name: `filterWidget`,
-			title: `Filter Widget`,
+			title: `Product List Filter`,
+			description: `Allows customers to filter products by this field in `
+				+ `Product Lists`,
 			type: `string`,
 			options: {
 				list: [
@@ -53,9 +66,14 @@ export const customField = {
 			options: {
 				list: [
 					{ title: `Text`, value: `string` },
-					{ title: `True/False`, value: `boolean` },
-					{ title: `Number`, value: `number` },
-					{ title: `Images`, value: `images` },
+					/**
+					 * The below types are commented out temporarily; custom inputs and
+					 * site code currently do nothing different with them and treat them
+					 * as "Text" types; implementation to be finished eventually...
+					 */
+					// { title: `True/False`, value: `boolean` },
+					// { title: `Number`, value: `number` },
+					{ title: `Image List`, value: `images` },
 				],
 			},
 		},
