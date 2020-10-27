@@ -3,41 +3,46 @@ import Img from 'gatsby-image'
 import { useStaticQuery, Link, graphql } from 'gatsby'
 import { formatPrice, getFluidGatsbyImage } from '@escaladesports/utils'
 import { css } from '@emotion/core'
-
 import ReviewSnippet from '../../widgets/ReviewSnippetWidget'
-
 import { useTemplateEngine } from '../../context/template-engine'
 import pricingOptions from './pricing-options'
-
 import { priceText } from '../../styles'
-
 import { colors } from '../../styles/variables'
 
-const imageKeyQuery = graphql`{
-  imageCustomField: sanityCustomField(useAsListImage: { eq: true }) {
+
+const imageFieldQuery = graphql`{
+  imageFieldMeta: sanityCustomField(useAsListImage: { eq: true }) {
     name
   }
 }`
 
-export default function ProductTile({ 
-	product, 
-	priceDisplay, 
-	brand, 
-	strikeThroughPrice, 
-}){
+
+export default function ProductTile({
+	product,
+	priceDisplay,
+	brand,
+	strikeThroughPrice,
+}) {
 	const { variants, sku  } = product
-	
+
 	const defaultVariant = variants?.[0]
 
 	const inStock = variants?.some?.(v => !!v.stock)
 
-	const { imageCustomField } = useStaticQuery(imageKeyQuery)
+	/**
+   * For images, use custom field specified on the variant or fall back to the
+   * custom field having useAsListImage true
+   */
+  const queryData = useStaticQuery(imageFieldQuery)
+  const imageFieldMeta = (
+    defaultVariant?.listImageCustomField || queryData.imageFieldMeta
+  )
 
-	const imageField = defaultVariant?.customFieldEntries?.find?.(entry => {
-		return entry.fieldName === imageCustomField.name
+	const imageFieldEntry = defaultVariant?.customFieldEntries?.find?.(entry => {
+		return entry?.fieldName === imageFieldMeta?.name
 	})
 
-	const imageUrl = imageField?.fieldValue?.images?.[0]?.externalUrl
+	const imageUrl = imageFieldEntry?.fieldValue?.images?.[0]?.externalUrl
 
 	const image = imageUrl && getFluidGatsbyImage(
 		imageUrl,

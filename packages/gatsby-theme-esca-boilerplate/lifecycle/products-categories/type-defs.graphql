@@ -8,6 +8,11 @@ type ResolvedTemplateReference {
   title: String
 }
 
+type ResolvedCustomFieldReference {
+  _id: String
+  name: String
+}
+
 type BaseProduct implements Node @infer {
   _id: String
   _type: String
@@ -35,6 +40,7 @@ type Variant {
   customFieldEntries: JSON
   salsify: JSON
   rating: Float
+  listImageCustomField: ResolvedCustomFieldReference
 }
 
 type Slug {
