@@ -1,15 +1,18 @@
+/** @jsx jsx */
 import React, { forwardRef, useState, useEffect } from 'react'
+import { jsx } from '@emotion/core'
 import sanityClient from 'part:@sanity/base/client'
 import { withDocument } from 'part:@sanity/form-builder'
 import SalsifyDisplay from './salsify-display'
 import CustomFieldsForm from './form'
 import ImageLists from './image-lists'
+import { container as containerStyle } from './styles'
 
 
 /**
  * The entire "Custom Fields" area in a product editor pane
  * Contains a form section for editable fields, display table for fields from
- * Salsify, and reorderable lists of images (for Salsify image list fields)
+ * Salsify, and reorderable lists of images (for image list fields)
  */
 export default withDocument(
 	forwardRef(function CustomFields(props, ref) {
@@ -28,7 +31,7 @@ export default withDocument(
 		}, [])
 
 		return (
-			<>
+			<div css={containerStyle}>
 				<CustomFieldsForm
 					ref={ref}
 					customFields={customFields}
@@ -44,7 +47,7 @@ export default withDocument(
 					onChange={onChange}
 					entries={value}
 				/>
-			</>
+			</div>
 		)
 	}),
 )
