@@ -200,6 +200,15 @@ export const ProductListWidget = {
 	title: `Product List`,
 	name: `ProductListWidget`,
 	type: `object`,
+	fieldsets: [
+		{
+			title: `Individual Tile Settings`,
+			name: `tileSettings`,
+			options: {
+				collapsible: true,
+			}
+		}
+	],
 	fields: [
 		{
 			title: `Filter by Category`,
@@ -228,16 +237,19 @@ export const ProductListWidget = {
 			title: `Brand`,
 			name: `brand`,
 			type: `string`,
+			fieldset: `tileSettings`
 		},
 		{
 			title: `Strike Through Price`,
 			name: `strikeThroughPrice`,
 			type: `string`,
+			fieldset: `tileSettings`
 		},
 		{
-			title: `Price Display on Product Tile`,
+			title: `Price Display`,
 			name: `priceDisplay`,
 			type: `string`,
+			fieldset: `tileSettings`,
 			options: {
 				list: [
 					{ title: `Default Variant Price`, value: `defaultVariant` },
@@ -270,7 +282,7 @@ export const ProductListWidget = {
 		prepare(selection) {
 			const { category } = selection
 			return {
-				title: `${category} Products`,
+				title: category ? `${category} Products` : `Product List`,
 			}
 		},
 	},
