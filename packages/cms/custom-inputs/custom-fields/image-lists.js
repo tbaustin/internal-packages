@@ -25,14 +25,19 @@ export default function ImageLists(props) {
 		// Get the position of this image list in the custom field entries
 		const updateIdx = entries.findIndex(e => e.fieldName === name)
 
-		// Replace existing image list w/ new one on the corresponding entry
+		/**
+		 * Replace existing image list w/ new one on the corresponding entry
+		 * Add an entry for the custom field if it doesn't exist
+		 */
 		const newEntries = [...entries]
-		newEntries[updateIdx] = {
+		const updatedEntry = {
 			fieldName: name,
 			fieldValue: {
 				images: newImageListValue,
-			},
+			}
 		}
+		if (updateIdx === -1) newEntries.push(updatedEntry)
+		else newEntries[updateIdx] = updatedEntry
 
 		return PatchEvent.from(set(newEntries))
 	}
@@ -43,19 +48,18 @@ export default function ImageLists(props) {
 				const { _id, name, title, salsifyName } = field
 				const entry = entries?.find(e => e.fieldName === name)
 				const value = entry?.fieldValue?.images
+				const listTitle = salsifyName ? `${name} (Salsify)` : name
 
-				const finalValue = value?.map?.(img => ({
-					...img,
-					_type: `customFieldImage`,
-				}))
+				const shouldHide = !entry && salsifyName
 
-				return !entry ? null : (
+				return shouldHide ? null : (
 					<ImageList
 						key={_id}
-						type={{ title: name }}
+						type={{ title: listTitle }}
 						createPatchEvent={createPatch(name)}
 						onChange={onChange}
 						value={value}
+						allowAddAndRemove={!salsifyName}
 					/>
 				)
 			})}

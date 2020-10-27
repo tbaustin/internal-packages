@@ -4,6 +4,8 @@ import { jsx } from '@emotion/core'
 import Patch, { set } from 'part:@sanity/form-builder/patch-event'
 import Fieldset from 'part:@sanity/components/fieldsets/default'
 import { List, Item, DragHandle } from 'part:@sanity/components/lists/sortable'
+import ButtonGrid from 'part:@sanity/components/buttons/button-grid'
+import Button from 'part:@sanity/components/buttons/default'
 import { combineArrays } from '@escaladesports/utils'
 import useDocuments from './use-documents'
 import * as styles from './styles'
@@ -12,7 +14,7 @@ import * as styles from './styles'
 
 export default forwardRef((props, ref) => {
 	const { options, type, value, onChange, createPatchEvent } = props
-	const { documents: documentsProp } = props
+	const { documents: documentsProp, showAdd, onClickAdd } = props
 
 	const [isMoving, setMoving] = useState(false)
 	/**
@@ -80,6 +82,11 @@ export default forwardRef((props, ref) => {
 					)
 				})}
 			</List>
+			{showAdd && (
+				<ButtonGrid align="start" onClick={onClickAdd}>
+					<Button inverted>Add</Button>
+				</ButtonGrid>
+			)}
 		</Fieldset>
 	)
 })
