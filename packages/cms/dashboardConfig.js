@@ -15,7 +15,7 @@ export default {
 						// buildHookId: siteConfig.netlifyBuildHookId,
 						// name: siteConfig.siteId,
 						apiId: `5da43aee-19c3-4b41-8d6d-f592e5cd3ba0`,
-						buildHookId: `5f8468d0a642c9d7c1fb2277`,
+						buildHookId: `5fa1cce4eee2f50119e72f0a`,
 						name: `lifeline-fitness`,
 					},
 				],

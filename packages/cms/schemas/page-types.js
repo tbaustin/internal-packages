@@ -20,7 +20,7 @@ export const breadcrumbCategory = {
 			title: `Choose Source for Category`,
 			description: `Use one of the methods below to select a category`,
 			name: `dataSource`,
-			type: `variableCategory`
+			type: `variableCategory`,
 		},
 		{
 			title: `Insert Crumbs for Parent Categories`,
@@ -143,20 +143,20 @@ const getFields = isTemplate => {
 				const regex = /^[a-zA-Z]*$/
 				const message = `Must contain only lower/uppercase letters (no spaces)`
 				return regex.test(text) || message
-			})
-    },
-    {
-      name: `schemaOrgPageType`,
-      title: `Schema.org Page Scope Type`,
-      description: `Defines the Schema type that the page will be scoped to. Applies to 'page-container'. Format should be a URL e.g. https://schema.org/Product`,
-      type: `string`,
-      validation: Rule => Rule.custom(text => {
-        if (!text) return true
-        const regex = /https:\/\/schema.org\/[a-zA-Z]+/
-        const message = `Must be a schema.org URL.`
-        return regex.test(text) || message
-      })
-    }
+			}),
+		},
+		{
+			name: `schemaOrgPageType`,
+			title: `Schema.org Page Scope Type`,
+			description: `Defines the Schema type that the page will be scoped to. Applies to 'page-container'. Format should be a URL e.g. https://schema.org/Product`,
+			type: `string`,
+			validation: Rule => Rule.custom(text => {
+				if (!text) return true
+				const regex = /https:\/\/schema.org\/[a-zA-Z]+/
+				const message = `Must be a schema.org URL.`
+				return regex.test(text) || message
+			}),
+		},
 	]
 }
 
@@ -192,6 +192,6 @@ export const template = {
 	name: `template`,
 	title: `Template`,
 	type: `document`,
-	fields: getFields(true),
+	fields: [...getFields(true), { name: `default`, title: `Default Template (for new products)`, type: `boolean` }],
 	preview: getPreview(true),
 }
