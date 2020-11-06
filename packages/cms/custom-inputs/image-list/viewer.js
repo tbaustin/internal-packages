@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import React from 'react'
 import { jsx } from '@emotion/core'
-import Modal from 'part:@sanity/components/dialogs/default'
+import Modal from 'part:@sanity/components/dialogs/fullscreen'
 import { buildSalsifyImageUrl } from '@escaladesports/utils'
-import { modalContent as style } from './styles'
+import { imageViewer as style } from './styles'
 
 
 export default function Viewer(props) {

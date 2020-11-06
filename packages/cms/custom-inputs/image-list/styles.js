@@ -23,6 +23,8 @@ export const altTextDisplay = css`
   color: gray;
   flex: 1;
   margin: 0 1rem;
+  display: flex;
+  align-items: center;
   cursor: pointer;
 
   svg {
@@ -36,15 +38,14 @@ export const altTextDisplay = css`
 `
 
 
-export const modalContent = css`
-  width: 50vw;
-  min-width: 800px;
-  min-height: 600px;
+export const imageViewer = css`
+  width: 100%;
   display: flex;
-  align-items: center;
-  padding: 2rem;
+  justify-content: center;
 
   img {
-    width: 100%;
+    height: 60vh;
+    max-width: 100%;
+    object-fit: contain;
   }
 `

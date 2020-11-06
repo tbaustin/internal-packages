@@ -152,14 +152,20 @@ export default function ReviewDisplayWidget(props){
 							</div>
 						</div>
 
-						<div className="recommend">
-							<div>
-								<span className="percent">{recommended_ratio * 100}%</span>
+						
+							<div className="recommend">
+								{!!+recommended_ratio &&  (
+									<>
+										<div>
+											<span className="percent">{+recommended_ratio * 100}%</span>
+										</div>
+										<p>
+											of users would recommend this to a friend
+										</p>
+									</>
+								)}
 							</div>
-							<p>
-								of users would recommend this to a friend
-							</p>
-						</div>
+						
 
 						<div className="histogram">
 							<ul className="histoList">

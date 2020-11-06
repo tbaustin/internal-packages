@@ -1,122 +1,80 @@
-import React, { useState } from 'react'
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+import React from 'react'
 import { css } from '@emotion/core'
 import { useTemplateEngine } from '../../context/template-engine'
 import useLivePriceAndStock from '../../context/live-price-and-stock'
 import { useProductList } from '../../context/product-lists'
-import { variables } from '../../styles'
-import CarouselList from '../../components/product-list/carousel-list'
-import GridList from '../../components/product-list/grid-list'
-import FilterWidget from '../FilterWidget'
-import generateFilters from './generate-filters'
-import filterProducts from './filter-products'
+import { breakpoints } from '../../styles/variables'
+import FiltersSection from './filters-section'
+import FilterAndSortProvider from './filter-and-sort-context'
+import ProductList from './product-list'
+import Toolbar from './toolbar'
 
-const { colors } = variables
 
 
 export default function ProductListWidget(props) {
 	const {
 		_key,
+		filters: filterSettings,
 		title,
 		display,
-		filters: initFilters = {},
-		priceDisplay,
+		priceDisplay
 	} = props
 
-	const [activeFilters, setActiveFilters] = useState({})
-
-	const enableFilter = initFilters?.enableFilter
-
-	// Try to replace template variable w/ value in case one is provided
 	const templateEngine = useTemplateEngine()
-	const parsedTitle = templateEngine.parse(title)
 
-	const products = useLivePriceAndStock(useProductList(_key))
+	const rawProducts = useLivePriceAndStock(useProductList(_key))
 
-	function renderList(productList) {
-		switch(display) {
-			case `carousel`:
-				return (
-					<CarouselList
-						products={productList}
-						title={parsedTitle}
-						priceDisplay={priceDisplay}
-					/>
-				)
-			default:
-				return (
-					<GridList
-						products={productList}
-						activeFilters={activeFilters}
-						priceDisplay={priceDisplay}
-						{...props}
-					/>
-				)
-		}
+	const patchedProducts =  rawProducts
+	  .filter(prod => prod?.variants?.every?.(v => v?.price))
+	  .map(prod => {
+	    const { patchedData } = templateEngine.patchCustomData(prod) || {}
+	    return patchedData || prod
+	  })
+
+	if (!filterSettings?.enableFilter || display !== `grid`) return (
+		<ProductList
+			products={patchedProducts}
+			title={title}
+			display={display}
+			priceDisplay={priceDisplay}
+		/>
+	)
+
+	const providerProps = {
+		products: patchedProducts,
+		filterSettings
 	}
 
-	if(!enableFilter || display !== `grid`) {
-		return renderList(products)
-	} else {
-		const customFields = templateEngine?.schema
-			?.find(type => type.name === `variant`)?.fields
-			?.find(field => field?.name === `customFields`)
-			?.fields || []
-
-		const filters = customFields.filter(field => field?.filterWidget)
-		const filterValues = generateFilters(filters, products, templateEngine, initFilters)
-		const filteredProducts = filterProducts(activeFilters, products, templateEngine)
-
-		return (
+	return (
+		<FilterAndSortProvider {...providerProps}>
 			<section css={styles}>
-				{!!filterValues.length && (
-					<div className="filters">
-						{filterValues.map((filter, i) => {
-							return (
-								<FilterWidget
-									key={i}
-									filter={filter}
-									activeFilters={activeFilters}
-									setActiveFilters={setActiveFilters}
-								/>
-							)
-						})}
-					</div>
-				)}
+				<Toolbar filterSettings={filterSettings} />
+	      <FiltersSection filterSettings={filterSettings} />
 				<div className="productList">
-					{renderList(filteredProducts)}
+					<ProductList
+						title={title}
+						display={display}
+						priceDisplay={priceDisplay}
+					/>
 				</div>
 			</section>
-		)
-	}
+		</FilterAndSortProvider>
+	)
 }
 
+
 const styles = css`
+	width: 100%;
 	display: flex;
   flex-flow: row wrap;
-	width: 100%;
-	.filters {
-		flex-basis: 200px;
-	}
+	justify-content: center;
+
 	.productList {
-		flex: 1;
-	}
-	.activeFilters {
-		margin-bottom: 20px;
-    border-bottom: 1px solid ${colors.lightGrey};
-    padding-bottom: 10px;
-	}
-	.activeList {
-		margin-bottom: 20px;
-	}
-	.activeFiltersTitle, .title {
-		font-size: 24px;
-    margin-bottom: 10px;
-	}
-	.filter {
-		margin-bottom: 20px;
-		padding-bottom: 10px;
-		border-bottom: 1px solid ${colors.lightGrey};
+		width: 100%;
+
+		@media(${breakpoints.laptop}) {
+			flex: 1;
+			width: unset;
+		}
 	}
 `

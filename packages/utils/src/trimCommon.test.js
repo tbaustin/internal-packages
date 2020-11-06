@@ -24,11 +24,20 @@ const sample2Expected = [
 	{ strings: [`Lament`] },
 ]
 
+const identicalStrings = [
+	`All the same`,
+	`All the same`,
+	`All the same`
+]
+
 const description = `
   Trims common beginning characters from each string in a given list
 `
 
 test(description, () => {
+	expect(trimCommon(`blah`)).toBe(`blah`)
+	expect(trimCommon(null)).toBeNull()
+
 	const result1 = trimCommon(sample1)
 	expect(result1).toBeInstanceOf(Array)
 	expect(result1).toHaveLength(4)
@@ -38,4 +47,18 @@ test(description, () => {
 	expect(result2).toBeInstanceOf(Array)
 	expect(result2).toHaveLength(4)
 	expect(result2).toEqual(expect.arrayContaining(sample2Expected))
+
+	const result3 = trimCommon([])
+	expect(result3).toBeInstanceOf(Array)
+	expect(result3).toHaveLength(0)
+
+	const result4 = trimCommon([`Only one`])
+	expect(result4).toBeInstanceOf(Array)
+	expect(result4).toHaveLength(1)
+	expect(result4).toEqual(expect.arrayContaining([`Only one`]))
+
+	const result5 = trimCommon(identicalStrings)
+	expect(result5).toBeInstanceOf(Array)
+	expect(result5).toHaveLength(3)
+	expect(result5).toEqual(expect.arrayContaining(identicalStrings))
 })

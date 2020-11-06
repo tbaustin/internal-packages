@@ -36,6 +36,9 @@ export function getComponentName(component) {
  * property path for objects)
  */
 export const trimCommon = (items = [], propPath = ``) => {
+	if (!Array.isArray(items)) return items
+	if ([0, 1].includes(items.length)) return items
+
 	const getString = item => {
 		if (typeof item === `object`) {
 			let value = _get(item, propPath || `name`)
@@ -55,8 +58,16 @@ export const trimCommon = (items = [], propPath = ``) => {
 		})
 	}
 
-	let numChars = 0, current = ``, common = ``
 	const first = getString(items[0])
+
+	/**
+	 * If all strings are the same, return the original array
+	 * Otherwise, infinite while loop occurs below
+	 */
+	const allSame = items.every(item => getString(item) === first)
+	if (allSame) return items
+
+	let numChars = 0, current = ``, common = ``
 
 	while (hasInCommon(current)) {
 		common = current

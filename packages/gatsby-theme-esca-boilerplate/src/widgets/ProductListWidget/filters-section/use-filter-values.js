@@ -1,4 +1,9 @@
-export default function (filters, products, templateEngine, initFilters) {
+import { useMemo } from 'react'
+import { useTemplateEngine } from '../../../context/template-engine'
+
+
+
+const generateFilters = (filters, products, templateEngine, initFilters) => {
 	const { priceFilter, ratingFilter, stockFilter } = initFilters
 
 	const staticFilters = []
@@ -6,9 +11,9 @@ export default function (filters, products, templateEngine, initFilters) {
 	if(priceFilter) {
 		staticFilters.push({
 			title: `Price`,
-			filterWidget: `FilterRange`,
+			filterWidget: `FilterPrice`,
 		})
-	} 
+	}
 	if(ratingFilter) {
 		staticFilters.push({
 			title: `Rating`,
@@ -18,7 +23,7 @@ export default function (filters, products, templateEngine, initFilters) {
 	if(stockFilter) {
 		staticFilters.push({
 			title: `Stock`,
-			filterWidget: `FilterBoolean`,
+			filterWidget: `FilterStock`
 		})
 	}
 
@@ -27,12 +32,12 @@ export default function (filters, products, templateEngine, initFilters) {
 	*/
 	const dynamicFilters = filters.reduce((acc, cur) => {
 		const { title } = cur
-		
+
 		const filterValues = []
 
 		products.forEach(product => {
 			const { patchedData } = templateEngine.patchCustomData(product)
-			
+
 			const { variants } = product
 
 			variants.forEach((_, i) => {
@@ -55,4 +60,23 @@ export default function (filters, products, templateEngine, initFilters) {
 	}, [])
 
 	return [...staticFilters, ...dynamicFilters]
+}
+
+
+
+export default function useFilterValues(options) {
+  const { products, initFilters } = options
+
+  const templateEngine = useTemplateEngine()
+
+  return useMemo(() => {
+    const customFields = templateEngine?.schema
+      ?.find(type => type.name === `variant`)?.fields
+      ?.find(field => field?.name === `customFields`)
+      ?.fields || []
+
+    const filters = customFields.filter(field => field?.filterWidget)
+
+    return generateFilters(filters, products, templateEngine, initFilters)
+  }, [])
 }

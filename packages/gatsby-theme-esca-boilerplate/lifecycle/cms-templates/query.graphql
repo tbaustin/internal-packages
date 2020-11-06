@@ -80,6 +80,10 @@ fragment ProductFields on BaseProduct {
     salsify
     customFieldEntries
     rating
+    listImageCustomField {
+      _id
+      name
+    }
   }
   template {
     _id

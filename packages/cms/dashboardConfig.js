@@ -1,3 +1,7 @@
+// const dirs = require(`@escaladesports/boilerplate/dirs`)
+// const configPath = `${dirs.site}/config.js`
+// const siteConfig = require(configPath)
+
 export default {
 	widgets: [
 		{
@@ -7,9 +11,12 @@ export default {
 				sites: [
 					{
 						title: `Sanity Studio`,
-						apiId: `1091f6e5-cc30-494a-8a51-636abb633596`,
-						buildHookId: `5ede982e5c7372feab488981`,
-						name: `escalade-website-boilerplate`,
+						// apiId: siteConfig.netlifyApiId,
+						// buildHookId: siteConfig.netlifyBuildHookId,
+						// name: siteConfig.siteId,
+						apiId: `5da43aee-19c3-4b41-8d6d-f592e5cd3ba0`,
+						buildHookId: `5fa1cce4eee2f50119e72f0a`,
+						name: `lifeline-fitness`,
 					},
 				],
 			},

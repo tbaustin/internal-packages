@@ -1,8 +1,14 @@
 import { css } from '@emotion/core'
 
 
+export const container = css`
+	> * {
+		margin-bottom: 2rem;
+	}
+`
+
 export const input = css`
-	* {
+	input {
 		font-size: 0.9rem;
 	}
 `

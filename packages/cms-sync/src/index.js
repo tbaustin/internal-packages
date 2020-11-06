@@ -12,6 +12,8 @@ export default async function cmsSync(args) {
 	} = args
 	console.log(`Product Sync Started`)
 
+
+	// this should be made into a reuseable function or just use the sdk...
 	const customFieldRes = await sanityRequest({
 		...sanityConfig,
 		apiKey: sanityKey,
@@ -21,6 +23,18 @@ export default async function cmsSync(args) {
 			query: /* groq */`*[ _type == "customField" && (fieldType == "images" || useAsName == true) ]`,  
 		},
 	})
+
+	const defaultTemplate = await sanityRequest({
+		...sanityConfig,
+		apiKey: sanityKey,
+		type: `query`,
+		endpoint: `data`,
+		body: { 
+			query: /* groq */`*[_type == "template" && default == true]`,  
+		},
+	})
+
+	const defaultTemplateId = defaultTemplate?.result?.[0]?._id
 
 	// use as name field for product slugs
 	const useAsNameField = customFieldRes?.result
@@ -72,10 +86,6 @@ export default async function cmsSync(args) {
 	// create mutations to send to sanity
 	const mutations = []
 	// only get products that exist
-
-	// lets us log out percentage complete
-	const totalPercent = Object.keys(baseProducts).length
-	let count = 1
 
 	// loop through each product and create variant/baseProducts in sanity
 
@@ -279,6 +289,13 @@ export default async function cmsSync(args) {
 				customFieldEntries: [],
 			}
 
+			if(defaultTemplateId) {
+				baseMutation.template = {
+					_ref: defaultTemplateId, 
+					_type: `reference`,
+				}
+			}
+
 			// new images from salsify here
 			imageTypes.forEach(imgType => {
 				const { salsifyName, name } = imgType
@@ -303,9 +320,6 @@ export default async function cmsSync(args) {
 				},
 			})
 		}
-
-		count++
-
 	}
 
 	try {

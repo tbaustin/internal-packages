@@ -69,7 +69,20 @@ export const variant = {
 	name: `variant`,
 	title: `Product Variant`,
 	type: `document`,
-	fields: productFields,
+	fields: [
+		...productFields,
+		{
+			name: `listImageCustomField`,
+			title: `Custom field to use for product list tile image`,
+			description: `Defaults to the custom field that has "Use for product `
+				+ `list images" turned on`,
+			type: `reference`,
+			to: [{ type: `customField` }],
+			options: {
+				filter: `fieldType == "images"`
+			}
+		}
+	],
 	preview: {
 		select: {
 			title: `slug.current`,

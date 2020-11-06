@@ -45,7 +45,13 @@ module.exports = async function getData() {
 				_id, title, path
 			},
 			"cmsVariants": variants[]->{
-				_type, _id, sku, customFieldEntries
+				_type,
+				_id,
+				sku,
+				customFieldEntries,
+				listImageCustomField->{
+					_id, name
+				}
 			},
 			"relatedProducts": relatedProducts[]->{
 				_id, sku

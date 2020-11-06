@@ -28,7 +28,7 @@ export default function MainTemplate(props) {
 	} = pageContext || {}
 
   const allProducts = graphqlData?.allBaseProduct?.nodes || []
-  
+
   const schemaOrgProps = {
     itemScope: true,
     itemType: schemaOrgPageType,
@@ -79,6 +79,10 @@ export const query = graphql`
 					stock
 					salsify
 					customFieldEntries
+					listImageCustomField {
+						_id
+						name
+					}
 				}
 			}
 		}

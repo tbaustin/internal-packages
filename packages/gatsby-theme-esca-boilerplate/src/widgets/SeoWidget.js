@@ -1,25 +1,31 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-
 import { useTemplateEngine } from '../context/template-engine'
 
+
 export default function SeoWidget(props) {
-	const {
-		seoDescription,
-		seoTitle,
-		h1Tag,
-		templateVariable = `` } = props
+	const { seoDescription, seoTitle, h1Tag } = props.seoObj || {}
 
 	const templateEngine = useTemplateEngine()
-	const templateValue = templateEngine.resolveProperty(templateVariable)
+	const resolveVal = val => templateEngine.data
+		? templateEngine.parse(val)
+		: val
+
+	const resolved = {
+		seoTitle: resolveVal(seoTitle),
+		seoDescription: resolveVal(seoDescription),
+		h1Tag: resolveVal(h1Tag)
+	}
 
 	return (
 		<>
 			<Helmet>
-				<title>{templateValue?.seoTitle || seoTitle}</title>
-				<meta name="description" content={templateValue?.seoDescription || seoDescription} />
+				{!resolved.seoTitle ? null : <title>{resolved.seoTitle}</title>}
+				{!resolved.seoDescription ? null : (
+					<meta name="description" content={resolved.seoDescription} />
+				)}
 			</Helmet>
-			{(templateValue?.h1Tag || h1Tag) && <h1>{templateValue?.h1Tag || h1Tag}</h1>}
+			{!resolved.h1Tag ? null : <h1>{resolved.h1Tag}</h1>}
 		</>
 	)
 }

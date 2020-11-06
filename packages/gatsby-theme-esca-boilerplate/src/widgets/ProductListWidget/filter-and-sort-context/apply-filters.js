@@ -1,8 +1,8 @@
-const getVariantValues = (variants, templateEngine, patchedData, key, field) => {
+const getVariantValues = (variants, templateEngine, product, key, field) => {
 	return variants.reduce((acc2, _, i) => {
 		const valueOnVariant = templateEngine.resolveProperty(
 			`Variants:${i + 1}:${field || ``}${key}`,
-			patchedData,
+			product,
 		)
 
 		if(valueOnVariant === 0 || valueOnVariant) {
@@ -23,8 +23,6 @@ const isObject = (val) => {
 
 export default function(activeFilters, products, templateEngine) {
 	return products.filter(product => {
-		const { patchedData } = templateEngine.patchCustomData(product)
-
 		const { variants } = product
 
 		const shouldShow = Object.keys(activeFilters).every(key => {
@@ -37,7 +35,7 @@ export default function(activeFilters, products, templateEngine) {
 				if(!activeFilterValues.length) return true
 
 				const variantValues = getVariantValues(
-					variants, templateEngine, patchedData, key, `Custom Fields:`,
+					variants, templateEngine, product, key, `Custom Fields:`,
 				)
 
 				// check if at least on of the variant values exist in the active filter values
@@ -54,7 +52,7 @@ export default function(activeFilters, products, templateEngine) {
 			if (isRangeValue) {
 				const { min, max } = activeFilterValues
 				const variantValues = getVariantValues(
-					variants, templateEngine, patchedData, key,
+					variants, templateEngine, product, key,
 				)
 
 				return variantValues.some(v => v >= min && v <= max)
@@ -65,7 +63,7 @@ export default function(activeFilters, products, templateEngine) {
 			 */
 			if (typeof activeFilterValues === `boolean`) {
 				const variantValues = getVariantValues(
-					variants, templateEngine, patchedData, key,
+					variants, templateEngine, product, key,
 				)
 				return variantValues.some(v => !!v === activeFilterValues)
 			}
@@ -75,7 +73,7 @@ export default function(activeFilters, products, templateEngine) {
 			 */
 			if(typeof activeFilterValues === `number`) {
 				const variantValues = getVariantValues(
-					variants, templateEngine, patchedData, key,
+					variants, templateEngine, product, key,
 				)
 
 				return variantValues.some(v => v >= activeFilterValues)

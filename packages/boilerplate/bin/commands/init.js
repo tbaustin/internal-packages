@@ -83,6 +83,8 @@ async function initProjectFiles() {
 	sanityDataset: \`\`,
   googleTagManagerId: \`\`,
   siteUrl: \`\`,
+  netlifyBuildHookId: \`\`,
+	netlifyApiId: \`\`,
   activeCampaign: {
 		integrationName: \`\`,
 		integrationLogo: \`\`,
