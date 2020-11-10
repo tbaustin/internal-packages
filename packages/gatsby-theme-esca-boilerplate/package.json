@@ -1,6 +1,6 @@
 {
   "name": "gatsby-theme-esca-boilerplate",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
@@ -14,7 +14,7 @@
     "@escaladesports/sanity-template-engine": "^1.0.3",
     "@escaladesports/utils": "^2.0.1",
     "@escaladesports/zygote-cart": "^4.2.0",
-    "@escaladesports/zygote-plugin-esca-api": "^4.2.2",
+    "@escaladesports/zygote-plugin-esca-api": "^4.3.0",
     "@iarna/toml": "^2.2.3",
     "@loadable/babel-plugin": "^5.12.0",
     "@loadable/component": "^5.12.0",
