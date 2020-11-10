@@ -7,10 +7,8 @@ import storeOrder from './storeOrder'
 import validateAddress from './validateAddress'
 
 
-export async function postInfo({ response, info, preFetchData }) {
-	console.log(`PostInfo`)
-
-	// Get messages, and moifications from response, or set default values
+export async function postInfo({ response, info, preFetchData, cartState: { productsState } }) {
+	// Get messages and modifications from response or set default values
 	let {
 		messages = { error: [], info: [] },
 		modifications = [],
@@ -29,10 +27,10 @@ export async function postInfo({ response, info, preFetchData }) {
 		] = await Promise.all([
 			quantityMod(products),
 			shippingMethods(info, products),
-			coupons(info, products)
+			coupons(info, products, productsState)
 		])
 		if(couponResponse.message)
-			messages.info.push(couponResponse.message)
+			messages.error.push(couponResponse.message)
 		if(couponResponse.coupon)
 			modifications.push(couponResponse.coupon)
 
@@ -59,6 +57,8 @@ export async function postInfo({ response, info, preFetchData }) {
 		let genericMessage = `We're sorry – there was an issue processing your `
 			+ `information. Please try again. If the problem persists, please `
 			+ `contact customer service.`
+
+		console.error(error)
 
 		messages.error.push(
 			error instanceof ValidationError ? error.message : genericMessage

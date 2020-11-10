@@ -2,8 +2,20 @@ import { toCents } from '@escaladesports/utils'
 import client from '../client'
 
 
-export default async function coupons(info, products) {
+export default async function coupons(info, products, productsState) {
 	if (!info.coupon) return {}
+
+	let modifications = []
+
+	/**
+	 * Coupon service only requires product objects to have a 'qty' property
+	 * Sending certain other properties (e.g. 'locations') causes 500 responses
+	 */
+	const productsQtyOnly = Object.keys(products).reduce((obj, sku) => {
+		const product = products[sku]
+		const { qty } = product || {}
+		return { ...obj, [sku]: { qty } }
+	}, {})
 
 	// Get coupon from the API
 	let response = await client.calculateDiscount({
@@ -23,14 +35,37 @@ export default async function coupons(info, products) {
 				phone: info.infoPhone,
 			},
 			billing: `delivery`,
-			products
-			// discounts: [],
+			products: productsQtyOnly
 		}
 	})
 
-	// console.log(`Coupon Response: `, response)
+	if (response.valid && !response.errors) {
+		if (response.item) {
+			const { sku, name, qty, price } = response.item
 
-	if (response.valid) {
+			let itemRes = await client.loadProducts({
+				skus: [ sku ],
+				salsify: [`Web Images`],
+				returnAsObject: true
+			})
+
+			const foundProduct = itemRes[sku]
+
+			const item = {
+				...response.item,
+				name: name,
+				id: sku,
+				description: `Promo item (${info.coupon})`,
+				quantity: +qty,
+				image: foundProduct?.[`Web Images`]?.[0],
+				price: price,
+				shippable: true,
+				isPromo: true
+			}
+
+			const { products: prevProducts } = productsState.state
+			productsState.setState({ products: [ ...prevProducts, item ]})
+		}
 		return {
 			coupon: {
 				id: info.coupon,
@@ -44,6 +79,6 @@ export default async function coupons(info, products) {
 	}
 
 	return {
-		message: response.errorMessage,
+		message: response.errorMessage
 	}
 }
