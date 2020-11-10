@@ -3,11 +3,19 @@ import client from '../client'
 
 
 export default async function coupons(info, products, productsState) {
-	console.log(`Coupons Function`, info, products)
-
 	if (!info.coupon) return {}
 
 	let modifications = []
+
+	/**
+	 * Coupon service only requires product objects to have a 'qty' property
+	 * Sending certain other properties (e.g. 'locations') causes 500 responses
+	 */
+	const productsQtyOnly = Object.keys(products).reduce((obj, sku) => {
+		const product = products[sku]
+		const { qty } = product || {}
+		return { ...obj, [sku]: { qty } }
+	}, {})
 
 	// Get coupon from the API
 	let response = await client.calculateDiscount({
@@ -27,35 +35,34 @@ export default async function coupons(info, products, productsState) {
 				phone: info.infoPhone,
 			},
 			billing: `delivery`,
-			products
-			// discounts: [],
+			products: productsQtyOnly
 		}
 	})
 
-	// console.log(`Coupon Response: `, response)
-
 	if (response.valid && !response.errors) {
-		if(response.item){
+		if (response.item) {
 			const { sku, name, qty, price } = response.item
-			let itemRes = await fetch(`/api/products/load`, { method: `post`, body: JSON.stringify({
+
+			let itemRes = await client.loadProducts({
 				skus: [ sku ],
 				salsify: [`Web Images`],
-			})})
-			itemRes = await itemRes.json()
-			const foundProduct = itemRes.products[sku]
-			console.log(`PRODUCT FOR COUPON: `, foundProduct)
+				returnAsObject: true
+			})
+
+			const foundProduct = itemRes[sku]
 
 			const item = {
 				...response.item,
 				name: name,
 				id: sku,
+				description: `Promo item (${info.coupon})`,
 				quantity: +qty,
-				image: foundProduct[`Web Images`] && foundProduct[`Web Images`][0],
+				image: foundProduct?.[`Web Images`]?.[0],
 				price: price,
 				shippable: true,
+				isPromo: true
 			}
-			console.log(`ITEM FROM COUPON: `, item)
-			
+
 			const { products: prevProducts } = productsState.state
 			productsState.setState({ products: [ ...prevProducts, item ]})
 		}
