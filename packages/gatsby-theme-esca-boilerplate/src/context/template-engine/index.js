@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import TemplateEngine from '@escaladesports/sanity-template-engine'
 import { useCurrentVariant } from '../current-variant'
+import useLivePriceAndStock from '../live-price-and-stock'
 import patch from './patch'
 
 
@@ -16,7 +17,10 @@ export const useTemplateEngine = () => useContext(TemplateEngineContext)
 
 
 export default function Provider(props) {
-	const { children, data } = props
+	const { children, data: dataProp } = props
+
+	// Try to add in live price & stock in case data source is a product
+	const data = useLivePriceAndStock(dataProp)
 
 	// Set current SKU first variant's SKU if data source is a product
 	const initialSku = data?.variants?.[0]?.sku
