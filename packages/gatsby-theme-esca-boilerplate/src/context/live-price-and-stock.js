@@ -8,18 +8,42 @@ const apiClient = new EscaAPIClient({
 })
 
 
-export default function useLivePriceAndStock(products){
+const addApiData = apiData => product => {
+	const { variants } = product || {}
+
+	const variantsWithLiveData = variants?.map?.(variant => {
+		const apiProduct = apiData[variant?.sku]
+
+		const apiStockSet = ![null, undefined, ``].includes(apiProduct?.stock)
+		const stock = apiStockSet ? apiProduct.stock : variant?.stock
+		const price = apiProduct?.price || variant?.price
+		const rating = Math.floor(Math.random() * 5) + 1 // Lol
+		return { ...variant, price, stock, rating }
+	})
+
+	const outputVariants = variantsWithLiveData || variants
+
+	return {
+		...product,
+		...outputVariants && { variants: outputVariants }
+	}
+}
+
+
+export default function useLivePriceAndStock(input) {
+	const products = Array.isArray(input) ? input : [ input ]
+
 	const [apiData, setApiData] = useState({})
 
 	const skus = products.reduce((acc, cur) => {
-		const { variants } = cur
+		const { variants } = cur || {}
 		const variantSkus = variants?.map?.(v => v?.sku)
-		if(variantSkus){
+		if (variantSkus) {
 			acc.push(...variantSkus)
 		}
 		return acc
 	}, [])
-  
+
 	useEffect(() => {
 		const loadApiData = async () => {
 			const result = await apiClient.loadProducts({
@@ -33,19 +57,7 @@ export default function useLivePriceAndStock(products){
 		if (skus.length) loadApiData()
 	}, [])
 
-	return products.map(product => {
-		const { variants } = product || {}
-    
-		const variantsWithLiveData = variants?.map?.(variant => {
-			const apiProduct = apiData[variant?.sku]
-
-			const apiStockSet = ![null, undefined, ``].includes(apiProduct?.stock)
-			const stock = apiStockSet ? apiProduct.stock : variant?.stock
-			const price = apiProduct?.price || variant?.price
-			const rating = Math.floor(Math.random() * 5) + 1 
-			return { ...variant, price, stock, rating }
-		})
-
-		return { ...product, variants: variantsWithLiveData || variants }
-	})
+	const productsWithApiData = products.map(addApiData(apiData))
+	if (Array.isArray(input)) return productsWithApiData
+	return productsWithApiData[0]
 }
